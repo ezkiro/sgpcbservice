@@ -1,16 +1,16 @@
 package com.toyfactory.pcb.domain;
 
-import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import lombok.Data;
+//import lombok.Data;
 
 @Entity
-public @Data class Account implements Serializable {
+//@Data
+public class Account {
 
 	@Id
 	private String id;
@@ -33,4 +33,30 @@ public @Data class Account implements Serializable {
 		this.crtDt = new Date();
 		this.updDt = new Date();
 	}
+	
+	public String getId() {
+		return this.id;
+	}
+	
+	public String getPasswd() {
+		return this.passwd;
+	}
+	
+	public String getPermission() {
+		return this.permission;
+	}
+	
+	public String getAgentId() {
+		return this.agentId;
+	}
+	
+	public Date getCrtDt() {
+		return this.crtDt;
+	}
+	
+	public Date getUpdDt() {
+		return this.updDt;
+	}
 }
+
+
