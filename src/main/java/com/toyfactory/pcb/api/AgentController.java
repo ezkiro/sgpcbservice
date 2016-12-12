@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.toyfactory.pcb.domain.Account;
+import com.toyfactory.pcb.model.Permission;
 import com.toyfactory.pcb.model.Version;
 import com.toyfactory.pcb.repository.AccountRepository;
 
@@ -35,9 +37,10 @@ public class AgentController {
 	public Account add(@PathVariable String id,
 			@PathVariable String passwd){
 
-		Account account = new Account(id, passwd, "Admin");
+		Account account = new Account(id, passwd, Permission.ADMIN);
 		Account accountData = accountDao.save(account);
 		log.debug("new account:" + accountData);
+				
 		return account;
 	}
 	
