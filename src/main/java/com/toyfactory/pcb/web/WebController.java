@@ -1,4 +1,4 @@
-package com.toyfactory.pcb.api;
+package com.toyfactory.pcb.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +11,18 @@ public class WebController {
 	public String jspPage(Model model){
 		model.addAttribute("name","hello springBoot1234");
 		return "hello";
+	}	
+
+	@RequestMapping("/login")
+	public String loginPage(Model model){
+		//model.addAttribute("name","hello springBoot1234");
+		return "login";
+	}		
+
+	@RequestMapping("/signup")
+	public String signupPage(Model model){
+		//model.addAttribute("name","hello springBoot1234");
+		return "signup";
 	}	
 	
 }
