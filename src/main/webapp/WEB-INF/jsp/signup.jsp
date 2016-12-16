@@ -26,10 +26,31 @@
  
   <script>
 	$(document).ready(function(){
-	 
+
+		var dublicateCheck = function(item1, value1) {
+			var isExist = false;
+		    $.get("/member/isExist",
+		    		{
+		    			item:item1,
+		    			value:value1
+		    		},
+		    		function(data, status){
+		    			isExist = data;
+		    		}
+		    );
+		    
+		    return isExist;
+		}
+		
 		//check double
-		$("#checkDoubleId").click(function(){
-			alert("check double id!!");
+		$("#checkDoubleId").click(function(){			
+			if($("#inputID").val() === "") return ;
+						
+			if( dublicateCheck("id", $("#inputID").val())){
+				alert("중복된 ID 입니다. 다른 ID를 입력해 주세요.");				
+			} else {
+				alert("사용가능한 ID 입니다.");
+			}
 		});
 		
 		$("#checkDoubleCompanyNumber").click(function(){
@@ -62,7 +83,7 @@
 			<label for="lbID">ID</label>
 		</div>
  		<div class="col-md-4">  		
-			<input type="email" class="form-control" id="exampleInputEmail1" placeholder="이메일을 입력하세요">
+			<input type="text" class="form-control" id="inputID" placeholder="ID을 입력하세요">
  		</div>
  		<div class="col-md-6"><button type="button" class="btn btn-warning" id="checkDoubleId">중복확인</button></div>		            
  		</div>
@@ -151,8 +172,70 @@
  		<div class="col-md-6"><button type="button" class="btn btn-warning" id="checkDoubleEmail">중복확인</button></div>
  		</div>
     </div>
+
+   <div class="row">
+		<div class="form-group">    
+		<div class="col-md-2 text-right"><label for="lbBankAccount">입금계좌</label></div>
+ 		<div class="col-md-2">
+			<select class="form-control" value="은행 ">
+			  <option>국민은행</option>
+			  <option>우리은행</option>
+			  <option>하나은행</option>
+			  <option>새마을금고</option>
+			  <option>농협</option>
+			  <option>직접입력</option>		  
+			</select>
+ 		</div>
+ 		<div class="col-md-6"><input type="text" class="form-control" id="InputBankAccount" placeholder=""></div>
+ 		</div>
+    </div>
+
+   <div class="row">
+		<div class="form-group">    
+		<div class="col-md-2"></div>
+ 		<div class="col-md-8 text-center">
+	 		<div class="panel panel-warning">
+	  			<div class="panel-heading">약관 동의</div>
+	  			<div class="panel-body">
+	    			Panel content
+	  			</div>
+			</div> 		
+ 		</div>
+ 		<div class="col-md-2"></div>
+ 		</div>
+    </div>
     
-	<button type="submit" class="btn btn-lg btn-primary btn-block">SignUP</button>
+   <div class="row">
+		<div class="form-group">    
+		<div class="col-md-2"></div>
+ 		<div class="col-md-4"></div>
+ 		<div class="col-md-2">
+		    <div class="radio">
+		  		<label>
+		    		<input type="radio" name="optionsRadios" id="optionsNo" value="false" checked>
+		    		동의 안 합니다.
+		  		</label>
+			</div> 		
+ 		</div>
+ 		<div class="col-md-4">
+		    <div class="radio">
+		  		<label>
+		    		<input type="radio" name="optionsRadios" id="optionsYES" value="true">
+		    		동의  합니다.
+		  		</label>
+			</div> 		
+ 		</div> 		
+ 		</div>
+    </div>
+    
+    <div class="row">
+		<div class="form-group">
+		<div class="col-md-2"></div>
+ 		<div class="col-md-6"></div>
+ 		<div class="col-md-2"><button type="submit" class="btn btn-lg btn-primary btn-block">가입</button></div>
+ 		<div class="col-md-2"></div>
+ 		</div>
+    </div>
 	</form>
                  
    </div> <!-- /container -->    
