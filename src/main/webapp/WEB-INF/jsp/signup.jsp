@@ -18,7 +18,36 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
+    
+     <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+    <script src="js/bootstrap.min.js"></script>
+ 
+  <script>
+	$(document).ready(function(){
+	 
+		//check double
+		$("#checkDoubleId").click(function(){
+			alert("check double id!!");
+		});
+		
+		$("#checkDoubleCompanyNumber").click(function(){
+			alert("checkDoubleCompanyNumber!!");
+		});
+
+		$("#checkDoubleContact").click(function(){
+			alert("checkDoubleContact!!");
+		});
+
+		$("#checkDoubleEmail").click(function(){
+			alert("checkDoubleEmail!!");
+		});
+		
+	});  
+  </script> 
+    
+  </head>  
   <body>	
         
    <div class="container">   
@@ -35,7 +64,7 @@
  		<div class="col-md-4">  		
 			<input type="email" class="form-control" id="exampleInputEmail1" placeholder="이메일을 입력하세요">
  		</div>
- 		<div class="col-md-6"><button type="button" class="btn btn-warning">중복확인</button></div>		            
+ 		<div class="col-md-6"><button type="button" class="btn btn-warning" id="checkDoubleId">중복확인</button></div>		            
  		</div>
     </div>
     <div class="row">
@@ -69,7 +98,7 @@
  		<div class="col-md-2"><input type="text" class="form-control" id="inputPart1" placeholder=""></div>
  		<div class="col-md-2"><input type="text" class="form-control" id="inputPart2" placeholder=""></div>
  		<div class="col-md-3"><input type="text" class="form-control" id="inputPart3" placeholder=""></div>
- 		<div class="col-md-3"><button type="button" class="btn btn-warning">중복확인</button></div>
+ 		<div class="col-md-3"><button type="button" class="btn btn-warning" id="checkDoubleCompanyNumber">중복확인</button></div>
  		</div>
     </div>
     
@@ -99,7 +128,7 @@
  		<div class="col-md-4">
 			<input type="text" class="form-control" id="InputContact" placeholder="">
  		</div>
- 		<div class="col-md-6"><button type="button" class="btn btn-warning">중복확인</button></div>
+ 		<div class="col-md-6"><button type="button" class="btn btn-warning" id="checkDoubleContact">중복확인</button></div>
  		</div>
     </div>
 
@@ -119,19 +148,13 @@
  		<div class="col-md-4">
 			<input type="text" class="form-control" id="InputEmail" placeholder="">
  		</div>
- 		<div class="col-md-6"><button type="button" class="btn btn-warning">중복확인</button></div>
+ 		<div class="col-md-6"><button type="button" class="btn btn-warning" id="checkDoubleEmail">중복확인</button></div>
  		</div>
     </div>
     
 	<button type="submit" class="btn btn-lg btn-primary btn-block">SignUP</button>
 	</form>
                  
-   </div> <!-- /container -->
-    
-    <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
-    <script src="js/bootstrap.min.js"></script>
-    
+   </div> <!-- /container -->    
   </body>
 </html>
