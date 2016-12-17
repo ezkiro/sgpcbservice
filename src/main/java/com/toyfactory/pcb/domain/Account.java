@@ -1,9 +1,12 @@
 package com.toyfactory.pcb.domain;
 
 import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -19,12 +22,14 @@ import lombok.Data;
 public class Account {
 	@Id
 	private String id;
-	private String passwd;
+	@Column(nullable=false, length=50)
+	private String password;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(nullable=false, length=10)
 	private Permission permission;
 	
-	@OneToOne
+	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "agent_id")
 	private Agent agent;
 	
@@ -36,9 +41,9 @@ public class Account {
 	
 	protected Account(){};
 	
-	public Account(String id, String passwd, Permission permission) {
+	public Account(String id, String password, Permission permission) {
 		this.id = id;
-		this.passwd = passwd;
+		this.password = password;
 		this.permission = permission;
 		this.crtDt = new Date();
 		this.uptDt = new Date();

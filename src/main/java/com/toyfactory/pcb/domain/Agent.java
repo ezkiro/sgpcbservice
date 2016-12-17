@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -30,13 +31,13 @@ public class Agent {
 	private String contactNum;	//연락처
 	private String address;		//주소
 	private String email;		//email
-	private String bankName;
 	private String bankAccount;	//계좌번호
 
-	@OneToOne(mappedBy = "agent")
-	private Account account;
+//	@OneToOne(mappedBy = "agent")
+//	private Account account;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(nullable=false, length=10)	
 	private StatusCd status;		//상태 (승인/미승인/대기)
 	
 	@OneToMany(mappedBy = "agent")
@@ -48,5 +49,11 @@ public class Agent {
 	private Date uptDt;
 
 	protected Agent(){}
+	
+	public Agent(Date date){
+		this.crtDt = date;
+		this.uptDt = date;
+		this.status = StatusCd.WAIT;
+	}
 	
 }

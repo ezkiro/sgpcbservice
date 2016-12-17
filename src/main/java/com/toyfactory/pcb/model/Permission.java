@@ -1,5 +1,5 @@
 package com.toyfactory.pcb.model;
 
 public enum Permission {
-	ADMIN,PARTNER,AGENT
+	ADMIN,PARTNER,AGENT,NOBODY
 }

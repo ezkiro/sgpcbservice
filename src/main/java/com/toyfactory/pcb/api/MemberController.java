@@ -1,57 +1,70 @@
 package com.toyfactory.pcb.api;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.assertj.core.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.toyfactory.pcb.domain.Account;
-import com.toyfactory.pcb.domain.Agent;
-import com.toyfactory.pcb.repository.AccountRepository;
-import com.toyfactory.pcb.repository.AgentRepository;
+import com.toyfactory.pcb.service.MemberService;
 
 @RestController
 @RequestMapping("/member")
 public class MemberController {
 
 	@Autowired
-	private AccountRepository accountDao;	
-
-	@Autowired
-	private AgentRepository agentDao;	
+	private MemberService memberService;
 	
     @RequestMapping("/isExist")
     public boolean duplicateCheck(
-    		@RequestParam(value="item") String item,
-    		@RequestParam(value="value") String value 
+    		@RequestParam(value="item", required = true) String item,
+    		@RequestParam(value="value", required = true) String value 
     		) {
     	//check item : id, company code, contact, email
+    	return memberService.checkDuplicateItem(item, value);
+    }
+    
+    @RequestMapping(value = "/signUp", method=RequestMethod.POST)
+    public boolean signUp(
+    		@RequestParam(value="id", required = true) String id,
+    		@RequestParam(value="password", required = true) String password,
+    		@RequestParam(value="company_code", required = true) String companyCode,
+    		@RequestParam(value="company_name", required = true) String companyName,
+    		@RequestParam(value="ceo", required = false) String ceo,
+    		@RequestParam(value="contact_num", required = true) String contactNum,
+    		@RequestParam(value="address", required = false) String address,
+    		@RequestParam(value="email", required = false) String email,
+    		@RequestParam(value="bank_account", required = false) String bankAccount   		
+    		) {
+    	//check item : id, company code, contact, email
+    	Map<String, String> params = new HashMap<String, String>();    	
     	
-    	if("id".equals(item)) {
-    		Account account = accountDao.findOne(value);
-    		if( account != null) return true;
-    		else return false;
+    	params.put("id", id);
+    	params.put("password", password);
+    	params.put("companyCode", companyCode);
+    	params.put("companyName", companyName);
+    	params.put("contactNum", contactNum);
+    	
+    	if(!Strings.isNullOrEmpty(ceo)) {
+        	params.put("ceo", ceo);
     	}
 
-    	if("company_code".equals(item)) {
-    		Agent agent = agentDao.findByCompanyCode(value);
-    		if( agent != null) return true;
-    		else return false;   		
+    	if(!Strings.isNullOrEmpty(address)) {
+        	params.put("address", address);
     	}
-    	
-    	if("contact".equals(item)) {
-    		Agent agent = agentDao.findByContactNum(value);
-    		if( agent != null) return true;
-    		else return false;    		
+
+    	if(!Strings.isNullOrEmpty(email)) {
+        	params.put("email", email);
     	}
-    	
-    	if("email".equals(item)) {
-    		Agent agent = agentDao.findByEmail(value);
-    		if( agent != null) return true;
-    		else return false;     		
+
+    	if(!Strings.isNullOrEmpty(bankAccount)) {
+        	params.put("bankAccount", bankAccount);
     	}
-    	
-        return false;
-    }
+    	    	
+    	return memberService.signUp(params);
+    }    
 }
