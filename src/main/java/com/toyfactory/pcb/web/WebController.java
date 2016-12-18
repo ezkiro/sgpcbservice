@@ -47,5 +47,4 @@ public class WebController {
 		//model.addAttribute("name","hello springBoot1234");
 		return "signup";
 	}	
-	
 }

@@ -1,6 +1,7 @@
 package com.toyfactory.pcb.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.assertj.core.util.Strings;
@@ -132,5 +133,10 @@ public class MemberService {
 		}
 		
 		return accessToken;
+	}
+	
+	public List<Agent> findAgents(String item, String keyworkd) {
+		//all agents
+		return agentDao.findAll();		
 	}
 }

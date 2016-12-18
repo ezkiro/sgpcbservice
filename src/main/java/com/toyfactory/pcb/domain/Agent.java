@@ -33,8 +33,8 @@ public class Agent {
 	private String email;		//email
 	private String bankAccount;	//계좌번호
 
-//	@OneToOne(mappedBy = "agent")
-//	private Account account;
+	@OneToOne(mappedBy = "agent")
+	private Account account;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable=false, length=10)	
