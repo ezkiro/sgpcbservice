@@ -11,7 +11,7 @@
 		<ul class="nav nav-pills">
 		  <li role="presentation" class="active"><a href="#">업체관리</a></li>
 		  <li role="presentation"><a href="#">설치/패치관리</a></li>
-		  <li role="presentation"><a href="#">가맹점관리</a></li>
+		  <li role="presentation"><a href="/admin/pcbang">가맹점관리</a></li>
 		</ul>
   	</div>
   	<hr>
@@ -31,7 +31,7 @@
 			  <option>상태</option>
 			</select>
 		</div>
-		<div class="col-md-3">	  			
+		<div class="col-md-4">	  			
 			<input type="text" class="form-control" id="serachKeyword" placeholder="">
 		</div>
 		<div class="col-md-2">		
@@ -51,9 +51,10 @@
 			<label for="lbWait">미승인 : 개 </label>
 		</div>		
 	</div>
-	<div class="row">
-		<table class="table table-bordered">
-			<tr>
+	</div><!-- container -->	
+	
+		<table class="table table-bordered table-hover">
+			<tr class="info">
 				<td>구분</td>
 				<td>사업자번호</td>
 				<td>아이디</td>
@@ -71,24 +72,23 @@
 			</tr>
 		<c:forEach var="agent" items="${agentList}">
 			<tr>
-    			<td>${agent.id}</td>
-    			<td>${agent.companyCode}</td>
-    			<td>${agent.accountId}</td>
-    			<td>${agent.companyName}</td>    			    			    			
-    			<td>${agent.ceo}</td>
-    			<td>${agent.contactNum}</td>
-    			<td>${agent.address}</td>
-    			<td>${agent.email}</td>    			    			    			
-    			<td>${agent.bankAccount}</td>
-    			<td>${agent.pcbangCnt}</td>
-    			<td>${agent.crtDt}</td>
-    			<td>${agent.status}</td>    			    			    			
-    			<td>${agent.permission}</td>
+    			<td><input type="checkbox" value="">${agent.getAgentId()}</td>
+    			<td>${agent.getCompanyCode()}</td>
+    			<td>${agent.getAccount().getId()}</td>
+    			<td>${agent.getCompanyName()}</td>    			    			    			
+    			<td>${agent.getCeo()}</td>
+    			<td>${agent.getContactNum()}</td>
+    			<td>${agent.getAddress()}</td>
+    			<td>${agent.getEmail()}</td>    			    			    			
+    			<td>${agent.getBankAccount()}</td>
+    			<td></td>
+    			<td>${agent.getCrtDt().toString().substring(0,10)}</td>
+    			<td>${agent.getStatus()}</td>    			    			    			
+    			<td>${agent.getAccount().getPermission()}</td>
     			<td>수정</td>
     		</tr>
 		</c:forEach>
 		</table>
-	</div>	
-	
+		
   </body>
 </html>
