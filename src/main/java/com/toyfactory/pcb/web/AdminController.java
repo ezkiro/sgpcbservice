@@ -39,5 +39,14 @@ public class AdminController {
 		model.addAttribute("gamePatchList",null);
 		return "gamePatchAdmin";
 	}
+
+	@RequestMapping("/pcbang/add")
+	public String pcbangInputPage(Model model){
+		
+		List<Agent> agentList = memberService.findAgents(null, null);
+		
+		model.addAttribute("agentList",agentList);
+		return "pcbangInput";
+	}	
 	
 }

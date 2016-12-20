@@ -4,13 +4,7 @@
 <html lang="ko">
   <head>
 	<jsp:include page="common.jsp" flush="true"/>
- 
-	<style type="text/css">
-	<!--
-	 body {color:gray;}
-	//-->
-	</style> 
- 
+	 
   <script>
 	$(document).ready(function(){
 		
@@ -250,7 +244,7 @@
 		<div class="form-group">    
 		<div class="col-md-2 text-right"><label for="lbBankAccount">입금계좌</label></div>
  		<div class="col-md-2">
-			<select class="form-control" id ="inputBank" value="은행 ">
+			<select class="form-control" id ="inputBank">
 			  <option>국민은행</option>
 			  <option>기업은행</option>			  
 			  <option>농협</option>			  
