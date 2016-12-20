@@ -3,14 +3,14 @@
 <!DOCTYPE html>
 <html lang="ko">
   <head>
-	<jsp:include page="common.jsp" flush="true"/>
+	<jsp:include page="common.jsp" flush="true"/>		
   </head>
   <body>
 	<div class="container"> 
   	<div class="row">
 		<ul class="nav nav-pills">
 		  <li role="presentation"><a href="/admin/agent">업체관리</a></li>
-		  <li role="presentation"><a href="#">설치/패치관리</a></li>
+		  <li role="presentation"><a href="/admin/gamepatch">설치/패치관리</a></li>
 		  <li role="presentation" class="active"><a href="#">가맹점관리</a></li>
 		</ul>
   	</div>
@@ -81,10 +81,103 @@
 	<div class="form-group">    
 		<div class="col-md-2"></div>
 		<div class="col-md-2"><a class="btn btn-default btn-block" href="#" role="button">일괄등록</a></div>		
-		<div class="col-md-2"><a class="btn btn-default btn-block" href="#" role="button">등록</a></div>
+		<div class="col-md-2"><a class="btn btn-default btn-block" href="#" role="button" data-toggle="modal" data-target="#myModal">등록</a></div>
 		<div class="col-md-2"><a class="btn btn-default btn-block" href="#" role="button">수정</a></div>		
 		<div class="col-md-2"><a class="btn btn-default btn-block" href="#" role="button">삭제</a></div>
 	</div>
+
+	<div class="modal fade" id="myModal">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title">Modal title</h4>
+	      </div>
+	      <div class="modal-body">
+			<form class="form-horizontal">	      
+		    <div class="row">
+		 		<div class="form-group">
+				<div class="col-md-2 text-right">
+					<label for="lbCompanyNumber">사업자번호</label>
+				</div>
+				
+		 		<div class="col-md-2"><input type="text" class="form-control" id="inputPart1" placeholder=""></div>
+		 		<div class="col-md-2"><input type="text" class="form-control" id="inputPart2" placeholder=""></div>
+		 		<div class="col-md-3"><input type="text" class="form-control" id="inputPart3" placeholder=""></div>
+		 		<div class="col-md-3"><button type="button" class="btn btn-warning" id="checkDoubleCompanyCode">중복확인</button></div>
+		 		</div>
+		    </div>
+		    
+		    <div class="row">
+				<div class="form-group">    
+				<div class="col-md-2 text-right"><label for="lbCompany">상호</label></div>
+		 		<div class="col-md-4">
+					<input type="text" class="form-control" id="inputCompany" placeholder="">
+		 		</div>
+		 		<div class="col-md-6"></div>
+		 		</div>
+		    </div>
+
+		    <div class="row">
+				<div class="form-group">    
+				<div class="col-md-2 text-right"><label for="lbAddress">주소</label></div>
+		 		<div class="col-md-6">
+					<input type="text" class="form-control" id="inputAddress" placeholder="">
+		 		</div>
+		 		<div class="col-md-4"></div>
+		 		</div>
+		    </div>
+		    
+		    <div class="row">
+		 		<div class="form-group">
+				<div class="col-md-2 text-right">
+					<label for="lbIPScope">IP대역</label>
+				</div>
+				
+		 		<div class="col-md-3"><input type="text" class="form-control" id="inputIPStart" placeholder=""></div>
+		 		<div class="col-md-3"><input type="text" class="form-control" id="inputIPEnd" placeholder=""></div>
+		 		</div>
+		    </div>		    
+
+		    <div class="row">
+		 		<div class="form-group">
+				<div class="col-md-2 text-right">
+					<label for="lbMasterIP">서버IP</label>
+				</div>
+				
+		 		<div class="col-md-3"><input type="text" class="form-control" id="inputMasterIP" placeholder=""></div>
+		 		</div>
+		    </div>		    
+
+		    <div class="row">
+		 		<div class="form-group">
+				<div class="col-md-2 text-right">
+					<label for="lbAgent">관리업체</label>
+				</div>
+				
+		 		<div class="col-md-3"><input type="text" class="form-control" id="inputAgent" placeholder=""></div>
+		 		</div>
+		    </div>
+
+		    <div class="row">
+		 		<div class="form-group">
+				<div class="col-md-2 text-right">
+					<label for="lbProgram">관리업체</label>
+				</div>
+				
+		 		<div class="col-md-3"><input type="text" class="form-control" id="inputProgram" placeholder=""></div>
+		 		</div>
+		    </div>
+		    
+		    </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 		
   </body>
 </html>

@@ -33,5 +33,11 @@ public class AdminController {
 		return "pcbangAdmin";
 	}
 	
+	@RequestMapping("/gamepatch")
+	public String gamePatchPage(Model model){
+		
+		model.addAttribute("gamePatchList",null);
+		return "gamePatchAdmin";
+	}
 	
 }
