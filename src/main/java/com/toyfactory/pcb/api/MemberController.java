@@ -1,5 +1,6 @@
 package com.toyfactory.pcb.api;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.toyfactory.pcb.domain.Pcbang;
 import com.toyfactory.pcb.service.MemberService;
 
 @RestController
@@ -66,5 +68,31 @@ public class MemberController {
     	}
     	    	
     	return memberService.signUp(params);
+    }
+    
+    @RequestMapping(value = "/pcbang", method=RequestMethod.POST)
+    public boolean registerPcbang(
+    		@RequestParam(value="company_code", required = true) String companyCode,
+    		@RequestParam(value="company_name", required = true) String companyName,
+    		@RequestParam(value="address", required = false) String address,
+    		@RequestParam(value="start_ip", required = true) String startIp,
+    		@RequestParam(value="end_ip", required = true) String endIp,
+    		@RequestParam(value="master_ip", required = false) String masterIp,
+    		@RequestParam(value="agent_id", required = true) Long agentId,
+    		@RequestParam(value="program", required = false) String program,
+    		@RequestParam(value="pcb_id", required = false) Long pcbId    		
+    		) {
+    	
+    	Pcbang aPcbang = new Pcbang(new Date());
+    	aPcbang.setCompanyCode(companyCode);
+    	aPcbang.setCompanyName(companyName);
+    	aPcbang.setAddress(address);
+    	aPcbang.setIpStart(startIp);
+    	aPcbang.setIpEnd(endIp);
+    	aPcbang.setMasterIp(masterIp);
+    	aPcbang.setProgram(program);
+    	aPcbang.setPcbId(pcbId);
+    	
+    	return (null != memberService.savePcbang(aPcbang, agentId));
     }    
 }

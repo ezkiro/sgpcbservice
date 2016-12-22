@@ -3,7 +3,55 @@
 <!DOCTYPE html>
 <html lang="ko">
   <head>
-	<jsp:include page="common.jsp" flush="true"/>		
+	<jsp:include page="common.jsp" flush="true"/>
+
+  <script>
+	$(document).ready(function(){
+		
+		var checkValidInput = function() {
+			
+			if($("#inputCompanyCode").val().length === 0 ) {
+				alert("사업자 번호를 입력해 주세요.");
+				return false;				
+			}			
+
+			if($("#inputCompany").val().length === 0 ) {
+				alert("상호 를 입력해 주세요.");
+				return false;				
+			}			
+			
+			return true;
+		}		
+		
+		//submit
+		$("#submitPcbang").click(function(){
+			
+			if(!checkValidInput()) return;
+									
+		    $.post("/member/pcbang",
+		    		{
+		    			company_code: $("#inputCompanyCode").val(),
+		    			company_name:$("#inputCompany").val(),
+		    			address: $("#inputAddress").val(),
+		    			start_ip: $("#inputIPStart").val(),
+		    			end_ip: $("#inputIPEnd").val(),
+		    			master_ip: $("#inputMasterIP").val(),
+		    			program: $("#inputProgram").val(),
+		    			agent_id: $("#inputAgent option:selected").val(),		    			
+		    		},
+		    		function(data, status){
+		    			if(data) {
+		    				alert("PC방 등록에 성공하였습니다.");
+		    				location.href = '/admin/pcbang';
+		    			}
+		    		}
+		    );			
+		});
+		
+	});  
+  </script> 
+	
+		
   </head>
   <body>
   
@@ -15,8 +63,8 @@
 <form class="form-horizontal">	      
 	<div class="row">
 		<div class="form-group">
-			<div class="col-md-2 text-right"><label for="lbCompanyNumber">사업자번호</label></div>
-			<div class="col-md-4"><input type="text" class="form-control" id="inputCompanyNumber" placeholder="111-2222-33333"></div>
+			<div class="col-md-2 text-right"><label for="lbCompanyCode">사업자번호</label></div>
+			<div class="col-md-4"><input type="text" class="form-control" id="inputCompanyCode" placeholder="111-2222-33333"></div>
 			<div class="col-md-2"></div>
 			<div class="col-md-4"></div>
 		</div>

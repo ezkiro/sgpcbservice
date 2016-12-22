@@ -55,4 +55,9 @@ public class Pcbang {
 		this.agent = agent;
 		agent.getPcbangs().add(this);
 	}
+	
+	public Pcbang(Date date) {
+		this.crtDt = date;
+		this.uptDt = date;
+	}
 }

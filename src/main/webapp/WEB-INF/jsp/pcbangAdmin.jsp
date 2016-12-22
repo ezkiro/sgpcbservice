@@ -69,7 +69,7 @@
    			<td>${pcbang.getCompanyCode()}</td>
    			<td>${pcbang.getCompanyName()}</td>    			    			    			
    			<td>${pcbang.getAddress()}</td>
-   			<td>${pcbang.getIpStart() + "-" + pcbang.getIpEnd()}</td>    			    			    			
+   			<td>${pcbang.getIpStart()} - ${pcbang.getIpEnd()}</td>    			    			    			
    			<td>${pcbang.getMasterIp()}</td>
    			<td>${pcbang.getAgent().getCompanyName()}</td>    			    			    			
    			<td>${pcbang.getProgram()}</td>

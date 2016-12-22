@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.toyfactory.pcb.domain.Agent;
+import com.toyfactory.pcb.domain.Pcbang;
 import com.toyfactory.pcb.service.MemberService;
 
 @Controller
@@ -29,7 +30,9 @@ public class AdminController {
 	@RequestMapping("/pcbang")
 	public String pcbangPage(Model model){
 		
-		model.addAttribute("pcbangList",null);
+		List<Pcbang> pcbangList = memberService.findPcbangs(null, null);
+		
+		model.addAttribute("pcbangList",pcbangList);
 		return "pcbangAdmin";
 	}
 	

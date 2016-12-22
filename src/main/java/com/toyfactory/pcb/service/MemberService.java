@@ -12,10 +12,12 @@ import org.springframework.stereotype.Service;
 
 import com.toyfactory.pcb.domain.Account;
 import com.toyfactory.pcb.domain.Agent;
+import com.toyfactory.pcb.domain.Pcbang;
 import com.toyfactory.pcb.model.Permission;
 import com.toyfactory.pcb.model.StatusCd;
 import com.toyfactory.pcb.repository.AccountRepository;
 import com.toyfactory.pcb.repository.AgentRepository;
+import com.toyfactory.pcb.repository.PcbangRepository;
 
 @Service("memberService")
 public class MemberService {
@@ -27,6 +29,9 @@ public class MemberService {
 
 	@Autowired
 	private AgentRepository agentDao;
+	
+	@Autowired	
+	private PcbangRepository pcbangDao;
 	
 	public boolean checkDuplicateItem(String item, String value) {
     	//check item : id, company code, contact, email
@@ -138,5 +143,23 @@ public class MemberService {
 	public List<Agent> findAgents(String item, String keyworkd) {
 		//all agents
 		return agentDao.findAll();		
+	}
+
+	public List<Pcbang> findPcbangs(String item, String keyworkd) {
+		//all pcbangs
+		return pcbangDao.findAll();		
+	}
+	
+	
+	public Pcbang savePcbang(Pcbang pcbang, Long agentId) {
+		
+		Agent agent = agentDao.findOne(agentId);		
+		//맵핑할 Agent 가 없으면 입력 실패
+		if(agent == null ) return null;
+		
+		pcbang.setAgent(agent);
+		pcbang.setStatus(StatusCd.WAIT);
+		
+		return pcbangDao.save(pcbang);
 	}
 }
