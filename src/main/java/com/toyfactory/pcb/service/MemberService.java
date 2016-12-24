@@ -149,17 +149,27 @@ public class MemberService {
 		//all pcbangs
 		return pcbangDao.findAll();		
 	}
-	
-	
-	public Pcbang savePcbang(Pcbang pcbang, Long agentId) {
 		
+	public Pcbang addPcbang(Pcbang pcbang, Long agentId) {		
 		Agent agent = agentDao.findOne(agentId);		
 		//맵핑할 Agent 가 없으면 입력 실패
 		if(agent == null ) return null;
 		
 		pcbang.setAgent(agent);
-		pcbang.setStatus(StatusCd.WAIT);
 		
 		return pcbangDao.save(pcbang);
 	}
+	
+	public Pcbang updatePcbang(Pcbang pcbang, Long agentId) {		
+		Agent agent = agentDao.findOne(agentId);		
+		//맵핑할 Agent 가 없으면 입력 실패
+		if(agent == null ) return null;
+		
+		pcbang.setAgent(agent);
+		pcbang.setUptDt(new Date());
+		
+		return pcbangDao.save(pcbang);
+	}
+	
+	
 }

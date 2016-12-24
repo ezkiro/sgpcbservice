@@ -3,7 +3,55 @@
 <!DOCTYPE html>
 <html lang="ko">
   <head>
-	<jsp:include page="common.jsp" flush="true"/>		
+	<jsp:include page="common.jsp" flush="true"/>
+	
+  <script>
+	$(document).ready(function(){
+		
+		var checkValidInput = function() {
+			
+			if($("#inputCompanyCode").val().length === 0 ) {
+				alert("사업자 번호를 입력해 주세요.");
+				return false;				
+			}			
+
+			if($("#inputCompany").val().length === 0 ) {
+				alert("상호 를 입력해 주세요.");
+				return false;				
+			}			
+			
+			return true;
+		}		
+		
+		//submit
+		$("#submitPcbang").click(function(){
+			
+			if(!checkValidInput()) return;
+									
+		    $.post("/member/pcbang",
+		    		{
+		    			company_code: $("#inputCompanyCode").val(),
+		    			company_name:$("#inputCompany").val(),
+		    			address: $("#inputAddress").val(),
+		    			start_ip: $("#inputIPStart").val(),
+		    			end_ip: $("#inputIPEnd").val(),
+		    			master_ip: $("#inputMasterIP").val(),
+		    			program: $("#inputProgram").val(),
+		    			agent_id: $("#inputAgent option:selected").val(),		    			
+		    		},
+		    		function(data, status){
+		    			if(data) {
+		    				alert("PC방 등록에 성공하였습니다.");
+		    				location.href = '/admin/pcbang';
+		    			}
+		    		}
+		    );			
+		});
+		
+	});  
+  </script> 
+	
+		
   </head>
   <body>
 	<div class="container"> 
@@ -44,7 +92,7 @@
 	
   	<div class="form-group bg-info">
 		<div class="col-md-2">
-			<label for="lbTotalAgent">총 가명점 수 : 개 </label>
+			<label for="lbTotalAgent">총 가명점 수 :${pcbangCnt}개 </label>
 		</div>
 	</div>
 	</div><!-- container -->	
@@ -65,7 +113,7 @@
 		</tr>
 	<c:forEach var="pcbang" items="${pcbangList}">
 		<tr>
-   			<td>${pcbang.getPcbId()}</td>
+   			<td><input type="checkbox" value="${pcbang.getPcbId()}">${pcbang.getPcbId()}</td>
    			<td>${pcbang.getCompanyCode()}</td>
    			<td>${pcbang.getCompanyName()}</td>    			    			    			
    			<td>${pcbang.getAddress()}</td>
@@ -76,8 +124,7 @@
    			<td>${pcbang.getStatus()}</td>   			  			
    			<td>${pcbang.getCrtDt().toString().substring(0,10)}</td>
    			<td>
-				<button type="button" class="btn btn-link">수정</button>
-				<button type="button" class="btn btn-link btn-danger">삭제</button>				
+				<a class="btn btn-default" href="/admin/pcbang/update?pcb_id=${pcbang.getPcbId()}" role="button">수정</a>
    			</td>
    		</tr>
 	</c:forEach>
@@ -87,6 +134,7 @@
 		<div class="col-md-2"></div>
 		<div class="col-md-2"><a class="btn btn-default btn-block" href="#" role="button">일괄등록</a></div>		
 		<div class="col-md-2"><a class="btn btn-default btn-block" href="/admin/pcbang/add" role="button">등록</a></div>
+		<div class="col-md-2"><a class="btn btn-default btn-block" href="/admin/pcbang/remove" role="button">삭제</a></div>		
 	</div>
 
 	<div class="modal fade" id="myModal">

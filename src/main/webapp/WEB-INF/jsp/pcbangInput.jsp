@@ -8,6 +8,8 @@
   <script>
 	$(document).ready(function(){
 		
+		var updateMode = false;
+		
 		var checkValidInput = function() {
 			
 			if($("#inputCompanyCode").val().length === 0 ) {
@@ -23,31 +25,78 @@
 			return true;
 		}		
 		
+		var setUpForUpdate = function() {
+			
+			var pcbId = "${pcbang.getPcbId()}";
+		
+			if(pcbId !== "") {
+				updateMode = true;
+				$("#inputPcbId").val("${pcbang.getPcbId()}");
+				$("#inputCompanyCode").val("${pcbang.getCompanyCode()}");
+				$("#inputCompany").val("${pcbang.getCompanyName()}");
+				$("#inputAddress").val("${pcbang.getAddress()}");
+				$("#inputIPStart").val("${pcbang.getIpStart()}");
+				$("#inputIPEnd").val("${pcbang.getIpEnd()}");
+				$("#inputMasterIP").val("${pcbang.getMasterIp()}");
+				$("#inputProgram").val("${pcbang.getProgram()}");
+				$("#inputAgent").val("${pcbang.getAgent().getAgentId()}");
+				$("#inputStatus").val("${pcbang.getStatus()}");
+			}
+		}
+		
 		//submit
 		$("#submitPcbang").click(function(){
 			
 			if(!checkValidInput()) return;
-									
-		    $.post("/member/pcbang",
-		    		{
-		    			company_code: $("#inputCompanyCode").val(),
-		    			company_name:$("#inputCompany").val(),
-		    			address: $("#inputAddress").val(),
-		    			start_ip: $("#inputIPStart").val(),
-		    			end_ip: $("#inputIPEnd").val(),
-		    			master_ip: $("#inputMasterIP").val(),
-		    			program: $("#inputProgram").val(),
-		    			agent_id: $("#inputAgent option:selected").val(),		    			
-		    		},
-		    		function(data, status){
-		    			if(data) {
-		    				alert("PC방 등록에 성공하였습니다.");
-		    				location.href = '/admin/pcbang';
-		    			}
-		    		}
-		    );			
+						
+			//add mode
+			if(!updateMode) {
+				
+			    $.post("/member/pcbang/add",
+			    		{
+			    			company_code: $("#inputCompanyCode").val(),
+			    			company_name:$("#inputCompany").val(),
+			    			address: $("#inputAddress").val(),
+			    			start_ip: $("#inputIPStart").val(),
+			    			end_ip: $("#inputIPEnd").val(),
+			    			master_ip: $("#inputMasterIP").val(),
+			    			program: $("#inputProgram").val(),
+			    			agent_id: $("#inputAgent option:selected").val(),
+			    		},
+			    		function(data, status){
+			    			if(data) {
+			    				alert("PC방 등록에 성공하였습니다.");
+			    				location.href = '/admin/pcbang';
+			    			}
+			    		}
+			    );
+			//update mode    
+			} else {
+			    $.post("/member/pcbang",
+			    		{
+							pcb_id:$("#inputPcbId").val(),	    	
+			    			company_code: $("#inputCompanyCode").val(),
+			    			company_name:$("#inputCompany").val(),
+			    			address: $("#inputAddress").val(),
+			    			start_ip: $("#inputIPStart").val(),
+			    			end_ip: $("#inputIPEnd").val(),
+			    			master_ip: $("#inputMasterIP").val(),
+			    			program: $("#inputProgram").val(),
+			    			agent_id: $("#inputAgent option:selected").val(),
+			    			status: $("#inputStatus option:selected").val()
+			    		},
+			    		function(data, status){
+			    			if(data) {
+			    				alert("PC방 수정에 성공하였습니다.");
+			    				location.href = '/admin/pcbang';
+			    			}
+			    		}
+			    );				
+			}
+			
 		});
 		
+		setUpForUpdate();
 	});  
   </script> 
 	
@@ -60,7 +109,18 @@
 		<h3>PC Bang 정보 입력/수정</h3>
 	</div>
 	
-<form class="form-horizontal">	      
+<form class="form-horizontal">
+<c:set var="aPcbang" value="${pcbang}" />
+<c:if test="${!empty aPcbang}">
+	<div class="row">
+		<div class="form-group">
+			<div class="col-md-2 text-right"><label for="lbPcbId">pcbid</label></div>
+			<div class="col-md-2"><input type="text" class="form-control" id="inputPcbId" placeholder="" disabled></div>
+			<div class="col-md-2"></div>
+			<div class="col-md-4"></div>
+		</div>
+   </div>
+</c:if>
 	<div class="row">
 		<div class="form-group">
 			<div class="col-md-2 text-right"><label for="lbCompanyCode">사업자번호</label></div>
@@ -120,6 +180,22 @@
 			<div class="col-md-3"><input type="text" class="form-control" id="inputProgram" placeholder=""></div>
 		</div>
 	</div>
+
+<c:if test="${!empty aPcbang}">
+	<div class="row">
+		<div class="form-group">
+			<div class="col-md-2 text-right"><label for="lbStatus">status</label></div>
+			<div class="col-md-4">
+				<select class="form-control" id ="inputStatus">
+					<option value="WAIT">WAIT</option>
+					<option value="OK">OK</option>
+				</select>						
+			</div>
+			<div class="col-md-2"></div>
+			<div class="col-md-4"></div>
+		</div>
+   </div>
+</c:if>
 
     <div class="row">
 		<div class="form-group">

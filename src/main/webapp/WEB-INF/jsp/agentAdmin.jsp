@@ -72,7 +72,7 @@
 			</tr>
 		<c:forEach var="agent" items="${agentList}">
 			<tr>
-    			<td><input type="checkbox" value="">${agent.getAgentId()}</td>
+    			<td><input type="checkbox" value="${agent.getAgentId()}">${agent.getAgentId()}</td>
     			<td>${agent.getCompanyCode()}</td>
     			<td>${agent.getAccount().getId()}</td>
     			<td>${agent.getCompanyName()}</td>    			    			    			
