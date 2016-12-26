@@ -30,4 +30,9 @@ public class Game {
 	private Date uptDt;
 	
 	protected Game(){}
+	
+	public Game(Date date) {
+		this.crtDt = date;
+		this.uptDt = date;
+	}
 }

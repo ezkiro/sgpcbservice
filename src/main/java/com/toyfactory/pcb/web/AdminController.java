@@ -1,6 +1,7 @@
 package com.toyfactory.pcb.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.toyfactory.pcb.domain.Agent;
+import com.toyfactory.pcb.domain.Game;
 import com.toyfactory.pcb.domain.Pcbang;
 import com.toyfactory.pcb.repository.PcbangRepository;
+import com.toyfactory.pcb.service.GamePatchService;
 import com.toyfactory.pcb.service.MemberService;
 
 @Controller
@@ -18,7 +21,11 @@ import com.toyfactory.pcb.service.MemberService;
 public class AdminController {
 
 	@Autowired
-	private MemberService memberService;	
+	private MemberService memberService;
+		
+	@Autowired
+	private GamePatchService gamePatchService;
+	
 
 	@Autowired	
 	private PcbangRepository pcbangDao;	
@@ -45,7 +52,15 @@ public class AdminController {
 	@RequestMapping("/gamepatch")
 	public String gamePatchPage(Model model){
 		
-		model.addAttribute("gamePatchList",null);
+		List<Pcbang> pcbangs = memberService.findPcbangs(null, null);	
+		Map<Long, Map<String, String>> gamePatchMapForPcbang = gamePatchService.buildGamePathForAllPcbang();
+		
+		List<Game> games = gamePatchService.getAllGames();
+	
+		model.addAttribute("gameList",games);
+		model.addAttribute("pcbangList",pcbangs);
+		model.addAttribute("gamePatchMapForPcbang",gamePatchMapForPcbang);
+		
 		return "gamePatchAdmin";
 	}
 

@@ -78,28 +78,24 @@
 				<td>관리업체</td>
 				<td>관리IP수</td>
 				<td>지급대상(O/X)</td>
-				<td>게임1</td>
-				<td>게임2</td>
-				<td>게임3</td>
-				<td>게임4</td>
-				<td>게임5</td>																																																		
+			<c:forEach var="game" items="${gameList}">
+				<td>${game.getName()}(${game.getMajor()})</td>
+			</c:forEach>																																																						
 			</tr>
-		<c:forEach var="agent" items="${gamePatchList}">
+		<c:forEach var="pcbang" items="${pcbangList}">
 			<tr>
-    			<td><input type="checkbox" value=""></td>
-    			<td></td>
-    			<td></td>
+    			<td><input type="checkbox" value="${pcbang.getPcbId()}">${pcbang.getPcbId()}</td>
+    			<td>${pcbang.getCompanyCode()}</td>
+    			<td>${pcbang.getCompanyName()}</td>
+    			<td>${pcbang.getAddress()}</td>    			    			    			
+    			<td>${pcbang.getIpStart()} - ${pcbang.getIpEnd()}</td>
+    			<td>${pcbang.getMasterIp()}</td>
+    			<td>${pcbang.getAgent().getCompanyName()}</td>
     			<td></td>    			    			    			
-    			<td></td>
-    			<td></td>
-    			<td></td>
-    			<td></td>    			    			    			
-    			<td></td>
-    			<td></td>
-    			<td></td>
-    			<td></td>    			    			    			
-    			<td></td>
-    			<td></td>
+    			<td>N/A</td>
+			<c:forEach var="game" items="${gameList}">
+				<td>${gamePatchMapForPcbang.get(pcbang.getPcbId()).get(game.getGsn())}</td>
+			</c:forEach>																																																						
     		</tr>
 		</c:forEach>
 		</table>
