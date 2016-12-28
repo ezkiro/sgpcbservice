@@ -22,7 +22,7 @@ import lombok.Data;
 public class Account {
 	@Id
 	private String id;
-	@Column(nullable=false, length=50)
+	@Column(nullable=false, length=256)
 	private String password;
 	
 	@Enumerated(EnumType.STRING)

@@ -37,7 +37,7 @@
 				$("#inputAddress").val("${pcbang.getAddress()}");
 				$("#inputIPStart").val("${pcbang.getIpStart()}");
 				$("#inputIPEnd").val("${pcbang.getIpEnd()}");
-				$("#inputMasterIP").val("${pcbang.getMasterIp()}");
+				$("#inputSubmask").val("${pcbang.getSubmask()}");
 				$("#inputProgram").val("${pcbang.getProgram()}");
 				$("#inputAgent").val("${pcbang.getAgent().getAgentId()}");
 				$("#inputStatus").val("${pcbang.getStatus()}");
@@ -59,7 +59,7 @@
 			    			address: $("#inputAddress").val(),
 			    			start_ip: $("#inputIPStart").val(),
 			    			end_ip: $("#inputIPEnd").val(),
-			    			master_ip: $("#inputMasterIP").val(),
+			    			submask: $("#inputSubmask").val(),
 			    			program: $("#inputProgram").val(),
 			    			agent_id: $("#inputAgent option:selected").val(),
 			    		},
@@ -80,7 +80,7 @@
 			    			address: $("#inputAddress").val(),
 			    			start_ip: $("#inputIPStart").val(),
 			    			end_ip: $("#inputIPEnd").val(),
-			    			master_ip: $("#inputMasterIP").val(),
+			    			submask: $("#inputSubmask").val(),
 			    			program: $("#inputProgram").val(),
 			    			agent_id: $("#inputAgent option:selected").val(),
 			    			status: $("#inputStatus option:selected").val()
@@ -156,8 +156,8 @@
 
 	<div class="row">
 		<div class="form-group">
-			<div class="col-md-2 text-right"><label for="lbMasterIP">서버IP</label></div>
-			<div class="col-md-3"><input type="text" class="form-control" id="inputMasterIP" placeholder=""></div>
+			<div class="col-md-2 text-right"><label for="lbSubmask">subnet mask</label></div>
+			<div class="col-md-3"><input type="text" class="form-control" id="inputSubmask" placeholder="255.255.255.0"></div>
 		</div>
 	</div>
 

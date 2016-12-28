@@ -12,6 +12,7 @@
 		  <li role="presentation"><a href="/admin/agent">업체관리</a></li>
 		  <li role="presentation" class="active"><a href="#">설치/패치관리</a></li>
 		  <li role="presentation"><a href="/admin/pcbang">가맹점관리</a></li>
+		  <li role="presentation"><a href="/admin/game">Game관리</a></li>		  
 		</ul>
   	</div>
   	<hr>
@@ -74,12 +75,12 @@
 				<td>상호</td>
 				<td>주소</td>				
 				<td>IP대역</td>
-				<td>서버IP</td>
+				<td>submask</td>
 				<td>관리업체</td>
 				<td>관리IP수</td>
-				<td>지급대상(O/X)</td>
+				<td>지급대상(Y/N)</td>
 			<c:forEach var="game" items="${gameList}">
-				<td>${game.getName()}(${game.getMajor()})</td>
+				<td>${game.getName()}</td>
 			</c:forEach>																																																						
 			</tr>
 		<c:forEach var="pcbang" items="${pcbangList}">
@@ -89,12 +90,12 @@
     			<td>${pcbang.getCompanyName()}</td>
     			<td>${pcbang.getAddress()}</td>    			    			    			
     			<td>${pcbang.getIpStart()} - ${pcbang.getIpEnd()}</td>
-    			<td>${pcbang.getMasterIp()}</td>
+    			<td>${pcbang.getSubmask()}</td>
     			<td>${pcbang.getAgent().getCompanyName()}</td>
     			<td></td>    			    			    			
-    			<td>N/A</td>
+    			<td>${gamePatchMapForPcbang.get(pcbang.getPcbId()).getAllPatchYN()}</td>
 			<c:forEach var="game" items="${gameList}">
-				<td>${gamePatchMapForPcbang.get(pcbang.getPcbId()).get(game.getGsn())}</td>
+				<td>${gamePatchMapForPcbang.get(pcbang.getPcbId()).getGamePatchMap().get(game.getGsn())}</td>
 			</c:forEach>																																																						
     		</tr>
 		</c:forEach>

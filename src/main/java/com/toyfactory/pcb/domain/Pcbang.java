@@ -29,7 +29,7 @@ public class Pcbang {
 	private String address;
 	private String ipStart;
 	private String ipEnd;
-	private String masterIp;
+	private String submask;
 	private String program;
 	
 	@Enumerated(EnumType.STRING)

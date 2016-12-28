@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.toyfactory.pcb.domain.Game;
 import com.toyfactory.pcb.domain.GamePatchLog;
 import com.toyfactory.pcb.domain.Pcbang;
+import com.toyfactory.pcb.model.PcbGamePatchResult;
 import com.toyfactory.pcb.repository.GamePatchLogRepository;
 import com.toyfactory.pcb.repository.GameRepository;
 import com.toyfactory.pcb.repository.PcbangRepository;
@@ -19,44 +20,49 @@ import com.toyfactory.pcb.repository.PcbangRepository;
 public class GamePatchService {
 
 	@Autowired
-	GamePatchLogRepository gamePatchLogDao;
+	private GamePatchLogRepository gamePatchLogDao;
 	
 	@Autowired	
-	GameRepository gameDao;
+	private GameService gameService;
 	
 	@Autowired	
 	private PcbangRepository pcbangDao;	
 	
-	public Map<Long, Map<String, String>> buildGamePathForAllPcbang() {
+	public Map<Long, PcbGamePatchResult> buildGamePathForAllPcbang() {
 		//최종 결과 
-		//gamePatchMapForPcbang = { pcbId: 123, games:{{key(gsn1):value(version1)},{key(gsn2):value(version2),...}, ...}			
-		Map<Long, Map<String, String>> gamePatchMapForPcbang = new HashMap<Long, Map<String, String>>();
+		//gamePatchMapForPcbang = { pcbId: 123, games:{{key(gsn1):value(설치여부)},{key(gsn2):value(설치여부),...}, ...}			
+		Map<Long, PcbGamePatchResult> gamePatchMapForPcbang = new HashMap<Long, PcbGamePatchResult>();
 		
-		//모든 pc방에 대해서 초기 데이터를 생성한다.
-		List<Pcbang> pcbangs = pcbangDao.findAll();		
-		List<Game> games = getAllGames();
-		
-		for(Pcbang pcbang : pcbangs) {	
-			Map<String,String> gamePatchMap = new HashMap<String, String>();
+		Map<String, Game> gamesMap = gameService.buildAllGamesMap();
 			
-			for(Game game : games) {
-				gamePatchMap.put(game.getGsn(), "no version");
-			}			
-			gamePatchMapForPcbang.put(pcbang.getPcbId(), gamePatchMap);
-		}
-		
 		List<GamePatchLog> gamePatchLogs = gamePatchLogDao.findAll();
 		
-		for(GamePatchLog item : gamePatchLogs) {
-			Map<String,String> gamePatchMap = gamePatchMapForPcbang.get(item.getPcbId());			
-			gamePatchMap.put(item.getGsn(), item.getMajor());
+		for(GamePatchLog gamePatchLog : gamePatchLogs) {
+			PcbGamePatchResult gamePatchResult = gamePatchMapForPcbang.get(gamePatchLog.getPcbId());
+			
+			if(gamePatchResult == null){
+				gamePatchResult = new PcbGamePatchResult();
+				gamePatchMapForPcbang.put(gamePatchLog.getPcbId(), gamePatchResult);
+			}
+			
+			gamePatchResult.verifyGamePatch(gamePatchLog, gamesMap.get(gamePatchLog.getGsn()));
+		}
+
+		//모든 pc방에 대해서 game patch 여부 조사
+		List<Pcbang> pcbangs = pcbangDao.findAll();		
+		
+		for(Pcbang pcbang : pcbangs) {
+			PcbGamePatchResult gamePatchResult = gamePatchMapForPcbang.get(pcbang.getPcbId());
+			
+			//수집된 gamePatchLog 보다 pcbang 수가 많은 경우 빈 데이터를 넣어 준다.
+			if(gamePatchResult == null) {
+				gamePatchResult = new PcbGamePatchResult();			
+				gamePatchMapForPcbang.put(pcbang.getPcbId(), gamePatchResult);
+			}
+			
+			gamePatchResult.verifyAllGamePatch(gamesMap.size());
 		}
 		
 		return gamePatchMapForPcbang;
 	}	
-	
-	public List<Game> getAllGames() {
-		return gameDao.findAll();
-	}
-	
 }

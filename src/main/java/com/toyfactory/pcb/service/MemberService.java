@@ -33,6 +33,10 @@ public class MemberService {
 	@Autowired	
 	private PcbangRepository pcbangDao;
 	
+	@Autowired	
+	private CrpytoService crpytoService;
+	
+	
 	public boolean checkDuplicateItem(String item, String value) {
     	//check item : id, company code, contact, email
     	
@@ -75,7 +79,9 @@ public class MemberService {
 			return false;
 		}
 		
-		Account newMember = new Account(params.get("id"),params.get("password"), Permission.AGENT);
+		String passwordHash = crpytoService.generateSHA1Hash(params.get("password"));
+		
+		Account newMember = new Account(params.get("id"),passwordHash, Permission.AGENT);
 					
 		Agent newAgent = new Agent(new Date());
 
@@ -121,21 +127,29 @@ public class MemberService {
 		//access tokekn format :  [agent_id|permission|expire date|sha1 hash]
 		String accessToken = "";
 		
-		Account user = accountDao.findByIdAndPassword(id, password);
+		String passwordHash = crpytoService.generateSHA1Hash(password);		
 		
-		if(user != null){
-			StringBuilder tokenBuilder = new StringBuilder();
-			
-			Agent agent = user.getAgent();
-			tokenBuilder.append(String.valueOf(agent.getAgentId()))
-						.append("|")
-						.append(user.getPermission())
-						.append("|")
-						.append(new Date().getTime() + 3600)
-						.append("|")
-						.append("sha1hash");
-			accessToken =  tokenBuilder.toString();
+		Account user = accountDao.findByIdAndPassword(id, passwordHash);
+		
+		if(user == null) {
+			logger.error("authentication fail! wrong password id:" + id);
+			return accessToken;
 		}
+		
+		StringBuilder tokenBuilder = new StringBuilder();
+		
+		Agent agent = user.getAgent();
+		tokenBuilder.append(String.valueOf(agent.getAgentId()))
+					.append("|")
+					.append(user.getPermission())
+					.append("|")
+					.append(new Date().getTime() + 3600);
+					
+		String sha1hash = crpytoService.generateSHA1Hash(tokenBuilder.toString());
+					
+		tokenBuilder.append("|")
+					.append(sha1hash);
+		accessToken =  tokenBuilder.toString();
 		
 		return accessToken;
 	}

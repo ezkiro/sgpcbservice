@@ -12,6 +12,7 @@
 		  <li role="presentation" class="active"><a href="#">업체관리</a></li>
 		  <li role="presentation"><a href="/admin/gamepatch">설치/패치관리</a></li>
 		  <li role="presentation"><a href="/admin/pcbang">가맹점관리</a></li>
+		  <li role="presentation"><a href="/admin/game">Game관리</a></li>		  
 		</ul>
   	</div>
   	<hr>

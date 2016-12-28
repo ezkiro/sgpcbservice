@@ -78,7 +78,7 @@ public class MemberController {
     		@RequestParam(value="address", required = false) String address,
     		@RequestParam(value="start_ip", required = true) String startIp,
     		@RequestParam(value="end_ip", required = true) String endIp,
-    		@RequestParam(value="master_ip", required = false) String masterIp,
+    		@RequestParam(value="submask", required = false) String submask,
     		@RequestParam(value="agent_id", required = true) Long agentId,
     		@RequestParam(value="program", required = false) String program
     		) {
@@ -89,7 +89,7 @@ public class MemberController {
     	aPcbang.setAddress(address);
     	aPcbang.setIpStart(startIp);
     	aPcbang.setIpEnd(endIp);
-    	aPcbang.setMasterIp(masterIp);
+    	aPcbang.setSubmask(submask);
     	aPcbang.setProgram(program);
     	aPcbang.setStatus(StatusCd.WAIT);
 
@@ -103,7 +103,7 @@ public class MemberController {
     		@RequestParam(value="address", required = false) String address,
     		@RequestParam(value="start_ip", required = true) String startIp,
     		@RequestParam(value="end_ip", required = true) String endIp,
-    		@RequestParam(value="master_ip", required = false) String masterIp,
+    		@RequestParam(value="submask", required = false) String submask,
     		@RequestParam(value="agent_id", required = true) Long agentId,
     		@RequestParam(value="program", required = false) String program,
     		@RequestParam(value="pcb_id", required = false) Long pcbId,
@@ -116,7 +116,7 @@ public class MemberController {
     	aPcbang.setAddress(address);
     	aPcbang.setIpStart(startIp);
     	aPcbang.setIpEnd(endIp);
-    	aPcbang.setMasterIp(masterIp);
+    	aPcbang.setSubmask(submask);
     	aPcbang.setProgram(program);
     	aPcbang.setPcbId(pcbId);
     	aPcbang.setStatus(StatusCd.valueOf(status));
