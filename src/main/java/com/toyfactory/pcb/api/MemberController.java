@@ -4,8 +4,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.assertj.core.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,19 +52,19 @@ public class MemberController {
     	params.put("companyName", companyName);
     	params.put("contactNum", contactNum);
     	
-    	if(!Strings.isNullOrEmpty(ceo)) {
+    	if(!StringUtils.isEmpty(ceo)) {
         	params.put("ceo", ceo);
     	}
 
-    	if(!Strings.isNullOrEmpty(address)) {
+    	if(!StringUtils.isEmpty(address)) {
         	params.put("address", address);
     	}
 
-    	if(!Strings.isNullOrEmpty(email)) {
+    	if(!StringUtils.isEmpty(email)) {
         	params.put("email", email);
     	}
 
-    	if(!Strings.isNullOrEmpty(bankAccount)) {
+    	if(!StringUtils.isEmpty(bankAccount)) {
         	params.put("bankAccount", bankAccount);
     	}
     	    	

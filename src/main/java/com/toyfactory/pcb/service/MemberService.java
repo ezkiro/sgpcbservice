@@ -4,17 +4,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.assertj.core.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.toyfactory.pcb.domain.Account;
 import com.toyfactory.pcb.domain.Agent;
 import com.toyfactory.pcb.domain.Pcbang;
 import com.toyfactory.pcb.model.Permission;
-import com.toyfactory.pcb.model.StatusCd;
 import com.toyfactory.pcb.repository.AccountRepository;
 import com.toyfactory.pcb.repository.AgentRepository;
 import com.toyfactory.pcb.repository.PcbangRepository;
@@ -74,7 +73,7 @@ public class MemberService {
 
 		logger.debug("input params=" + params);
 		
-		if(Strings.isNullOrEmpty(params.get("id"))|| Strings.isNullOrEmpty(params.get("password"))) {
+		if(StringUtils.isEmpty(params.get("id"))|| StringUtils.isEmpty(params.get("password"))) {
 			logger.error("[signUp] fail to sign up! id or password is null or empty!");
 			return false;
 		}
@@ -86,30 +85,30 @@ public class MemberService {
 		Agent newAgent = new Agent(new Date());
 
 		//set optional information		
-		if(!Strings.isNullOrEmpty(params.get("companyCode"))) {
+		if(!StringUtils.isEmpty(params.get("companyCode"))) {
 			newAgent.setCompanyCode(params.get("companyCode"));			
 		}	
 		
-		if(!Strings.isNullOrEmpty(params.get("companyName"))) {
+		if(!StringUtils.isEmpty(params.get("companyName"))) {
 			newAgent.setCompanyName(params.get("companyName"));			
 		}
 
-		if(!Strings.isNullOrEmpty(params.get("contactNum"))) {
+		if(!StringUtils.isEmpty(params.get("contactNum"))) {
 			newAgent.setContactNum(params.get("contactNum"));			
 		}		
 		
-		if(!Strings.isNullOrEmpty(params.get("address"))) {
+		if(!StringUtils.isEmpty(params.get("address"))) {
 			newAgent.setAddress(params.get("address"));			
 		}
 
-		if(!Strings.isNullOrEmpty(params.get("ceo"))) {
+		if(!StringUtils.isEmpty(params.get("ceo"))) {
 			newAgent.setCeo(params.get("ceo"));
 		}
 
-		if(!Strings.isNullOrEmpty(params.get("bankAccount"))) {
+		if(!StringUtils.isEmpty(params.get("bankAccount"))) {
 			newAgent.setBankAccount(params.get("bankAccount"));
 		}
-		if(!Strings.isNullOrEmpty(params.get("email"))) {
+		if(!StringUtils.isEmpty(params.get("email"))) {
 			newAgent.setEmail(params.get("email"));
 		}
 		
