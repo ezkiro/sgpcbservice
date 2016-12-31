@@ -1,15 +1,20 @@
 package com.toyfactory.pcb.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.toyfactory.pcb.domain.Game;
 import com.toyfactory.pcb.domain.GamePatchLog;
 import com.toyfactory.pcb.domain.Pcbang;
+import com.toyfactory.pcb.model.PcbGame;
+import com.toyfactory.pcb.model.PcbGamePatch;
 import com.toyfactory.pcb.model.PcbGamePatchResult;
 import com.toyfactory.pcb.repository.GamePatchLogRepository;
 import com.toyfactory.pcb.repository.GameRepository;
@@ -26,7 +31,13 @@ public class GamePatchService {
 	private GameService gameService;
 	
 	@Autowired	
-	private PcbangRepository pcbangDao;	
+	private PcbangRepository pcbangDao;
+
+	@Autowired	
+	private PcbangService pcbangService;	
+	
+    @Autowired @Qualifier("jsonRedisTemplate")
+    private RedisTemplate<String, PcbGamePatch> redisTemplate;	
 	
 	public Map<Long, PcbGamePatchResult> buildGamePathForAllPcbang() {
 		//최종 결과 
@@ -48,8 +59,8 @@ public class GamePatchService {
 			gamePatchResult.verifyGamePatch(gamePatchLog, gamesMap.get(gamePatchLog.getGsn()));
 		}
 
-		//모든 pc방에 대해서 game patch 여부 조사
-		List<Pcbang> pcbangs = pcbangDao.findAll();		
+		//status = OK 인 모든 pc방에 대해서 game patch 여부 조사
+		List<Pcbang> pcbangs = pcbangService.findPcbangs("status", "OK");	
 		
 		for(Pcbang pcbang : pcbangs) {
 			PcbGamePatchResult gamePatchResult = gamePatchMapForPcbang.get(pcbang.getPcbId());
@@ -64,5 +75,46 @@ public class GamePatchService {
 		}
 		
 		return gamePatchMapForPcbang;
-	}	
+	}
+	
+	/**
+	 * redis에 저장된 PC방 별 데이터를 취합하여 GamePatchLog table에 데이터를 넣는 batch작업
+	 * executeService를 통해서 실행해야 하고 중복으로 실행이 되지 않도록 해야 한다.
+	 * @return
+	 */
+	public void excuteGamePatchAnalysisBatch(){
+		
+		//Pcbang별 IP 목록 별 PcbGamePatch 추출
+		List<Pcbang> vaildPcbangs = pcbangService.findPcbangs("status", "OK");
+		for(Pcbang pcbang : vaildPcbangs) {
+			
+			List<String> pcbangIPs = pcbangService.buildPcbangIPs(pcbang.getIpStart(), pcbang.getIpEnd(), pcbang.getSubmask());
+			
+			for(String ip : pcbangIPs) {
+				PcbGamePatch pcbGamePatch = readPcbGamePatchFromCache(ip);
+				if(pcbGamePatch == null) continue;
+				
+				savePcbGamePatchToGamePatchLog(pcbang.getPcbId(), pcbGamePatch);
+			}			
+		}		
+	}
+	
+	public boolean writePcbGamePatchToCache(String clientIp, PcbGamePatch pcbGamePatch){
+    	pcbGamePatch.setCrtDt(new Date());
+        redisTemplate.opsForValue().set(clientIp, pcbGamePatch);		
+		return true;
+	}
+	
+	public PcbGamePatch readPcbGamePatchFromCache(String clientIp){
+		return redisTemplate.opsForValue().get(clientIp);
+	}
+	
+	public void savePcbGamePatchToGamePatchLog(Long pcbId, PcbGamePatch pcbGamePatch){
+		List<PcbGame> pcbGames = pcbGamePatch.getPcbGames();
+		
+		for(PcbGame pcbGame : pcbGames){
+			GamePatchLog gamePatchLog = new GamePatchLog(pcbId, pcbGame.getGsn(), pcbGame.getMajor(), pcbGame.getMinor());
+			gamePatchLogDao.save(gamePatchLog);
+		}
+	}
 }

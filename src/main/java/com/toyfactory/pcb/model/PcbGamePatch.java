@@ -1,5 +1,6 @@
 package com.toyfactory.pcb.model;
 
+import java.util.Date;
 import java.util.List;
 
 import lombok.Data;
@@ -12,5 +13,19 @@ import lombok.Data;
  */
 @Data
 public class PcbGamePatch {
-	private List<PcbGame> pcbGames;	
+	private String version; //pcbAgent version
+	private Date crtDt;
+	private List<PcbGame> pcbGames;
+	
+//	@Override
+//	public String toString(){
+//		StringBuilder sb = new StringBuilder("pcbGames:[");
+//		
+//		for(PcbGame pcbGame : pcbGames) {
+//			sb.append("{").append(pcbGame.toString()).append("},");
+//		}		
+//		
+//		sb.append("]");
+//		return sb.toString();
+//	}
 }

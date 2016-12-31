@@ -13,4 +13,17 @@ public class PcbGame {
 	private String name;
 	private String major;
 	private String minor;
+	
+//	@Override
+//	public String toString(){
+//		
+//		StringBuilder sb = new StringBuilder();
+//		
+//		sb.append("gsn:").append(gsn)
+//		  .append(",name:").append(name)
+//		  .append(",major:").append(major)
+//		  .append(",minor:").append(minor);
+//		
+//		return sb.toString();
+//	}
 }
