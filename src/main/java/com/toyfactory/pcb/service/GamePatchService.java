@@ -24,6 +24,8 @@ import com.toyfactory.pcb.repository.PcbangRepository;
 @Service("gamePatchService")
 public class GamePatchService {
 
+	private static long EXPIRE_TERM = 43200L; //24hours
+	
 	@Autowired
 	private GamePatchLogRepository gamePatchLogDao;
 	
@@ -94,7 +96,8 @@ public class GamePatchService {
 				PcbGamePatch pcbGamePatch = readPcbGamePatchFromCache(ip);
 				if(pcbGamePatch == null) continue;
 				
-				savePcbGamePatchToGamePatchLog(pcbang.getPcbId(), pcbGamePatch);
+				//한번이라도 저장에 성공을 하면 중단한다.
+				if(savePcbGamePatchToGamePatchLog(pcbang.getPcbId(), pcbGamePatch)) break;
 			}			
 		}		
 	}
@@ -109,12 +112,29 @@ public class GamePatchService {
 		return redisTemplate.opsForValue().get(clientIp);
 	}
 	
-	public void savePcbGamePatchToGamePatchLog(Long pcbId, PcbGamePatch pcbGamePatch){
+	public boolean savePcbGamePatchToGamePatchLog(Long pcbId, PcbGamePatch pcbGamePatch){		
 		List<PcbGame> pcbGames = pcbGamePatch.getPcbGames();
+
+		if(pcbGames.isEmpty()) return false;
 		
 		for(PcbGame pcbGame : pcbGames){
 			GamePatchLog gamePatchLog = new GamePatchLog(pcbId, pcbGame.getGsn(), pcbGame.getMajor(), pcbGame.getMinor());
 			gamePatchLogDao.save(gamePatchLog);
 		}
+		
+		return true;
+	}
+	
+	public boolean isUpdatedAllGamePatchLog(Long pcbId, Date checkDt){
+		//최신 gamepatch로 모두 업데이트 되어 있으면 더이상 업데이트 하지 않는다.
+		//12시간 이전에 저장된 데이터가 있는지 조사한다.
+		Date uptDt = new Date(checkDt.getTime()-EXPIRE_TERM);
+		List<GamePatchLog> gamePatchLogs = gamePatchLogDao.findByPcbIdAndUptDt(pcbId, uptDt);
+		
+		if(gamePatchLogs.isEmpty()) return false;
+		
+		Map<String, Game> allGameMap =  gameService.buildAllGamesMap();
+		
+		return false;
 	}
 }
