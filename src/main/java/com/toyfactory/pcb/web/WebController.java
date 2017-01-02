@@ -50,6 +50,7 @@ public class WebController {
 		try {
 			Cookie cookie;
 			cookie = new Cookie("access_token", URLEncoder.encode(accessToken, "UTF-8"));
+			cookie.setPath("/");
 			//if(!Strings.isNullOrEmpty(cookieDomain)) cookie.setDomain(cookieDomain);
 			//if(!Strings.isNullOrEmpty(cookiePath)) cookie.setPath(cookiePath);
 			
@@ -58,8 +59,7 @@ public class WebController {
 			throw new RuntimeException(e);
 		}
 
-    	//return "redirect:/main";
-		return "hello";
+    	return "redirect:/main";
     }
 	
 	@RequestMapping("/signup")

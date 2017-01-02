@@ -80,8 +80,8 @@
     </div>
 
     <div class = "row text-center">    
-    	<h4>CopyrightⓒE-GATEAll Rights Reserved</h4>
-    	<h4>관리자: 홍세호episode@e-gate.co.kr</h4>  
+    	<h4>CopyrightⓒE-GATE All Rights Reserved</h4>
+    	<h4>관리자: 홍세호 episode@e-gate.co.kr</h4>  
     </div>             
    </div> <!-- /container -->
        

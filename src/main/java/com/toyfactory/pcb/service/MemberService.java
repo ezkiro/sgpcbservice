@@ -142,7 +142,7 @@ public class MemberService {
 					.append("|")
 					.append(user.getPermission())
 					.append("|")
-					.append(new Date().getTime() + 3600);
+					.append(new Date().getTime() + 3600 * 1000);
 					
 		String sha1hash = crpytoService.generateSHA1Hash(tokenBuilder.toString());
 					
@@ -184,5 +184,47 @@ public class MemberService {
 		return pcbangDao.save(pcbang);
 	}
 	
-	
+	public boolean verifyAccessToken(String accessToken) {
+		
+		if(accessToken == null) return false;
+		
+		if(logger.isDebugEnabled()) logger.debug("verifyAccessToken accessToken:" + accessToken);
+		
+		//access tokekn format :  [agent_id|permission|expire date|sha1 hash]
+		
+		String delimiter = "\\|";
+		
+		String[] tokens = accessToken.split(delimiter);	
+		
+		if(tokens.length < 4) return false;
+				
+		StringBuilder message = new StringBuilder();
+		
+		message.append(tokens[0]).append("|").append(tokens[1]).append("|").append(tokens[2]);
+				
+		String messageDigest = tokens[3];
+				
+		if(logger.isDebugEnabled()) logger.debug("verifyAccessToken message:" + message.toString() + ", hash:" + messageDigest);
+
+		String checkHash = crpytoService.generateSHA1Hash(message.toString());
+		
+		if(logger.isDebugEnabled()) logger.debug("verifyAccessToken checkHash:" + checkHash);
+		
+		//compare messageDigest
+		if(!messageDigest.equals(checkHash)){
+			if(logger.isDebugEnabled()) logger.debug("verifyAccessToken fail to compare messageDigest");			
+			return false;
+		}
+		
+		//check expire time
+		Date now = new Date();
+		Date tokenExpire = new Date(Long.valueOf(tokens[2]));
+		
+		if( now.getTime() > tokenExpire.getTime()) {
+			if(logger.isDebugEnabled()) logger.debug("verifyAccessToken token time is expired");			
+			return false;
+		}
+		
+		return true;
+	}
 }
