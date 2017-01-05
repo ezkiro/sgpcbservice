@@ -11,7 +11,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.util.WebUtils;
 
+import com.toyfactory.pcb.exception.InvalidPermissionException;
 import com.toyfactory.pcb.exception.InvalidTokenException;
+import com.toyfactory.pcb.model.Permission;
 import com.toyfactory.pcb.service.MemberService;
 
 import java.net.URLDecoder;
@@ -44,16 +46,27 @@ public class AuthAspect{
 				}
 				
 				String token = URLDecoder.decode(cookie.getValue(), "UTF-8");
-				if(memberService.verifyAccessToken(token) == false){ //check
+				
+				Permission userPerm = memberService.verifyAccessToken(token);
+				if(userPerm == Permission.NOBODY){ //check
 					throw new InvalidTokenException();
 				}
 				
+				//check permission
+				if(userPerm != Permission.valueOf(pcbAuth.permission())){
+					throw new InvalidPermissionException();
+				}
+				
 			} catch(InvalidTokenException e) {
-				if(logger.isDebugEnabled()) logger.debug("invaild Token exception!");
+				if(logger.isDebugEnabled()) logger.debug("invalid Token exception!");
 				
 				//return new ModelAndView("redirect:/login");
 				return "redirect:/login";
-			}		
+			} catch(InvalidPermissionException e) {
+				if(logger.isDebugEnabled()) logger.debug("invalid permission exception!");
+				
+				return "redirect:/errormsg";
+			}
 		}
 
 		Object result =  joinPoint.proceed();
