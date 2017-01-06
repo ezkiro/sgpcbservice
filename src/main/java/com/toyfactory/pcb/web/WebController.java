@@ -73,7 +73,7 @@ public class WebController {
 		if(accessToken.contains(Permission.ADMIN.toString()) || accessToken.contains(Permission.PARTNER.toString())){			
 			return "redirect:/admin/agent";
 		} else {
-	    	return "redirect:/main";			
+	    	return "redirect:/member/gamepatch";			
 		}
     }
 	

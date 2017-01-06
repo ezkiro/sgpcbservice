@@ -170,7 +170,6 @@ public class MemberService {
 	}
 
 	public List<Pcbang> findPcbangs(String item, String keyworkd) {
-		
 		if("status".equals(item)) {
 			return pcbangDao.findByStatus(StatusCd.valueOf(keyworkd));
 		}
