@@ -73,4 +73,8 @@ public class PcbangService {
 	public Pcbang findPcbang(Long pcbId){
 		return pcbangDao.findOne(pcbId);
 	}
+	
+	public List<Pcbang> findPcbangs(Long agentId, StatusCd status){
+		return pcbangDao.findByAgentAndStatus(agentId, status);
+	}
 }

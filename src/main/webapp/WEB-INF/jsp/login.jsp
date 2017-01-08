@@ -53,7 +53,7 @@
 		<div class="form-group">
 		<div class="col-md-2 text-right"><label for="lbEmail">ID</label></div>
  		<div class="col-md-6">
-			<input type="email" name="id" class="form-control" id="inputEmail" placeholder="이메일을 입력하세요">
+			<input type="text" name="id" class="form-control" id="inputEmail" placeholder="ID를 입력하세요">
 		</div>
  		</div>
     </div>

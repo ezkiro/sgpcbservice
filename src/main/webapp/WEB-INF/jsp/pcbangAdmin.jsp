@@ -36,7 +36,6 @@
 			  <option>상호</option>			  
 			  <option>주소</option>			  
 			  <option>IP대역</option>
-			  <option>서버IP</option>
 			  <option>관리업체</option>
 			  <option>프로그램명</option>
 			  <option>상태</option>		  			  			  			  

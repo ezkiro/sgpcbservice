@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.toyfactory.pcb.aop.PcbAuthorization;
+import com.toyfactory.pcb.model.Permission;
 import com.toyfactory.pcb.service.MemberService;
 
 @Controller
@@ -23,12 +24,20 @@ public class WebController {
 	private MemberService memberService;	
 	
 	@RequestMapping("/main")
-	@PcbAuthorization(requireAccessToken=true)
+	@PcbAuthorization
 	public String jspPage(@RequestParam(value="name", required = false) String name, Model model){
 		//model.addAttribute("name","access token is" + name);
 		return "hello";
 	}	
 
+	@RequestMapping("/errormsg")
+	public String errorPage(@RequestParam(value="message", required = false) String message, Model model){
+		if(message != null){
+			model.addAttribute("message", message);			
+		}
+		return "errorMsg";
+	}		
+	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
 	public String loginPage(@RequestParam(value="error", required = false) String error, Model model){
 		model.addAttribute("error",error);
@@ -59,7 +68,13 @@ public class WebController {
 			throw new RuntimeException(e);
 		}
 
-    	return "redirect:/main";
+		//go to process for permission
+		
+		if(accessToken.contains(Permission.ADMIN.toString()) || accessToken.contains(Permission.PARTNER.toString())){			
+			return "redirect:/admin/agent";
+		} else {
+	    	return "redirect:/member/gamepatch";			
+		}
     }
 	
 	@RequestMapping("/signup")

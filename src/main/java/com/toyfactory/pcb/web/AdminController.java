@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.toyfactory.pcb.aop.PcbAuthorization;
 import com.toyfactory.pcb.domain.Agent;
 import com.toyfactory.pcb.domain.Game;
 import com.toyfactory.pcb.domain.Pcbang;
@@ -38,6 +39,7 @@ public class AdminController {
 	private PcbangRepository pcbangDao;	
 	
 	@RequestMapping("/agent")
+	@PcbAuthorization(permission="ADMIN")	
 	public String adminPage(Model model){
 		
 		List<Agent> agentList = memberService.findAgents(null, null);
@@ -60,6 +62,7 @@ public class AdminController {
 	
 	
 	@RequestMapping("/pcbang")
+	@PcbAuthorization(permission="ADMIN")	
 	public String pcbangPage(Model model){
 		
 		List<Pcbang> pcbangList = memberService.findPcbangs(null, null);
@@ -70,6 +73,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping("/gamepatch")
+	@PcbAuthorization(permission="ADMIN")	
 	public String gamePatchPage(Model model){
 		
 		List<Pcbang> pcbangs = memberService.findPcbangs(null, null);	
@@ -85,6 +89,7 @@ public class AdminController {
 	}
 
 	@RequestMapping("/pcbang/add")
+	@PcbAuthorization(permission="ADMIN")	
 	public String pcbangAddPage(Model model){
 		
 		List<Agent> agentList = memberService.findAgents(null, null);
@@ -94,6 +99,7 @@ public class AdminController {
 	}	
 
 	@RequestMapping("/pcbang/update")
+	@PcbAuthorization(permission="ADMIN")	
 	public String pcbangUpdatePage(
 			@RequestParam(value="pcb_id", required = true) Long pcbId,
 			Model model){
@@ -111,6 +117,7 @@ public class AdminController {
 	}	
 
 	@RequestMapping("/game")
+	@PcbAuthorization(permission="ADMIN")	
 	public String gamePage(Model model){
 		
 		List<Game> gameList = gameService.findGames();
@@ -121,11 +128,13 @@ public class AdminController {
 
 
 	@RequestMapping(value="/game/add", method=RequestMethod.GET)
+	@PcbAuthorization(permission="ADMIN")	
 	public String addGamePage(Model model){				
 		return "gameInput";
 	}
 	
 	@RequestMapping(value="/game/update", method=RequestMethod.GET)
+	@PcbAuthorization(permission="ADMIN")	
 	public String updateGamePage(Model model,
     		@RequestParam(value="gsn", required = true) String gsn){
 		
@@ -136,6 +145,7 @@ public class AdminController {
 	
 	@RequestMapping(value="/game/{action}", method=RequestMethod.POST)
 	@ResponseBody
+	@PcbAuthorization(permission="ADMIN")	
 	public boolean addOrUpdateGame(Model model,
     		@RequestParam(value="gsn", required = true) String gsn,
     		@RequestParam(value="name", required = true) String name,
