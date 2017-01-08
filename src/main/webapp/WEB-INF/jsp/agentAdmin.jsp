@@ -86,7 +86,7 @@
     			<td>${agent.getCrtDt().toString().substring(0,10)}</td>
     			<td>${agent.getStatus()}</td>    			    			    			
     			<td>${agent.getAccount().getPermission()}</td>
-    			<td>수정</td>
+    			<td><a class="btn btn-default" href="/admin/agent/update?agent_id=${agent.getAgentId()}" role="button">수정</a></td>
     		</tr>
 		</c:forEach>
 		</table>

@@ -46,6 +46,19 @@ public class AdminController {
 		return "agentAdmin";
 	}
 
+	@RequestMapping("/agent/update")
+	public String agentUpdatePage(
+			@RequestParam(value="agent_id", required = true) Long agentId,
+			Model model){
+		
+		Agent agent = memberService.findAgent(agentId);
+			
+		model.addAttribute("agent",agent);			
+				
+		return "agentUpdate";
+	}	
+	
+	
 	@RequestMapping("/pcbang")
 	public String pcbangPage(Model model){
 		

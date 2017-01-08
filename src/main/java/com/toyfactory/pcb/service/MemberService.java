@@ -154,9 +154,15 @@ public class MemberService {
 	}
 	
 	public List<Agent> findAgents(String item, String keyworkd) {
+				
 		//all agents
 		return agentDao.findAll();		
 	}
+	
+	public Agent findAgent(Long agentId){
+		return agentDao.findOne(agentId);
+	}
+	
 
 	public List<Pcbang> findPcbangs(String item, String keyworkd) {
 		//all pcbangs
