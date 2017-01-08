@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -24,6 +26,8 @@ import com.toyfactory.pcb.repository.PcbangRepository;
 @Service("gamePatchService")
 public class GamePatchService {
 
+	private static final Logger logger = LoggerFactory.getLogger(GamePatchService.class);	
+	
 	private static long EXPIRE_TERM = 43200L; //24hours
 	
 	@Autowired
@@ -136,5 +140,31 @@ public class GamePatchService {
 		Map<String, Game> allGameMap =  gameService.buildAllGamesMap();
 		
 		return false;
+	}
+	
+	public String checkGamePatchPass(String clientIp){
+    	//PcbAgent가 중복해서 GamePatch check 하는 것을 방지하기 위한 사전 체크 
+    	
+    	if("127.0.0.1".equals(clientIp)){
+    		return "PASS"; //do nothing
+    	}
+    	
+    	PcbGamePatch pcbGamePatch = readPcbGamePatchFromCache(clientIp);
+    	
+    	if(pcbGamePatch == null){
+    		return "CHECK";
+    	}
+
+    	Date now = new Date();
+    	//마지막으로 저장이 된지 24시간이 지나지 않았으면  pass    	
+    	if((now.getTime() - pcbGamePatch.getCrtDt().getTime())/1000 < 86400L) {
+    		
+    		if(logger.isDebugEnabled()){
+    			logger.debug("[checkGamePatchPass] PASS! client ip:" + clientIp);
+    		}    		
+    		return "PASS";
+    	}
+		
+		return "CHECK";
 	}
 }

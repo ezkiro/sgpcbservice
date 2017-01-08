@@ -41,18 +41,28 @@ public class AgentController {
         return new Version("20161205");
     }
     
-    @RequestMapping(value = "/gamepatch/{client_ip}", method = RequestMethod.POST)
-    public boolean putPcbGamePatch(@PathVariable String client_ip ,@RequestBody PcbGamePatch pcbGamePatch)throws Exception{
+    @RequestMapping(value = "/gamepatch", method = RequestMethod.POST)
+    public boolean putPcbGamePatch(@RequestParam(name="client_ip") String client_ip ,@RequestBody PcbGamePatch pcbGamePatch)throws Exception{
     	
     	if(logger.isDebugEnabled()){
         	logger.debug("[pcbgamepatch] ip:" + client_ip + ", data:" + pcbGamePatch.toString());    		
     	}
     	
+    	if("127.0.0.1".equals(client_ip)){
+    		//skip 처리
+    		logger.error("[pcbgamepatch] client ip is 127.0.0.1! data:" + pcbGamePatch.toString());
+    		return true;
+    	}    	
+    	
         return gamePatchService.writePcbGamePatchToCache(client_ip, pcbGamePatch);
     }
 
-    @RequestMapping(value = "/gamepatch/{client_ip}", method = RequestMethod.GET)
-    public PcbGamePatch getPcbGamePatch(@PathVariable String client_ip) throws Exception {
+    @RequestMapping(value = "/gamepatch", method = RequestMethod.GET)
+    public PcbGamePatch getPcbGamePatch(@RequestParam(name="client_ip") String client_ip) throws Exception {
+    	if(logger.isDebugEnabled()){
+        	logger.debug("[getPcbGamePatch] ip:" + client_ip);   		
+    	}    	
+    	
         return gamePatchService.readPcbGamePatchFromCache(client_ip);
     }
     
@@ -64,4 +74,15 @@ public class AgentController {
     	
         return pcbangService.buildPcbangIPs(pcbang.getIpStart(), pcbang.getIpEnd(), pcbang.getSubmask());
     }
+    
+    @RequestMapping(value = "/check", method = RequestMethod.GET)
+    public String preCheck(@RequestParam(name="client_ip") String client_ip) {
+
+    	if(logger.isDebugEnabled()){
+        	logger.debug("[precheck] ip:" + client_ip);    		
+    	}    	
+    	
+        return gamePatchService.checkGamePatchPass(client_ip);
+    }
+    
 }
