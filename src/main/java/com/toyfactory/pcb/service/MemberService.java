@@ -13,7 +13,9 @@ import org.springframework.util.StringUtils;
 import com.toyfactory.pcb.domain.Account;
 import com.toyfactory.pcb.domain.Agent;
 import com.toyfactory.pcb.domain.Pcbang;
+import com.toyfactory.pcb.exception.InvalidTokenException;
 import com.toyfactory.pcb.model.Permission;
+import com.toyfactory.pcb.model.StatusCd;
 import com.toyfactory.pcb.repository.AccountRepository;
 import com.toyfactory.pcb.repository.AgentRepository;
 import com.toyfactory.pcb.repository.PcbangRepository;
@@ -138,9 +140,15 @@ public class MemberService {
 		StringBuilder tokenBuilder = new StringBuilder();
 		
 		Agent agent = user.getAgent();
+		
+		Permission permission = Permission.NOBODY;
+		if(agent.getStatus() == StatusCd.OK) {
+			permission = user.getPermission();
+		}		
+		
 		tokenBuilder.append(String.valueOf(agent.getAgentId()))
 					.append("|")
-					.append(user.getPermission())
+					.append(permission.toString())
 					.append("|")
 					.append(new Date().getTime() + 3600 * 1000);
 					
@@ -154,7 +162,11 @@ public class MemberService {
 	}
 	
 	public List<Agent> findAgents(String item, String keyworkd) {
-				
+		
+		if("status".equals(item)) {
+			return agentDao.findByStatus(StatusCd.valueOf(keyworkd));
+		}	
+		
 		//all agents
 		return agentDao.findAll();		
 	}
@@ -165,6 +177,11 @@ public class MemberService {
 	
 
 	public List<Pcbang> findPcbangs(String item, String keyworkd) {
+		
+		if("status".equals(item)) {
+			return pcbangDao.findByStatus(StatusCd.valueOf(keyworkd));
+		}		
+		
 		//all pcbangs
 		return pcbangDao.findAll();		
 	}
@@ -190,9 +207,9 @@ public class MemberService {
 		return pcbangDao.save(pcbang);
 	}
 	
-	public boolean verifyAccessToken(String accessToken) {
+	public Permission verifyAccessToken(String accessToken) throws InvalidTokenException{
 		
-		if(accessToken == null) return false;
+		if(accessToken == null) throw new InvalidTokenException();
 		
 		if(logger.isDebugEnabled()) logger.debug("verifyAccessToken accessToken:" + accessToken);
 		
@@ -202,7 +219,7 @@ public class MemberService {
 		
 		String[] tokens = accessToken.split(delimiter);	
 		
-		if(tokens.length < 4) return false;
+		if(tokens.length < 4) throw new InvalidTokenException();
 				
 		StringBuilder message = new StringBuilder();
 		
@@ -219,7 +236,7 @@ public class MemberService {
 		//compare messageDigest
 		if(!messageDigest.equals(checkHash)){
 			if(logger.isDebugEnabled()) logger.debug("verifyAccessToken fail to compare messageDigest");			
-			return false;
+				throw new InvalidTokenException();
 		}
 		
 		//check expire time
@@ -228,9 +245,9 @@ public class MemberService {
 		
 		if( now.getTime() > tokenExpire.getTime()) {
 			if(logger.isDebugEnabled()) logger.debug("verifyAccessToken token time is expired");			
-			return false;
+				throw new InvalidTokenException();
 		}
 		
-		return true;
+		return Permission.valueOf(tokens[1]);
 	}
 }

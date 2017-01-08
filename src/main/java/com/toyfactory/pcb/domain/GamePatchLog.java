@@ -27,6 +27,8 @@ public class GamePatchLog {
 	private String minor; //minor version
 	private String desc;
 
+	private Long installCnt = 0L;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date crtDt;
 	@Temporal(TemporalType.TIMESTAMP)

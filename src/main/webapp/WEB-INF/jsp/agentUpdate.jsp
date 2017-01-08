@@ -17,7 +17,7 @@
 		$("#inputContact").val("${agent.getContactNum()}");
 		$("#inputEmail").val("${agent.getEmail()}");
 		$("#inputBankAccount").val("${agent.getBankAccount()}");
-		$("#inputPermission").val("${agent.getPermission()}");
+		$("#inputPermission").val("${agent.getAccount().getPermission()}");
 		$("#inputStatus").val("${agent.getStatus()}");
 		
 		var checkValidInput = function() {								
@@ -88,7 +88,7 @@
 	<form class="form-horizontal">     
     <div class="row">
 		<div class="form-group">    
-			<div class="col-md-2 text-right"><label for="lbID">ID</label></div>
+			<div class="col-md-2 text-right"><label for="lbID">Agent ID</label></div>
 	 		<div class="col-md-4"><input type="text" class="form-control" id="inputID" placeholder="" disabled></div>
  		</div>
     </div>
@@ -165,6 +165,7 @@
 			<div class="col-md-2 text-right"><label for="lbBankAccount">입금계좌</label></div>
 	 		<div class="col-md-2">
 				<select class="form-control" id ="inputBank">
+				  <option>직접입력</option>				
 				  <option>국민은행</option>
 				  <option>기업은행</option>			  
 				  <option>농협</option>			  
@@ -173,11 +174,10 @@
 				  <option>우리은행</option>
 				  <option>KEB하나은행</option>
 				  <option>한국씨티은행</option>			  
-				  <option>새마을금고</option>
-				  <option>직접입력</option>		  
+				  <option>새마을금고</option>		  
 				</select>
 	 		</div>
-	 		<div class="col-md-6"><input type="text" class="form-control" id="inputBankAccount" placeholder=""></div>
+	 		<div class="col-md-4"><input type="text" class="form-control" id="inputBankAccount" placeholder=""></div>
  		</div>
     </div>
     
@@ -185,7 +185,7 @@
 		<div class="form-group">
 			<div class="col-md-2"></div>
 	 		<div class="col-md-2"><button type="button" class="btn btn-lg btn-primary btn-block" id="saveAgentInfo">수정</button></div>
-	 		<div class="col-md-2"><button type="button" class="btn btn-lg btn-default btn-block" id="cancelAgentInfo">취소</button></div>
+	 		<div class="col-md-2"><a class="btn btn-lg btn-default btn-block" href="/admin/agent" role="button">취소</a></div>
  		</div>
     </div>
     
