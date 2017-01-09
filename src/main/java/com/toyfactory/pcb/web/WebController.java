@@ -60,6 +60,7 @@ public class WebController {
 			Cookie cookie;
 			cookie = new Cookie("access_token", URLEncoder.encode(accessToken, "UTF-8"));
 			cookie.setPath("/");
+			cookie.setMaxAge(3600); //1시간 유효
 			//if(!Strings.isNullOrEmpty(cookieDomain)) cookie.setDomain(cookieDomain);
 			//if(!Strings.isNullOrEmpty(cookiePath)) cookie.setPath(cookiePath);
 			
@@ -76,7 +77,20 @@ public class WebController {
 	    	return "redirect:/member/gamepatch";			
 		}
     }
-	
+
+    @RequestMapping(value="/logout")
+    public String logout(HttpServletResponse response) {
+    	
+		Cookie cookie = new Cookie("access_token", null);
+		cookie.setPath("/");
+		cookie.setMaxAge(0);
+		
+		response.addCookie(cookie);
+		
+	    return "redirect:/login";			
+    }
+    
+    
 	@RequestMapping("/signup")
 	public String signupPage(Model model){
 		//model.addAttribute("name","hello springBoot1234");

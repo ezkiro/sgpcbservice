@@ -56,6 +56,5 @@ public class Agent {
 		this.crtDt = date;
 		this.uptDt = date;
 		this.status = StatusCd.WAIT;
-	}
-	
+	}	
 }

@@ -212,13 +212,7 @@ public class MemberService {
 		
 		pcbang.setAgent(agent);
 		pcbang.setUptDt(new Date());
-		
-    	//agent member 가 수정하는 경우는 status는 변경을 할수 없기 때문에 기존 값을 유지해야 한다.
-		if(pcbang.getStatus() == null){		
-			Pcbang oldPcbang = pcbangDao.getOne(pcbang.getPcbId());
-			pcbang.setStatus(oldPcbang.getStatus());
-		}
-		
+				
 		return pcbangDao.save(pcbang);
 	}
 	
@@ -265,4 +259,20 @@ public class MemberService {
 		
 		return Permission.valueOf(tokens[1]);
 	}
+	
+	public Agent updateAgent(Agent agent, Permission permission) {
+		
+		Account account = agent.getAccount();
+		if(account != null) {
+			account.setPermission(permission);
+			account.setUptDt(new Date());
+			
+			accountDao.save(account);
+		}
+		
+		agent.setUptDt(new Date());
+						
+		return agentDao.save(agent);
+	}
+	
 }

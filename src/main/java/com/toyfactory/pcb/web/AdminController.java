@@ -17,6 +17,7 @@ import com.toyfactory.pcb.domain.Agent;
 import com.toyfactory.pcb.domain.Game;
 import com.toyfactory.pcb.domain.Pcbang;
 import com.toyfactory.pcb.model.PcbGamePatchResult;
+import com.toyfactory.pcb.model.StatusCd;
 import com.toyfactory.pcb.repository.PcbangRepository;
 import com.toyfactory.pcb.service.GamePatchService;
 import com.toyfactory.pcb.service.GameService;
@@ -40,11 +41,22 @@ public class AdminController {
 	
 	@RequestMapping("/agent")
 	@PcbAuthorization(permission="ADMIN")	
-	public String adminPage(Model model){
+	public String agentPage(Model model){
 		
 		List<Agent> agentList = memberService.findAgents(null, null);
 		
+		int agentOKCnt = 0;
+		int agentWaitCnt = 0;
+		
+		for(Agent agent : agentList) {
+			if(agent.getStatus() == StatusCd.OK) agentOKCnt += 1;
+			if(agent.getStatus() == StatusCd.WAIT) agentWaitCnt += 1;
+		}
+		
 		model.addAttribute("agentList",agentList);
+		model.addAttribute("agentOKCnt",agentOKCnt);
+		model.addAttribute("agentWaitCnt",agentWaitCnt);
+		
 		return "agentAdmin";
 	}
 

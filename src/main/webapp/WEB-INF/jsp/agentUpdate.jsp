@@ -29,19 +29,9 @@
 			
 			return true;
 		}
-		
-		//bank
-		$("#inputBank").change(function(){			
-//			alert($("#inputBank option:selected").val());
-		});
-
-		//bank
-		$(":radio").click(function(){			
-			//alert($(':radio[name="eulaAgree"]:checked').val());
-		});		
-		
+				
 		//submit
-		$("#submitSignUp").click(function(){
+		$("#saveAgentInfo").click(function(){
 			
 			if(!checkValidInput()) return;
 						
@@ -53,11 +43,12 @@
 				bankAccount = $("#inputBankAccount").val();
 			}
 			
-		    $.post("/member/signUp",
+		    $.post("/member/agent",
 		    		{
-		    			id: $("#inputID").val(),
-		    			password: $("#inputPassword1").val(),
-		    			company_code: $("#inputPart1").val() + '-' + $("#inputPart2").val() + '-' + $("#inputPart3").val(),
+		    			agent_id: $("#inputID").val(),
+		    			status: $("#inputStatus option:selected").val(),
+		    			permission: $("#inputPermission option:selected").val(),
+		    			company_code: $("#inputCompanyCode").val(),
 		    			company_name:$("#inputCompany").val(),
 		    			ceo: $("#inputCEO").val(),
 		    			contact_num: $("#inputContact").val(),
@@ -67,8 +58,9 @@
 		    		},
 		    		function(data, status){
 		    			if(data) {
-		    				alert("회원가입에 성공하였습니다. 로그인 해주시기 바랍니다.");
-		    				location.href = '/login';
+		    				location.href = '/admin/agent';
+		    			} else {
+		    				alert('업체 정보 수정에 실패했습니다. 다시 시도 하세요.');
 		    			}
 		    		}
 		    );			

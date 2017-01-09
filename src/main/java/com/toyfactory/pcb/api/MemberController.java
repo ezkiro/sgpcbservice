@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.toyfactory.pcb.domain.Agent;
 import com.toyfactory.pcb.domain.Pcbang;
+import com.toyfactory.pcb.model.Permission;
 import com.toyfactory.pcb.model.StatusCd;
 import com.toyfactory.pcb.service.MemberService;
+import com.toyfactory.pcb.service.PcbangService;
 
 @RestController
 @RequestMapping("/member")
@@ -21,6 +24,9 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private PcbangService pcbangService;	
 	
     @RequestMapping("/isExist")
     public boolean duplicateCheck(
@@ -78,7 +84,7 @@ public class MemberController {
     		@RequestParam(value="address", required = false) String address,
     		@RequestParam(value="start_ip", required = true) String startIp,
     		@RequestParam(value="end_ip", required = true) String endIp,
-    		@RequestParam(value="submask", required = false) String submask,
+    		@RequestParam(value="submask", required = true) String submask,
     		@RequestParam(value="agent_id", required = true) Long agentId,
     		@RequestParam(value="program", required = false) String program
     		) {
@@ -98,34 +104,79 @@ public class MemberController {
     
     @RequestMapping(value = "/pcbang", method=RequestMethod.POST)
     public boolean updatePcbang(
+    		@RequestParam(value="pcb_id", required = true) Long pcbId,    		
     		@RequestParam(value="company_code", required = true) String companyCode,
     		@RequestParam(value="company_name", required = true) String companyName,
     		@RequestParam(value="address", required = false) String address,
     		@RequestParam(value="start_ip", required = true) String startIp,
     		@RequestParam(value="end_ip", required = true) String endIp,
-    		@RequestParam(value="submask", required = false) String submask,
+    		@RequestParam(value="submask", required = true) String submask,
     		@RequestParam(value="agent_id", required = true) Long agentId,
     		@RequestParam(value="program", required = false) String program,
-    		@RequestParam(value="pcb_id", required = false) Long pcbId,
     		@RequestParam(value="status", required = false) String status 		
     		) {
     	
-    	Pcbang aPcbang = new Pcbang(new Date());
+    	Pcbang aPcbang = pcbangService.findPcbang(pcbId);
     	aPcbang.setCompanyCode(companyCode);
     	aPcbang.setCompanyName(companyName);
-    	aPcbang.setAddress(address);
     	aPcbang.setIpStart(startIp);
     	aPcbang.setIpEnd(endIp);
     	aPcbang.setSubmask(submask);
-    	aPcbang.setProgram(program);
-    	aPcbang.setPcbId(pcbId);
+    	
+    	if(!StringUtils.isEmpty(address))
+    		aPcbang.setAddress(address);
+    	
+    	if(!StringUtils.isEmpty(program))
+    		aPcbang.setProgram(program);
     	
     	//agent member 가 수정하는 경우는 status는 변경을 할수 없기 때문에 기존 값을 유지해야 한다.
-    	if(status != null)
+    	if(!StringUtils.isEmpty(status))
     		aPcbang.setStatus(StatusCd.valueOf(status));
     	
     	return (null != memberService.updatePcbang(aPcbang, agentId));
     }    
     
-    
+    @RequestMapping(value = "/agent", method=RequestMethod.POST)
+    public boolean updateAgent(
+    		@RequestParam(value="agent_id", required = true) Long agentId,
+    		@RequestParam(value="status", required = true) String status,
+    		@RequestParam(value="permission", required = true) String permission,
+    		@RequestParam(value="company_code", required = false) String companyCode,
+    		@RequestParam(value="company_name", required = false) String companyName,
+    		@RequestParam(value="ceo", required = false) String ceo,    		
+    		@RequestParam(value="address", required = false) String address,
+    		@RequestParam(value="contact_num", required = false) String contactNum,
+    		@RequestParam(value="bank_account", required = false) String bankAccount,
+    		@RequestParam(value="email", required = false) String email 		
+    		) {
+    	
+    	Agent aAgent = memberService.findAgent(agentId);
+    	
+    	if(aAgent == null) return false;
+    	
+    	aAgent.setStatus(StatusCd.valueOf(status));
+    	if(!StringUtils.isEmpty(companyCode))
+    		aAgent.setCompanyCode(companyCode);
+    	
+    	if(!StringUtils.isEmpty(companyName))
+    		aAgent.setCompanyName(companyName);
+    	
+    	if(!StringUtils.isEmpty(ceo))
+    		aAgent.setCompanyName(ceo);  	
+    	
+    	if(!StringUtils.isEmpty(address))
+    		aAgent.setAddress(address);
+    	
+    	if(!StringUtils.isEmpty(contactNum))
+    		aAgent.setContactNum(contactNum);
+    	
+    	if(!StringUtils.isEmpty(bankAccount))
+    		aAgent.setBankAccount(bankAccount);
+    	
+    	if(!StringUtils.isEmpty(email))
+    		aAgent.setEmail(email);
+    	    	
+    	return (null != memberService.updateAgent(aAgent, Permission.valueOf(permission)));
+    }    
+        
 }

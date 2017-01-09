@@ -20,7 +20,8 @@
 		  <li role="presentation"><a href="/admin/agent">업체관리</a></li>
 		  <li role="presentation"><a href="/admin/gamepatch">설치/패치관리</a></li>
 		  <li role="presentation" class="active"><a href="#">가맹점관리</a></li>
-		  <li role="presentation"><a href="/admin/game">Game관리</a></li>		  
+		  <li role="presentation"><a href="/admin/game">Game관리</a></li>
+		  <li role="presentation"><a href="/logout">로그아웃</a></li>		    
 		</ul>
   	</div>
   	<hr>
@@ -52,7 +53,7 @@
 	
   	<div class="form-group bg-info">
 		<div class="col-md-2">
-			<label for="lbTotalAgent">총 가명점 수 :${pcbangCnt}개 </label>
+			<label for="lbTotalAgent">총 가맹점 수 :${pcbangCnt}개 </label>
 		</div>
 	</div>
 	</div><!-- container -->	

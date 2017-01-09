@@ -19,6 +19,7 @@
 		<ul class="nav nav-pills">
 		  <li role="presentation"><a href="/member/gamepatch">설치/패치관리</a></li>
 		  <li role="presentation" class="active"><a href="#">가맹점관리</a></li>
+		  <li role="presentation"><a href="/logout">로그아웃</a></li>		  
 		</ul>
   	</div>
   	<hr>
@@ -49,10 +50,9 @@
 	
   	<div class="form-group bg-info">
 		<div class="col-md-2">
-			<label for="lbTotalAgent">총 가명점 수 :${pcbangCnt}개 </label>
+			<label for="lbTotalAgent">총 가맹점 수 :${pcbangCnt}개 </label>
 		</div>
 	</div>
-	</div><!-- container -->	
 	
 	<table class="table table-bordered table-hover">
 		<tr class="info">
@@ -64,7 +64,6 @@
 			<td>subnet mask</td>
 			<td>상태</td>			
 			<td>등록일</td>
-			<td>관리</td>
 		</tr>
 	<c:forEach var="pcbang" items="${pcbangList}">
 		<tr>
@@ -76,19 +75,17 @@
    			<td>${pcbang.getSubmask()}</td>
    			<td>${pcbang.getStatus()}</td>   			  			
    			<td>${pcbang.getCrtDt().toString().substring(0,10)}</td>
-   			<td>
-				<a class="btn btn-default" href="/member/pcbang/update?pcb_id=${pcbang.getPcbId()}" role="button">수정</a>
-   			</td>
    		</tr>
 	</c:forEach>
 	</table>
 	<br>
 	<div class="form-group">    
-		<div class="col-md-2"></div>
-		<div class="col-md-2"><a class="btn btn-default btn-block" href="#" role="button">일괄등록</a></div>		
+		<div class="col-md-4"></div>
 		<div class="col-md-2"><a class="btn btn-default btn-block" href="/member/pcbang/add" role="button">등록</a></div>
-		<div class="col-md-2"><a class="btn btn-default btn-block" href="/member/pcbang/remove" role="button">삭제</a></div>		
+		<div class="col-md-2"><a class="btn btn-default btn-block" href="#" role="button">삭제</a></div>		
 	</div>
+	
+	</div><!-- container -->	
 		
   </body>
 </html>

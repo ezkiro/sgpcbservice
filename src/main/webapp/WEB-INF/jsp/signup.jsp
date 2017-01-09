@@ -26,15 +26,10 @@
 				return false;
 			}
 
-			//약관동의 체크
-			if($(':radio[name="eulaAgree"]:checked').val() === "NO") {
-				alert("약관에 동의해야 가입이 가능합니다.");
-				return false;
-			}
 			return true;
 		}
 		
-		var duplicateCheck = function(item1, value1) {
+		var duplicateCheck = function(item1, value1, title, controlObj) {
 			var isExist = false;
 		    $.get("/member/isExist",
 		    		{
@@ -43,6 +38,10 @@
 		    		},
 		    		function(data, status){
 		    			isExist = data;
+		    			if(isExist){
+		    				alert('중복된 ' + title + ' 입니다. 다시 입력해 주세요.');
+		    				controlObj.focus();
+		    			}
 		    		}
 		    );
 		    
@@ -53,39 +52,31 @@
 		$("#checkDoubleId").click(function(){
 			if($("#inputID").val() === "") return ;
 						
-			if( duplicateCheck("id", $("#inputID").val())){
-				alert("중복된 ID 입니다. 다시 입력해 주세요.");
-				$("#inputID").focus();
-			} 
+			duplicateCheck("id", $("#inputID").val(), 'ID', $("#inputID"));
+			
 		});
 		
 		$("#checkDoubleCompanyCode").click(function(){
 			if($("#inputPart1").val() === "") return ;
 			
 			var companyCode = $("#inputPart1").val() + '-' + $("#inputPart2").val() + '-' + $("#inputPart3").val();
+						
+			duplicateCheck("company_code", companyCode, '사업자번호', $("#inputPart1"));
 			
-			if( duplicateCheck("company_code", companyCode)){
-				alert("중복된 사업자번호  입니다. 다시 입력해 주세요.");
-				$("#inputPart1").focus();
-			}
 		});
 
 		$("#checkDoubleContact").click(function(){
 			if($("#inputContact").val() === "") return ;
+
+			duplicateCheck("contact", $("#inputContact").val(), '연락처', $("#inputContact"));
 			
-			if( duplicateCheck("contact", $("#inputContact").val())){
-				alert("중복된 연락처 입니다. 다시 입력해 주세요.");
-				$("#inputContact").focus();
-			} 
 		});
 
 		$("#checkDoubleEmail").click(function(){
 			if($("#inputEmail").val() === "") return ;
+
+			duplicateCheck("email", $("#inputEmail").val(), 'email', $("#inputEmail"));			
 			
-			if( duplicateCheck("email", $("#inputEmail").val())){
-				alert("중복된 email 입니다. 다시 입력해 주세요.");
-				$("#inputEmail").focus();
-			} 
 		});
 		
 		//bank
@@ -260,45 +251,7 @@
  		<div class="col-md-6"><input type="text" class="form-control" id="inputBankAccount" placeholder=""></div>
  		</div>
     </div>
-
-   <div class="row">
-		<div class="form-group">    
-		<div class="col-md-2"></div>
- 		<div class="col-md-8 text-center">
-	 		<div class="panel panel-warning">
-	  			<div class="panel-heading">약관 동의</div>
-	  			<div class="panel-body">
-	    			Panel content
-	  			</div>
-			</div> 		
- 		</div>
- 		<div class="col-md-2"></div>
- 		</div>
-    </div>
-    
-   <div class="row">
-		<div class="form-group">    
-		<div class="col-md-2"></div>
- 		<div class="col-md-4"></div>
- 		<div class="col-md-2">
-		    <div class="radio">
-		  		<label>
-		    		<input type="radio" name="eulaAgree" value="NO" checked>
-		    		동의 안 합니다.
-		  		</label>
-			</div> 		
- 		</div>
- 		<div class="col-md-4">
-		    <div class="radio">
-		  		<label>
-		    		<input type="radio" name="eulaAgree"  value="YES">
-		    		동의  합니다.
-		  		</label>
-			</div> 		
- 		</div> 		
- 		</div>
-    </div>
-    
+        
     <div class="row">
 		<div class="form-group">
 		<div class="col-md-2"></div>

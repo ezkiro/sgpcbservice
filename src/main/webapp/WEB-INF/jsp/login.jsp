@@ -61,7 +61,7 @@
 		<div class="form-group">    
 		<div class="col-md-2 text-right"><label for="lbPassword">PASSWORD</label></div>
  		<div class="col-md-6">
-			<input type="password" name="password", class="form-control" id="inputPassword" placeholder="패스워드를 입력하세요">
+			<input type="password" name="password" class="form-control" id="inputPassword" placeholder="패스워드를 입력하세요">
 		</div>
  		</div>
     </div>
