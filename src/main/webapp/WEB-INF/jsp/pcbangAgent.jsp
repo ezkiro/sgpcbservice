@@ -77,7 +77,7 @@
    			<td>${pcbang.getStatus()}</td>   			  			
    			<td>${pcbang.getCrtDt().toString().substring(0,10)}</td>
    			<td>
-				<a class="btn btn-default" href="/admin/pcbang/update?pcb_id=${pcbang.getPcbId()}" role="button">수정</a>
+				<a class="btn btn-default" href="/member/pcbang/update?pcb_id=${pcbang.getPcbId()}" role="button">수정</a>
    			</td>
    		</tr>
 	</c:forEach>

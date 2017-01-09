@@ -37,7 +37,7 @@ public class Pcbang {
 	private StatusCd status;
 	
 	@ManyToOne
-	@JoinColumn(name = "agent_id")
+	@JoinColumn(name = "agent_id", insertable = false, updatable = false)  //read only
 	private Agent agent;
 	
 	@Temporal(TemporalType.TIMESTAMP)	

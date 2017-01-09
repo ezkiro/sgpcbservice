@@ -10,6 +10,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -40,7 +41,8 @@ public class Agent {
 	@Column(nullable=false, length=10)	
 	private StatusCd status;		//상태 (승인/미승인/대기)
 	
-	@OneToMany(mappedBy = "agent")
+	@OneToMany
+	@JoinColumn(name = "agent_id")
 	private List<Pcbang> pcbangs = new ArrayList<Pcbang>();
 	
 	@Temporal(TemporalType.TIMESTAMP)

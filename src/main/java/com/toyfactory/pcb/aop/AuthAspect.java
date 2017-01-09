@@ -36,6 +36,8 @@ public class AuthAspect{
 		//get HttpServletRequest
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		
+		if(logger.isDebugEnabled()) logger.debug("verifyAuthrization called! request:" + request.getRequestURL());
+		
 		//before
 		if(pcbAuth.requireAccessToken()) {				
 			try {
@@ -64,6 +66,10 @@ public class AuthAspect{
 				return "redirect:/login";
 			} catch(InvalidPermissionException e) {
 				if(logger.isDebugEnabled()) logger.debug("invalid permission exception!");
+				
+				return "redirect:/errormsg";
+			} catch(Exception e) {
+				logger.error("error in verifyAuthrization exception:" + e.getMessage());
 				
 				return "redirect:/errormsg";
 			}

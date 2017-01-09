@@ -16,6 +16,7 @@ import com.toyfactory.pcb.domain.Pcbang;
 import com.toyfactory.pcb.model.PcbGamePatchResult;
 import com.toyfactory.pcb.model.StatusCd;
 import com.toyfactory.pcb.repository.PcbangRepository;
+import com.toyfactory.pcb.resolver.AgentArg;
 import com.toyfactory.pcb.service.GamePatchService;
 import com.toyfactory.pcb.service.GameService;
 import com.toyfactory.pcb.service.MemberService;
@@ -38,9 +39,9 @@ public class AgentMemberController {
 	
 	@RequestMapping("/pcbang")
 	@PcbAuthorization(permission="AGENT")	
-	public String pcbangPage(Model model){
+	public String pcbangPage(@AgentArg Agent agent, Model model){
 		
-		List<Pcbang> pcbangList = memberService.findPcbangs(null, null);
+		List<Pcbang> pcbangList = agent.getPcbangs();
 
 		model.addAttribute("pcbangCnt", pcbangList.size());
 		model.addAttribute("pcbangList",pcbangList);
@@ -49,9 +50,9 @@ public class AgentMemberController {
 	
 	@RequestMapping("/gamepatch")
 	@PcbAuthorization(permission="AGENT")	
-	public String gamePatchPage(Model model){
+	public String gamePatchPage(@AgentArg Agent agent, Model model){
 		
-		List<Pcbang> pcbangs = pcbangService.findPcbangs(1L, StatusCd.OK);
+		List<Pcbang> pcbangs = pcbangService.findPcbangs(agent.getAgentId(), StatusCd.OK);
 		Map<Long, PcbGamePatchResult> gamePatchMapForPcbang = gamePatchService.buildGamePathForAllPcbang();
 		
 		List<Game> games = gameService.findGames();
@@ -65,30 +66,27 @@ public class AgentMemberController {
 
 	@RequestMapping("/pcbang/add")
 	@PcbAuthorization(permission="AGENT")	
-	public String pcbangAddPage(Model model){
-		
-		List<Agent> agentList = memberService.findAgents(null, null);
-		
-		model.addAttribute("agentList",agentList);
-		return "pcbangInput";
+	public String pcbangAddPage(@AgentArg Agent agent, Model model){
+				
+		model.addAttribute("agent",agent);
+		return "pcbangInputAgent";
 	}	
 
 	@RequestMapping("/pcbang/update")
 	@PcbAuthorization(permission="AGENT")	
 	public String pcbangUpdatePage(
+			@AgentArg Agent agent,
 			@RequestParam(value="pcb_id", required = true) Long pcbId,
 			Model model){
-		
-		List<Agent> agentList = memberService.findAgents(null, null);
-		
+				
 		Pcbang pcbang = pcbangService.findPcbang(pcbId);
 		
 		if(pcbang != null) {
 			model.addAttribute("pcbang",pcbang);			
 		}
 				
-		model.addAttribute("agentList",agentList);
-		return "pcbangInput";
+		model.addAttribute("agent",agent);
+		return "pcbangInputAgent";
 	}	
 
 }

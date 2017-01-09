@@ -139,15 +139,24 @@ public class MemberService {
 		
 		StringBuilder tokenBuilder = new StringBuilder();
 		
-		Agent agent = user.getAgent();
-		
 		Permission permission = Permission.NOBODY;
-		if(agent.getStatus() == StatusCd.OK) {
+		//admin,partner 와 agent간 권한 분리
+		if(user.getPermission() == Permission.ADMIN || user.getPermission() == Permission.PARTNER){
+			//0 이라는 특수한 agent id를 사용한다.
+			tokenBuilder.append(String.valueOf(0));
 			permission = user.getPermission();
-		}		
-		
-		tokenBuilder.append(String.valueOf(agent.getAgentId()))
-					.append("|")
+			
+		} else {
+			Agent agent = user.getAgent();
+			
+			if(agent.getStatus() == StatusCd.OK) {
+				permission = user.getPermission();
+			}		
+			
+			tokenBuilder.append(String.valueOf(agent.getAgentId()));			
+		}
+				
+		tokenBuilder.append("|")
 					.append(permission.toString())
 					.append("|")
 					.append(new Date().getTime() + 3600 * 1000);
@@ -180,8 +189,8 @@ public class MemberService {
 		
 		if("status".equals(item)) {
 			return pcbangDao.findByStatus(StatusCd.valueOf(keyworkd));
-		}		
-		
+		}
+				
 		//all pcbangs
 		return pcbangDao.findAll();		
 	}
@@ -203,6 +212,12 @@ public class MemberService {
 		
 		pcbang.setAgent(agent);
 		pcbang.setUptDt(new Date());
+		
+    	//agent member 가 수정하는 경우는 status는 변경을 할수 없기 때문에 기존 값을 유지해야 한다.
+		if(pcbang.getStatus() == null){		
+			Pcbang oldPcbang = pcbangDao.getOne(pcbang.getPcbId());
+			pcbang.setStatus(oldPcbang.getStatus());
+		}
 		
 		return pcbangDao.save(pcbang);
 	}

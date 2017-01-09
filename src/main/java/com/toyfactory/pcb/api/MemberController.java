@@ -119,7 +119,10 @@ public class MemberController {
     	aPcbang.setSubmask(submask);
     	aPcbang.setProgram(program);
     	aPcbang.setPcbId(pcbId);
-    	aPcbang.setStatus(StatusCd.valueOf(status));
+    	
+    	//agent member 가 수정하는 경우는 status는 변경을 할수 없기 때문에 기존 값을 유지해야 한다.
+    	if(status != null)
+    		aPcbang.setStatus(StatusCd.valueOf(status));
     	
     	return (null != memberService.updatePcbang(aPcbang, agentId));
     }    
