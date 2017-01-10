@@ -21,28 +21,32 @@ public class GamePatchLog {
 	@Column(nullable=false, length=10)
 	private String gsn;
 	
-	@Column(nullable=false, length=50)
-	private String major; //major version
-	@Column(nullable=true, length=50)	
-	private String minor; //minor version
-	private String desc;
-
-	private Long installCnt = 0L;
+	private Long install = 0L; //설치된 수
+	private Long patch = 0L; //패치 OK 수
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date crtDt;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date uptDt;
 	
-	protected GamePatchLog(){}
+	protected GamePatchLog() {}
 
-	public GamePatchLog(Long pcbId, String gsn, String major, String minor) {
+	public GamePatchLog(Long pcbId, String gsn) {
 		this.pcbId = pcbId;
 		this.gsn = gsn;
-		this.major = major;
-		this.minor = minor;
+		this.install = 0L;
+		this.patch = 0L;
 		
 		this.crtDt = new Date();
 		this.uptDt = new Date();
 	}
+	
+	public void incrPatch() {
+		this.patch += 1L;
+	}
+	
+	public void incrInstall() {
+		this.install += 1L;
+	}
+
 }

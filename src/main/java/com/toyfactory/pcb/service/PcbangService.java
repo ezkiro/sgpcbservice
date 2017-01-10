@@ -31,7 +31,7 @@ public class PcbangService {
 	 * @param subnetMask
 	 * @return
 	 */
-	public List<String> buildPcbangIPs(String ipStart, String ipEnd, String subnetMask){
+	public List<String> buildPcbangIPs(String ipStart, String ipEnd, String subnetMask) {
 		
 		SubnetUtils utils = new SubnetUtils(ipStart,subnetMask);
 		
@@ -42,12 +42,12 @@ public class PcbangService {
 		
 		//ipStart부터 - ipEnd까지만 넣기
 		boolean isRange = false;
-		for(String ip : allIPs){			
-			if(ipStart.equals(ip)){
+		for (String ip : allIPs) {			
+			if (ipStart.equals(ip)) {
 				isRange = true;
 			}
 			
-			if(ipEnd.equals(ip)){
+			if (ipEnd.equals(ip)) {
 				pcbangIPs.add(ip);
 				break;
 			}
@@ -58,7 +58,7 @@ public class PcbangService {
 		}
 		
 		return pcbangIPs;
-	}	
+	}
 	
 	public List<Pcbang> findPcbangs(String key, String keyworkd) {		
 		//key:status 

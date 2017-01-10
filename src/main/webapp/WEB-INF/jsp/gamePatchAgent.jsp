@@ -71,19 +71,19 @@
 				<td>${game.getName()}</td>
 			</c:forEach>																																																						
 			</tr>
-		<c:forEach var="pcbang" items="${pcbangList}">
+		<c:forEach var="pcbGamePatchResult" items="${pcbGamePatchResultList}">
 			<tr>
-    			<td><input type="checkbox" value="${pcbang.getPcbId()}">${pcbang.getPcbId()}</td>
-    			<td>${pcbang.getCompanyCode()}</td>
-    			<td>${pcbang.getCompanyName()}</td>
-    			<td>${pcbang.getAddress()}</td>    			    			    			
-    			<td>${pcbang.getIpStart()} - ${pcbang.getIpEnd()}</td>
-    			<td>${pcbang.getSubmask()}</td>
-    			<td>${pcbang.getAgent().getCompanyName()}</td>
-    			<td></td>    			    			    			
-    			<td>${gamePatchMapForPcbang.get(pcbang.getPcbId()).getAllPatchYN()}</td>
+    			<td>${pcbGamePatchResult.getPcbang().getPcbId()}</td>
+    			<td>${pcbGamePatchResult.getPcbang().getCompanyCode()}</td>
+    			<td>${pcbGamePatchResult.getPcbang().getCompanyName()}</td>
+    			<td>${pcbGamePatchResult.getPcbang().getAddress()}</td>    			    			    			
+    			<td>${pcbGamePatchResult.getPcbang().getIpStart()} - ${pcbang.getIpEnd()}</td>
+    			<td>${pcbGamePatchResult.getPcbang().getSubmask()}</td>
+    			<td>${pcbGamePatchResult.getPcbang().getAgent().getCompanyName()}</td>
+    			<td>${pcbGamePatchResult.getPcbang().getIpTotal()}</td>    			    			    			
+    			<td>${pcbGamePatchResult.getIsPaymentPcbang().toString()}</td>
 			<c:forEach var="game" items="${gameList}">
-				<td>${gamePatchMapForPcbang.get(pcbang.getPcbId()).getGamePatchMap().get(game.getGsn())}</td>
+				<td>${pcbGamePatchResult.getGamePatchMap().get(game.getGsn())}</td>
 			</c:forEach>																																																						
     		</tr>
 		</c:forEach>

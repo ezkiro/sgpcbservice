@@ -53,13 +53,12 @@ public class AgentMemberController {
 	public String gamePatchPage(@AgentArg Agent agent, Model model){
 		
 		List<Pcbang> pcbangs = pcbangService.findPcbangs(agent.getAgentId(), StatusCd.OK);
-		Map<Long, PcbGamePatchResult> gamePatchMapForPcbang = gamePatchService.buildGamePathForAllPcbang();
-		
 		List<Game> games = gameService.findGames();
-	
+
+		List<PcbGamePatchResult> pcbGamePatchResultList = gamePatchService.buildPcbGamePathResultForPcbang(pcbangs, games);
+		
 		model.addAttribute("gameList",games);
-		model.addAttribute("pcbangList",pcbangs);
-		model.addAttribute("gamePatchMapForPcbang",gamePatchMapForPcbang);
+		model.addAttribute("pcbGamePatchResultList",pcbGamePatchResultList);
 		
 		return "gamePatchAgent";
 	}

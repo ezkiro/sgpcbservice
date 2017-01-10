@@ -30,7 +30,7 @@ public class Account {
 	private Permission permission;
 	
 	@OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "agent_id")
+	@JoinColumn(name="agent_id")
 	private Agent agent;
 	
 	@Temporal(TemporalType.TIMESTAMP)

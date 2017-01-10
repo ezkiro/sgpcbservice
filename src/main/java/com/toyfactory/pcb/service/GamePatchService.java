@@ -1,5 +1,6 @@
 package com.toyfactory.pcb.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,10 +15,13 @@ import org.springframework.stereotype.Service;
 
 import com.toyfactory.pcb.domain.Game;
 import com.toyfactory.pcb.domain.GamePatchLog;
+import com.toyfactory.pcb.domain.GamePatchLogPK;
 import com.toyfactory.pcb.domain.Pcbang;
 import com.toyfactory.pcb.model.PcbGame;
 import com.toyfactory.pcb.model.PcbGamePatch;
 import com.toyfactory.pcb.model.PcbGamePatchResult;
+import com.toyfactory.pcb.model.StatusCd;
+import com.toyfactory.pcb.model.YN;
 import com.toyfactory.pcb.repository.GamePatchLogRepository;
 import com.toyfactory.pcb.repository.GameRepository;
 import com.toyfactory.pcb.repository.PcbangRepository;
@@ -45,42 +49,24 @@ public class GamePatchService {
     @Autowired @Qualifier("jsonRedisTemplate")
     private RedisTemplate<String, PcbGamePatch> redisTemplate;	
 	
-	public Map<Long, PcbGamePatchResult> buildGamePathForAllPcbang() {
+	public List<PcbGamePatchResult> buildPcbGamePathResultForPcbang(List<Pcbang> pcbangs, List<Game> games) {
 		//최종 결과 
 		//gamePatchMapForPcbang = { pcbId: 123, games:{{key(gsn1):value(설치여부)},{key(gsn2):value(설치여부),...}, ...}			
-		Map<Long, PcbGamePatchResult> gamePatchMapForPcbang = new HashMap<Long, PcbGamePatchResult>();
-		
-		Map<String, Game> gamesMap = gameService.buildAllGamesMap();
+		List<PcbGamePatchResult> pcbGamePatchResultList = new ArrayList<PcbGamePatchResult>();
+						
+		for (Pcbang pcbang : pcbangs) {
+			PcbGamePatchResult pcbGamePatchResult = new PcbGamePatchResult(pcbang);
 			
-		List<GamePatchLog> gamePatchLogs = gamePatchLogDao.findAll();
-		
-		for(GamePatchLog gamePatchLog : gamePatchLogs) {
-			PcbGamePatchResult gamePatchResult = gamePatchMapForPcbang.get(gamePatchLog.getPcbId());
+			List<GamePatchLog> gamePatchLogs = gamePatchLogDao.findByPcbId(pcbang.getPcbId());
 			
-			if(gamePatchResult == null){
-				gamePatchResult = new PcbGamePatchResult();
-				gamePatchMapForPcbang.put(gamePatchLog.getPcbId(), gamePatchResult);
-			}
-			
-			gamePatchResult.verifyGamePatch(gamePatchLog, gamesMap.get(gamePatchLog.getGsn()));
-		}
+			pcbGamePatchResult.buildResult(gamePatchLogs, games);
 
-		//status = OK 인 모든 pc방에 대해서 game patch 여부 조사
-		List<Pcbang> pcbangs = pcbangService.findPcbangs("status", "OK");	
-		
-		for(Pcbang pcbang : pcbangs) {
-			PcbGamePatchResult gamePatchResult = gamePatchMapForPcbang.get(pcbang.getPcbId());
+			YN isPaymentPcbang = isMissionCompletePcbang(pcbang, games) ? YN.Y : YN.N;
 			
-			//수집된 gamePatchLog 보다 pcbang 수가 많은 경우 빈 데이터를 넣어 준다.
-			if(gamePatchResult == null) {
-				gamePatchResult = new PcbGamePatchResult();			
-				gamePatchMapForPcbang.put(pcbang.getPcbId(), gamePatchResult);
-			}
-			
-			gamePatchResult.verifyAllGamePatch(gamesMap.size());
+			pcbGamePatchResult.setIsPaymentPcbang(isPaymentPcbang);			
 		}
 		
-		return gamePatchMapForPcbang;
+		return pcbGamePatchResultList;
 	}
 	
 	/**
@@ -88,76 +74,107 @@ public class GamePatchService {
 	 * executeService를 통해서 실행해야 하고 중복으로 실행이 되지 않도록 해야 한다.
 	 * @return
 	 */
-	public void excuteGamePatchAnalysisBatch(){
+	public void excuteGamePatchAnalysisBatch() {
 		
 		//Pcbang별 IP 목록 별 PcbGamePatch 추출
-		List<Pcbang> vaildPcbangs = pcbangService.findPcbangs("status", "OK");
-		for(Pcbang pcbang : vaildPcbangs) {
+		List<Pcbang> validPcbangs = pcbangService.findPcbangs("status", StatusCd.OK.toString());
+		for (Pcbang pcbang : validPcbangs) {
 			
 			List<String> pcbangIPs = pcbangService.buildPcbangIPs(pcbang.getIpStart(), pcbang.getIpEnd(), pcbang.getSubmask());
 			
-			for(String ip : pcbangIPs) {
+			for (String ip : pcbangIPs) {
 				PcbGamePatch pcbGamePatch = readPcbGamePatchFromCache(ip);
-				if(pcbGamePatch == null) continue;
+				if (pcbGamePatch == null) continue;
 				
-				//한번이라도 저장에 성공을 하면 중단한다.
-				if(savePcbGamePatchToGamePatchLog(pcbang.getPcbId(), pcbGamePatch)) break;
+				processFromPcbGamePatchToGamePatchLog(pcbang.getPcbId(), pcbGamePatch);
 			}			
 		}		
 	}
 	
-	public boolean writePcbGamePatchToCache(String clientIp, PcbGamePatch pcbGamePatch){
+	public boolean writePcbGamePatchToCache(String clientIp, PcbGamePatch pcbGamePatch) {
     	pcbGamePatch.setCrtDt(new Date());
         redisTemplate.opsForValue().set(clientIp, pcbGamePatch);		
 		return true;
 	}
 	
-	public PcbGamePatch readPcbGamePatchFromCache(String clientIp){
+	public PcbGamePatch readPcbGamePatchFromCache(String clientIp) {
 		return redisTemplate.opsForValue().get(clientIp);
 	}
 	
-	public boolean savePcbGamePatchToGamePatchLog(Long pcbId, PcbGamePatch pcbGamePatch){		
+	public boolean processFromPcbGamePatchToGamePatchLog(Long pcbId, PcbGamePatch pcbGamePatch) {		
 		List<PcbGame> pcbGames = pcbGamePatch.getPcbGames();
 
-		if(pcbGames.isEmpty()) return false;
+		if (pcbGames.isEmpty()) return false;
 		
-		for(PcbGame pcbGame : pcbGames){
-			GamePatchLog gamePatchLog = new GamePatchLog(pcbId, pcbGame.getGsn(), pcbGame.getMajor(), pcbGame.getMinor());
+		for (PcbGame pcbGame : pcbGames) {
+			//GSN별 기존 데이터 저장된 데이터 검색 없는 경우 새로 생성			
+			GamePatchLog gamePatchLog = gamePatchLogDao.findOne(new GamePatchLogPK(pcbId, pcbGame.getGsn()));
+			
+			if (gamePatchLog == null) {
+				gamePatchLog = new GamePatchLog(pcbId, pcbGame.getGsn());				
+			} 
+			
+			//GSN별 PATCH 여부 체크
+			if (verifyPcbGamePatch(pcbGame)) {
+				gamePatchLog.incrPatch();
+			}
+			
+			gamePatchLog.incrInstall();
+			
 			gamePatchLogDao.save(gamePatchLog);
 		}
 		
 		return true;
 	}
 	
-	public boolean isUpdatedAllGamePatchLog(Long pcbId, Date checkDt){
-		//최신 gamepatch로 모두 업데이트 되어 있으면 더이상 업데이트 하지 않는다.
-		//12시간 이전에 저장된 데이터가 있는지 조사한다.
-		Date uptDt = new Date(checkDt.getTime()-EXPIRE_TERM);
-		List<GamePatchLog> gamePatchLogs = gamePatchLogDao.findByPcbIdAndUptDt(pcbId, uptDt);
+	public boolean verifyPcbGamePatch(PcbGame pcbGame) {
 		
-		if(gamePatchLogs.isEmpty()) return false;
+		Game game = gameService.findGame(pcbGame.getGsn());
 		
-		Map<String, Game> allGameMap =  gameService.buildAllGamesMap();
-		
-		return false;
+		//TODO: Game 별로 다른 검증 방법을 사용하는 것을 지원해야 한다.
+		if (!game.getMajor().equals(pcbGame.getMajor())) {
+			return false;
+		}
+
+		return true;
 	}
 	
-	public String checkGamePatchPass(String clientIp){
+	public boolean isMissionCompletePcbang(Pcbang pcbang, List<Game> games) {
+		//현재 지급대상 PC방은 모든 게임의 patch 수가  전체 IP 수의 50% 이상이어야 한다.
+		
+		//List<Game> games = gameService.findGames();
+				
+		for (Game aGame : games) {
+			GamePatchLog gamePatchLog = gamePatchLogDao.findOne(new GamePatchLogPK(pcbang.getPcbId(), aGame.getGsn()));
+			if (gamePatchLog == null) {
+				return false;
+			}
+			
+			// 50% 미만은 지급 대상이 아니다.
+			if ((gamePatchLog.getPatch() * 2L) < pcbang.getIpTotal()) {
+				return false;
+			}			
+		}
+		
+		return true;
+	}
+	
+	public String checkGamePatchPass(String clientIp) {
     	//PcbAgent가 중복해서 GamePatch check 하는 것을 방지하기 위한 사전 체크 
     	
-    	if("127.0.0.1".equals(clientIp)){
+    	if ("127.0.0.1".equals(clientIp)) {
     		return "PASS"; //do nothing
     	}
     	
     	PcbGamePatch pcbGamePatch = readPcbGamePatchFromCache(clientIp);
     	
-    	if(pcbGamePatch == null){
+    	if (pcbGamePatch == null) {
     		return "CHECK";
     	}
 
     	Date now = new Date();
     	//마지막으로 저장이 된지 24시간이 지나지 않았으면  pass    	
-    	if((now.getTime() - pcbGamePatch.getCrtDt().getTime())/1000 < 86400L) {
+    	if ((now.getTime() - pcbGamePatch.getCrtDt().getTime())/1000 < 86400L) {
     		
     		if(logger.isDebugEnabled()){
     			logger.debug("[checkGamePatchPass] PASS! client ip:" + clientIp);

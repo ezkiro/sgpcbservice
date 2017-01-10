@@ -35,6 +35,9 @@ public class MemberService {
 	private PcbangRepository pcbangDao;
 	
 	@Autowired	
+	private PcbangService pcbangService;	
+	
+	@Autowired	
 	private CrpytoService crpytoService;
 	
 	
@@ -43,25 +46,25 @@ public class MemberService {
     	
 		logger.debug("input item=" + item + ", value=" + value);
 		
-    	if("id".equals(item)) {
+    	if ("id".equals(item)) {
     		Account account = accountDao.findOne(value);
     		if( account != null) return true;
     		else return false;
     	}
 
-    	if("company_code".equals(item)) {
+    	if ("company_code".equals(item)) {
     		Agent agent = agentDao.findByCompanyCode(value);
-    		if( agent != null) return true;
+    		if ( agent != null) return true;
     		else return false;   		
     	}
     	
-    	if("contact".equals(item)) {
+    	if ("contact".equals(item)) {
     		Agent agent = agentDao.findByContactNum(value);
     		if( agent != null) return true;
     		else return false;    		
     	}
     	
-    	if("email".equals(item)) {
+    	if ("email".equals(item)) {
     		Agent agent = agentDao.findByEmail(value);
     		if( agent != null) return true;
     		else return false;     		
@@ -75,7 +78,7 @@ public class MemberService {
 
 		logger.debug("input params=" + params);
 		
-		if(StringUtils.isEmpty(params.get("id"))|| StringUtils.isEmpty(params.get("password"))) {
+		if (StringUtils.isEmpty(params.get("id"))|| StringUtils.isEmpty(params.get("password"))) {
 			logger.error("[signUp] fail to sign up! id or password is null or empty!");
 			return false;
 		}
@@ -87,30 +90,30 @@ public class MemberService {
 		Agent newAgent = new Agent(new Date());
 
 		//set optional information		
-		if(!StringUtils.isEmpty(params.get("companyCode"))) {
+		if (!StringUtils.isEmpty(params.get("companyCode"))) {
 			newAgent.setCompanyCode(params.get("companyCode"));			
 		}	
 		
-		if(!StringUtils.isEmpty(params.get("companyName"))) {
+		if (!StringUtils.isEmpty(params.get("companyName"))) {
 			newAgent.setCompanyName(params.get("companyName"));			
 		}
 
-		if(!StringUtils.isEmpty(params.get("contactNum"))) {
+		if (!StringUtils.isEmpty(params.get("contactNum"))) {
 			newAgent.setContactNum(params.get("contactNum"));			
 		}		
 		
-		if(!StringUtils.isEmpty(params.get("address"))) {
+		if (!StringUtils.isEmpty(params.get("address"))) {
 			newAgent.setAddress(params.get("address"));			
 		}
 
-		if(!StringUtils.isEmpty(params.get("ceo"))) {
+		if (!StringUtils.isEmpty(params.get("ceo"))) {
 			newAgent.setCeo(params.get("ceo"));
 		}
 
-		if(!StringUtils.isEmpty(params.get("bankAccount"))) {
+		if (!StringUtils.isEmpty(params.get("bankAccount"))) {
 			newAgent.setBankAccount(params.get("bankAccount"));
 		}
-		if(!StringUtils.isEmpty(params.get("email"))) {
+		if (!StringUtils.isEmpty(params.get("email"))) {
 			newAgent.setEmail(params.get("email"));
 		}
 		
@@ -132,7 +135,7 @@ public class MemberService {
 		
 		Account user = accountDao.findByIdAndPassword(id, passwordHash);
 		
-		if(user == null) {
+		if (user == null) {
 			logger.error("authentication fail! wrong password id:" + id);
 			return accessToken;
 		}
@@ -141,7 +144,7 @@ public class MemberService {
 		
 		Permission permission = Permission.NOBODY;
 		//admin,partner 와 agent간 권한 분리
-		if(user.getPermission() == Permission.ADMIN || user.getPermission() == Permission.PARTNER){
+		if (user.getPermission() == Permission.ADMIN || user.getPermission() == Permission.PARTNER) {
 			//0 이라는 특수한 agent id를 사용한다.
 			tokenBuilder.append(String.valueOf(0));
 			permission = user.getPermission();
@@ -149,7 +152,7 @@ public class MemberService {
 		} else {
 			Agent agent = user.getAgent();
 			
-			if(agent.getStatus() == StatusCd.OK) {
+			if (agent.getStatus() == StatusCd.OK) {
 				permission = user.getPermission();
 			}		
 			
@@ -172,7 +175,7 @@ public class MemberService {
 	
 	public List<Agent> findAgents(String item, String keyworkd) {
 		
-		if("status".equals(item)) {
+		if ("status".equals(item)) {
 			return agentDao.findByStatus(StatusCd.valueOf(keyworkd));
 		}	
 		
@@ -187,7 +190,7 @@ public class MemberService {
 
 	public List<Pcbang> findPcbangs(String item, String keyworkd) {
 		
-		if("status".equals(item)) {
+		if ("status".equals(item)) {
 			return pcbangDao.findByStatus(StatusCd.valueOf(keyworkd));
 		}
 				
@@ -198,9 +201,12 @@ public class MemberService {
 	public Pcbang addPcbang(Pcbang pcbang, Long agentId) {		
 		Agent agent = agentDao.findOne(agentId);		
 		//맵핑할 Agent 가 없으면 입력 실패
-		if(agent == null ) return null;
+		if (agent == null ) return null;
 		
 		pcbang.setAgent(agent);
+
+		List<String> pcbangIPs = pcbangService.buildPcbangIPs(pcbang.getIpStart(), pcbang.getIpEnd(), pcbang.getSubmask());
+		pcbang.setIpTotal(Long.valueOf(pcbangIPs.size()));
 		
 		return pcbangDao.save(pcbang);
 	}
@@ -208,19 +214,22 @@ public class MemberService {
 	public Pcbang updatePcbang(Pcbang pcbang, Long agentId) {		
 		Agent agent = agentDao.findOne(agentId);		
 		//맵핑할 Agent 가 없으면 입력 실패
-		if(agent == null ) return null;
+		if (agent == null ) return null;
 		
 		pcbang.setAgent(agent);
 		pcbang.setUptDt(new Date());
-				
+		
+		List<String> pcbangIPs = pcbangService.buildPcbangIPs(pcbang.getIpStart(), pcbang.getIpEnd(), pcbang.getSubmask());
+		pcbang.setIpTotal(Long.valueOf(pcbangIPs.size()));
+		
 		return pcbangDao.save(pcbang);
 	}
 	
 	public Permission verifyAccessToken(String accessToken) throws InvalidTokenException{
 		
-		if(accessToken == null) throw new InvalidTokenException();
+		if (accessToken == null) throw new InvalidTokenException();
 		
-		if(logger.isDebugEnabled()) logger.debug("verifyAccessToken accessToken:" + accessToken);
+		if (logger.isDebugEnabled()) logger.debug("verifyAccessToken accessToken:" + accessToken);
 		
 		//access tokekn format :  [agent_id|permission|expire date|sha1 hash]
 		
@@ -228,7 +237,7 @@ public class MemberService {
 		
 		String[] tokens = accessToken.split(delimiter);	
 		
-		if(tokens.length < 4) throw new InvalidTokenException();
+		if (tokens.length < 4) throw new InvalidTokenException();
 				
 		StringBuilder message = new StringBuilder();
 		
@@ -236,14 +245,14 @@ public class MemberService {
 				
 		String messageDigest = tokens[3];
 				
-		if(logger.isDebugEnabled()) logger.debug("verifyAccessToken message:" + message.toString() + ", hash:" + messageDigest);
+		if (logger.isDebugEnabled()) logger.debug("verifyAccessToken message:" + message.toString() + ", hash:" + messageDigest);
 
 		String checkHash = crpytoService.generateSHA1Hash(message.toString());
 		
-		if(logger.isDebugEnabled()) logger.debug("verifyAccessToken checkHash:" + checkHash);
+		if (logger.isDebugEnabled()) logger.debug("verifyAccessToken checkHash:" + checkHash);
 		
 		//compare messageDigest
-		if(!messageDigest.equals(checkHash)){
+		if (!messageDigest.equals(checkHash)) {
 			if(logger.isDebugEnabled()) logger.debug("verifyAccessToken fail to compare messageDigest");			
 				throw new InvalidTokenException();
 		}
@@ -252,7 +261,7 @@ public class MemberService {
 		Date now = new Date();
 		Date tokenExpire = new Date(Long.valueOf(tokens[2]));
 		
-		if( now.getTime() > tokenExpire.getTime()) {
+		if (now.getTime() > tokenExpire.getTime()) {
 			if(logger.isDebugEnabled()) logger.debug("verifyAccessToken token time is expired");			
 				throw new InvalidTokenException();
 		}
@@ -263,7 +272,7 @@ public class MemberService {
 	public Agent updateAgent(Agent agent, Permission permission) {
 		
 		Account account = agent.getAccount();
-		if(account != null) {
+		if (account != null) {
 			account.setPermission(permission);
 			account.setUptDt(new Date());
 			

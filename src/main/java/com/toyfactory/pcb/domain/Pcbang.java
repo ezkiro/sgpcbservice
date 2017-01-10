@@ -31,6 +31,7 @@ public class Pcbang {
 	private String ipEnd;
 	private String submask;
 	private String program;
+	private Long ipTotal;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable=false, length=10)

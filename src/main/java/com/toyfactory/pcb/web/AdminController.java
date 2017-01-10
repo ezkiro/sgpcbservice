@@ -22,6 +22,7 @@ import com.toyfactory.pcb.repository.PcbangRepository;
 import com.toyfactory.pcb.service.GamePatchService;
 import com.toyfactory.pcb.service.GameService;
 import com.toyfactory.pcb.service.MemberService;
+import com.toyfactory.pcb.service.PcbangService;
 
 @Controller
 @RequestMapping("/admin")
@@ -37,7 +38,10 @@ public class AdminController {
 	private GameService gameService;
 	
 	@Autowired	
-	private PcbangRepository pcbangDao;	
+	private PcbangRepository pcbangDao;
+	
+	@Autowired	
+	private PcbangService pcbangService;	
 	
 	@RequestMapping("/agent")
 	@PcbAuthorization(permission="ADMIN")	
@@ -88,14 +92,14 @@ public class AdminController {
 	@PcbAuthorization(permission="ADMIN")	
 	public String gamePatchPage(Model model){
 		
-		List<Pcbang> pcbangs = memberService.findPcbangs(null, null);	
-		Map<Long, PcbGamePatchResult> gamePatchMapForPcbang = gamePatchService.buildGamePathForAllPcbang();
-		
+		//status = OK 인 모든 pc방에 대해서 game patch 여부 조사
+		List<Pcbang> pcbangs = pcbangService.findPcbangs("status", StatusCd.OK.toString());	
 		List<Game> games = gameService.findGames();
-	
+				
+		List<PcbGamePatchResult> pcbGamePatchResultList = gamePatchService.buildPcbGamePathResultForPcbang(pcbangs, games);
+		
 		model.addAttribute("gameList",games);
-		model.addAttribute("pcbangList",pcbangs);
-		model.addAttribute("gamePatchMapForPcbang",gamePatchMapForPcbang);
+		model.addAttribute("pcbGamePatchResultList",pcbGamePatchResultList);
 		
 		return "gamePatchAdmin";
 	}

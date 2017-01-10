@@ -9,7 +9,12 @@ public class GamePatchLogPK implements Serializable {
 	private Long pcbId;
 	private String gsn;
 	
-	public GamePatchLogPK(){}
+	public GamePatchLogPK() {}
+	
+	public GamePatchLogPK(Long pcbId, String gsn) {
+		this.pcbId = pcbId;
+		this.gsn = gsn;
+	}
 	
     @Override
     public boolean equals(Object obj) {

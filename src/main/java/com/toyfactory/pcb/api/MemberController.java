@@ -58,19 +58,19 @@ public class MemberController {
     	params.put("companyName", companyName);
     	params.put("contactNum", contactNum);
     	
-    	if(!StringUtils.isEmpty(ceo)) {
+    	if (!StringUtils.isEmpty(ceo)) {
         	params.put("ceo", ceo);
     	}
 
-    	if(!StringUtils.isEmpty(address)) {
+    	if (!StringUtils.isEmpty(address)) {
         	params.put("address", address);
     	}
 
-    	if(!StringUtils.isEmpty(email)) {
+    	if (!StringUtils.isEmpty(email)) {
         	params.put("email", email);
     	}
 
-    	if(!StringUtils.isEmpty(bankAccount)) {
+    	if (!StringUtils.isEmpty(bankAccount)) {
         	params.put("bankAccount", bankAccount);
     	}
     	    	
@@ -123,14 +123,14 @@ public class MemberController {
     	aPcbang.setIpEnd(endIp);
     	aPcbang.setSubmask(submask);
     	
-    	if(!StringUtils.isEmpty(address))
+    	if (!StringUtils.isEmpty(address))
     		aPcbang.setAddress(address);
     	
-    	if(!StringUtils.isEmpty(program))
+    	if (!StringUtils.isEmpty(program))
     		aPcbang.setProgram(program);
     	
     	//agent member 가 수정하는 경우는 status는 변경을 할수 없기 때문에 기존 값을 유지해야 한다.
-    	if(!StringUtils.isEmpty(status))
+    	if (!StringUtils.isEmpty(status))
     		aPcbang.setStatus(StatusCd.valueOf(status));
     	
     	return (null != memberService.updatePcbang(aPcbang, agentId));
@@ -152,28 +152,28 @@ public class MemberController {
     	
     	Agent aAgent = memberService.findAgent(agentId);
     	
-    	if(aAgent == null) return false;
+    	if (aAgent == null) return false;
     	
     	aAgent.setStatus(StatusCd.valueOf(status));
-    	if(!StringUtils.isEmpty(companyCode))
+    	if (!StringUtils.isEmpty(companyCode))
     		aAgent.setCompanyCode(companyCode);
     	
-    	if(!StringUtils.isEmpty(companyName))
+    	if (!StringUtils.isEmpty(companyName))
     		aAgent.setCompanyName(companyName);
     	
-    	if(!StringUtils.isEmpty(ceo))
+    	if (!StringUtils.isEmpty(ceo))
     		aAgent.setCompanyName(ceo);  	
     	
-    	if(!StringUtils.isEmpty(address))
+    	if (!StringUtils.isEmpty(address))
     		aAgent.setAddress(address);
     	
-    	if(!StringUtils.isEmpty(contactNum))
+    	if (!StringUtils.isEmpty(contactNum))
     		aAgent.setContactNum(contactNum);
     	
-    	if(!StringUtils.isEmpty(bankAccount))
+    	if (!StringUtils.isEmpty(bankAccount))
     		aAgent.setBankAccount(bankAccount);
     	
-    	if(!StringUtils.isEmpty(email))
+    	if (!StringUtils.isEmpty(email))
     		aAgent.setEmail(email);
     	    	
     	return (null != memberService.updateAgent(aAgent, Permission.valueOf(permission)));
