@@ -55,6 +55,9 @@ public class GamePatchService {
 		List<PcbGamePatchResult> pcbGamePatchResultList = new ArrayList<PcbGamePatchResult>();
 						
 		for (Pcbang pcbang : pcbangs) {
+			
+			if (logger.isDebugEnabled()) logger.debug("pcbGamePatchResult pcb_id:" + pcbang.getPcbId());
+			
 			PcbGamePatchResult pcbGamePatchResult = new PcbGamePatchResult(pcbang);
 			
 			List<GamePatchLog> gamePatchLogs = gamePatchLogDao.findByPcbId(pcbang.getPcbId());
@@ -63,7 +66,9 @@ public class GamePatchService {
 
 			YN isPaymentPcbang = isMissionCompletePcbang(pcbang, games) ? YN.Y : YN.N;
 			
-			pcbGamePatchResult.setIsPaymentPcbang(isPaymentPcbang);			
+			pcbGamePatchResult.setIsPaymentPcbang(isPaymentPcbang);
+			
+			pcbGamePatchResultList.add(pcbGamePatchResult);
 		}
 		
 		return pcbGamePatchResultList;
@@ -130,7 +135,7 @@ public class GamePatchService {
 	public boolean verifyPcbGamePatch(PcbGame pcbGame) {
 		
 		Game game = gameService.findGame(pcbGame.getGsn());
-		
+				
 		//TODO: Game 별로 다른 검증 방법을 사용하는 것을 지원해야 한다.
 		if (!game.getMajor().equals(pcbGame.getMajor())) {
 			return false;

@@ -39,15 +39,8 @@ public class GameService {
 		return gameDao.findOne(gsn);
 	}
 	
-	public boolean addGame(String gsn, String name, String major, String minor) {
-		
-		Game newGame = new Game(new Date());
-		
-		newGame.setGsn(gsn);
-		newGame.setName(name);
-		newGame.setMajor(major);
-		newGame.setMinor(minor);
-		
+	public boolean addGame(Game newGame) {
+				
 		Game existGame = gameDao.findOne(newGame.getGsn());
 		
 		if(existGame != null ) return false;
@@ -57,16 +50,7 @@ public class GameService {
 		return true;
 	}
 	
-	public boolean updateGame(String gsn, String name, String major, String minor) {
-		
-		Game existGame = gameDao.findOne(gsn);
-		
-		if(existGame == null ) return false;
-
-		existGame.setName(name);
-		existGame.setMajor(major);
-		existGame.setMinor(minor);
-		
+	public boolean updateGame(Game existGame) {		
 		existGame.setUptDt(new Date());
 		
 		gameDao.save(existGame);

@@ -92,15 +92,19 @@
 		//submit
 		$("#submitSignUp").click(function(){
 			
-			if(!checkValidInput()) return;
+			if (!checkValidInput()) return;
 						
 			var bankAccount;
 			//make bank account
-			if($("#inputBank option:selected").val() !== '직접입력'){
-				bankAccount = $("#inputBank option:selected").val() + ' ' + $("#inputBankAccount").val();
-			} else {
-				bankAccount = $("#inputBankAccount").val();
+			
+			if ($("#inputBankAccount").val().length > 0) {
+				if ($("#inputBank option:selected").val() !== '직접입력') {
+					bankAccount = $("#inputBank option:selected").val() + ' ' + $("#inputBankAccount").val();
+				} else {
+					bankAccount = $("#inputBankAccount").val();
+				}				
 			}
+			
 			
 		    $.post("/member/signUp",
 		    		{

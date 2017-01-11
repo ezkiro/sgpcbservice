@@ -30,8 +30,13 @@
 		<tr class="info">
 			<td>GSN</td>
 			<td>게임명</td>
+			<td>확인방법</td>
 			<td>major버전</td>
 			<td>minor버전</td>
+			<td>실행파일명</td>
+			<td>상위dir</td>
+			<td>버전파일명</td>
+			<td>버전파일포맷</td>
 			<td>변경날짜</td>
 			<td>생성날짜</td>
 			<td>관리</td>
@@ -40,8 +45,13 @@
 		<tr>
    			<td><input type="checkbox" value="${game.getGsn()}">${game.getGsn()}</td>
    			<td>${game.getName()}</td>
+   			<td>${game.getVerifyType()}</td>   			
    			<td>${game.getMajor()}</td>    			    			    			
    			<td>${game.getMinor()}</td>
+   			<td>${game.getExeFile()}</td>
+   			<td>${game.getDirName()}</td>
+   			<td>${game.getVerFile()}</td>
+   			<td>${game.getVerFileFmt()}</td>   			   			   			   			
    			<td>${game.getUptDt().toString()}</td>   			
    			<td>${game.getCrtDt().toString()}</td>
    			<td>

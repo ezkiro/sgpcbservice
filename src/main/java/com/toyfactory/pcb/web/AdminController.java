@@ -1,11 +1,13 @@
 package com.toyfactory.pcb.web;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +20,7 @@ import com.toyfactory.pcb.domain.Game;
 import com.toyfactory.pcb.domain.Pcbang;
 import com.toyfactory.pcb.model.PcbGamePatchResult;
 import com.toyfactory.pcb.model.StatusCd;
+import com.toyfactory.pcb.model.VerifyType;
 import com.toyfactory.pcb.repository.PcbangRepository;
 import com.toyfactory.pcb.service.GamePatchService;
 import com.toyfactory.pcb.service.GameService;
@@ -165,15 +168,58 @@ public class AdminController {
 	public boolean addOrUpdateGame(Model model,
     		@RequestParam(value="gsn", required = true) String gsn,
     		@RequestParam(value="name", required = true) String name,
+    		@RequestParam(value="verify_type", required = true) String verifyType,    		
     		@RequestParam(value="major", required = true) String majorVer,
     		@RequestParam(value="minor", required = false) String minorVer,
+    		@RequestParam(value="exe_file", required = true) String exeFile,
+    		@RequestParam(value="dir_name", required = false) String dirName,
+    		@RequestParam(value="ver_file", required = false) String verFile,
+    		@RequestParam(value="ver_file_fmt", required = false) String verFileFmt,
 			@PathVariable String action){
-		
-		if(action.equals("new")){
-			return gameService.addGame(gsn, name, majorVer, minorVer);
+				
+		if (action.equals("new")) {
+			Game newGame = new Game(new Date());
+			
+			newGame.setGsn(gsn);
+			newGame.setName(name);
+			newGame.setVerifyType(VerifyType.valueOf(verifyType));			
+			newGame.setMajor(majorVer);
+			newGame.setMinor(minorVer);
+			newGame.setExeFile(exeFile);
+			newGame.setDirName(dirName);
+			newGame.setVerFile(verFile);
+			newGame.setVerFileFmt(verFileFmt);
+			
+			return gameService.addGame(newGame);
 			
 		} else {
-			return gameService.updateGame(gsn, name, majorVer, minorVer);
+			
+			Game existGame = gameService.findGame(gsn);
+			
+			if(existGame == null ) return false;			
+			
+			existGame.setName(name);
+			existGame.setVerifyType(VerifyType.valueOf(verifyType));
+			existGame.setMajor(majorVer);
+			existGame.setExeFile(exeFile);
+			
+			if (!StringUtils.isEmpty(minorVer)) existGame.setMinor(minorVer);
+			if (!StringUtils.isEmpty(dirName)) existGame.setMinor(dirName);
+			if (!StringUtils.isEmpty(verFile)) existGame.setMinor(verFile);
+			if (!StringUtils.isEmpty(verFileFmt)) existGame.setMinor(verFileFmt);
+			
+			return gameService.updateGame(existGame);
 		}		
+	}
+	
+	@RequestMapping("/batch")
+	@ResponseBody
+	@PcbAuthorization(permission="ADMIN")	
+	public String runBatch(){
+
+		gamePatchService.excuteGamePatchAnalysisBatch();
+		
+		return "OK";
 	}	
+	
 }

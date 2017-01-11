@@ -4,9 +4,15 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.toyfactory.pcb.model.Permission;
+import com.toyfactory.pcb.model.VerifyType;
+
 import lombok.Data;
 
 @Entity
@@ -17,12 +23,17 @@ public class Game {
 	private String gsn;
 	@Column(nullable=false)
 	private String name;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(nullable=false, length=50)
+	private VerifyType verifyType;	
+	
 	@Column(nullable=false, length=50)
 	private String major; //major version
 	@Column(nullable=true, length=50)
 	private String minor; //minor version
 
-	@Column(nullable=false)	
+	@Column(nullable=true)	
 	private String exeFile;
 	
 	private String dirName;

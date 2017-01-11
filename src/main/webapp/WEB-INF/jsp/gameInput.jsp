@@ -58,8 +58,13 @@
 			    		{
 			    			gsn: $("#inputGsn").val(),
 			    			name:$("#inputName").val(),
+			    			verify_type:$("#inputVerifyType option:selected").val(),			    			
 			    			major: $("#inputMajor").val(),
-			    			minor: $("#inputMinor").val()
+			    			minor: $("#inputMinor").val(),
+			    			exe_file: $("#inputExeFile").val(),
+			    			dir_name: $("#inputDirName").val(),
+			    			ver_file: $("#inputVerFile").val(),
+			    			ver_file_fmt: $("#inputVerFileFmt option:selected").val()			    			
 			    		},
 			    		function(data, status){
 			    			if(data) {
@@ -76,8 +81,13 @@
 			    		{
 			    			gsn: $("#inputGsn").val(),
 			    			name:$("#inputName").val(),
+			    			verify_type:$("#inputVerifyType option:selected").val(),			    			
 			    			major: $("#inputMajor").val(),
-			    			minor: $("#inputMinor").val()
+			    			minor: $("#inputMinor").val(),
+			    			exe_file: $("#inputExeFile").val(),
+			    			dir_name: $("#inputDirName").val(),
+			    			ver_file: $("#inputVerFile").val(),
+			    			ver_file_fmt: $("#inputVerFileFmt option:selected").val()			    			
 			    		},
 			    		function(data, status){
 			    			if(data) {
@@ -102,7 +112,7 @@
   
 <div class="container bg-info">  
 	<div class="row text-center">
-		<h3>PC Bang 정보 입력/수정</h3>
+		<h3>Game 정보 입력/수정</h3>
 	</div>
 	
 <form class="form-horizontal">
@@ -115,36 +125,80 @@
 			<div class="col-md-2"><input type="text" class="form-control" id="inputGsn" placeholder="" disabled></div>
 		</c:when>
 		<c:otherwise>
-			<div class="col-md-2"><input type="text" class="form-control" id="inputGsn" placeholder=""></div>	
+			<div class="col-md-2"><input type="text" class="form-control" id="inputGsn" placeholder="필수"></div>	
 		</c:otherwise>
 	</c:choose>			
-			<div class="col-md-2"></div>
-			<div class="col-md-2"></div>
 		</div>
    </div>
 	<div class="row">
 		<div class="form-group">    
 			<div class="col-md-2 text-right"><label for="lbName">게임명</label></div>
-			<div class="col-md-4"><input type="text" class="form-control" id="inputName" placeholder=""></div>
-			<div class="col-md-4"></div>
+			<div class="col-md-4"><input type="text" class="form-control" id="inputName" placeholder="필수"></div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="form-group">    
+			<div class="col-md-2 text-right"><label for="lbVerifyType">확인방법</label></div>
+			<div class="col-md-2">
+				<select class="form-control" id ="inputVerifyType">
+					<option value="INSTALL">설치만</option>
+					<option value="VERFILE">버전 체크 </option>
+					<option value="VERDATE">파일 수정날짜 체크</option>
+				</select>						
+			</div>
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="form-group">    
 			<div class="col-md-2 text-right"><label for="lbMajor">Major버전</label></div>
-			<div class="col-md-2"><input type="text" class="form-control" id="inputMajor" placeholder=""></div>
-			<div class="col-md-4"></div>
+			<div class="col-md-4"><input type="text" class="form-control" id="inputMajor" placeholder="필수"></div>
 		</div>
 	</div>
    
 	<div class="row">
 		<div class="form-group">    
 			<div class="col-md-2 text-right"><label for="lbMinor">Minor버전</label></div>
-			<div class="col-md-2"><input type="text" class="form-control" id="inputMinor" placeholder=""></div>
-			<div class="col-md-4"></div>
+			<div class="col-md-4"><input type="text" class="form-control" id="inputMinor" placeholder="version file의 수정날짜"></div>
 		</div>
 	</div>
+
+	<div class="row">
+		<div class="form-group">    
+			<div class="col-md-2 text-right"><label for="lbExeFile">실행파일명</label></div>
+			<div class="col-md-4"><input type="text" class="form-control" id="inputExeFile" placeholder="필수"></div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="form-group">    
+			<div class="col-md-2 text-right"><label for="lbDir">상위dir</label></div>
+			<div class="col-md-4"><input type="text" class="form-control" id="inputDirName" placeholder=""></div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="form-group">    
+			<div class="col-md-2 text-right"><label for="lbVerFile">버전파일명</label></div>
+			<div class="col-md-4"><input type="text" class="form-control" id="inputVerFile" placeholder=""></div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="form-group">    
+			<div class="col-md-2 text-right"><label for="lbVerFileFmt">버전파일포맷</label></div>
+			<div class="col-md-2">
+				<select class="form-control" id ="inputVerFileFmt">
+					<option value="JSON">JSON</option>
+					<option value="XML">XML</option>
+					<option value="INI">INI</option>
+					<option value="BIN">BIN</option>					
+				</select>						
+			</div>
+		</div>
+	</div>
+
 
     <div class="row">
 		<div class="form-group">
