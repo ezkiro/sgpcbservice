@@ -23,9 +23,9 @@ public class WebController {
 	@Autowired
 	private MemberService memberService;	
 	
-	@RequestMapping("/main")
-	@PcbAuthorization
-	public String jspPage(@RequestParam(value="name", required = false) String name, Model model){
+	@RequestMapping("/hello")
+//	@PcbAuthorization(permission="NOBODY")
+	public String helloPage(@RequestParam(value="name", required = false) String name, Model model){
 		//model.addAttribute("name","access token is" + name);
 		return "hello";
 	}	
@@ -38,7 +38,7 @@ public class WebController {
 		return "errorMsg";
 	}		
 	
-	@RequestMapping(value="/login", method=RequestMethod.GET)
+	@RequestMapping(value={"/", "/login"}, method=RequestMethod.GET)
 	public String loginPage(@RequestParam(value="error", required = false) String error, Model model){
 		model.addAttribute("error",error);
 		return "login";

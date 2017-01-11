@@ -105,12 +105,18 @@
 				}				
 			}
 			
+			var companyCode;
+			
+			if ($("#inputPart1").val().length > 0) {
+				
+				companyCode = $("#inputPart1").val() + '-' + $("#inputPart2").val() + '-' + $("#inputPart3").val();
+			}
 			
 		    $.post("/member/signUp",
 		    		{
 		    			id: $("#inputID").val(),
 		    			password: $("#inputPassword1").val(),
-		    			company_code: $("#inputPart1").val() + '-' + $("#inputPart2").val() + '-' + $("#inputPart3").val(),
+		    			company_code: companyCode,
 		    			company_name:$("#inputCompany").val(),
 		    			ceo: $("#inputCEO").val(),
 		    			contact_num: $("#inputContact").val(),
@@ -120,8 +126,7 @@
 		    		},
 		    		function(data, status){
 		    			if(data) {
-		    				alert("회원가입에 성공하였습니다. 로그인 해주시기 바랍니다.");
-		    				location.href = '/login';
+		    				location.href = '/hello';
 		    			}
 		    		}
 		    );			
@@ -138,7 +143,7 @@
  		<h2>SignUp for E-GPMS Game Patch Monitoring System</h2>
     </div>
 
-	<form class="form-horizontal">     
+	<form class="form-horizontal" action>     
     <div class="row">
 		<div class="form-group">    
 		<div class="col-md-2 text-right">

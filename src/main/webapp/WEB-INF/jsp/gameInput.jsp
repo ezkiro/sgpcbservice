@@ -118,29 +118,29 @@
 <form class="form-horizontal">
 	<div class="row">
 		<div class="form-group">
-			<div class="col-md-2 text-right"><label for="lbGsn">GSN</label></div>
+			<div class="col-sm-2 text-right"><label for="lbGsn">GSN</label></div>
 	<c:set var="aGame" value="${game}" />
 	<c:choose>
 		<c:when test="${!empty aGame}">
-			<div class="col-md-2"><input type="text" class="form-control" id="inputGsn" placeholder="" disabled></div>
+			<div class="col-sm-2"><input type="text" class="form-control" id="inputGsn" placeholder="" disabled></div>
 		</c:when>
 		<c:otherwise>
-			<div class="col-md-2"><input type="text" class="form-control" id="inputGsn" placeholder="필수"></div>	
+			<div class="col-sm-2"><input type="text" class="form-control" id="inputGsn" placeholder="필수"></div>	
 		</c:otherwise>
 	</c:choose>			
 		</div>
    </div>
 	<div class="row">
 		<div class="form-group">    
-			<div class="col-md-2 text-right"><label for="lbName">게임명</label></div>
-			<div class="col-md-4"><input type="text" class="form-control" id="inputName" placeholder="필수"></div>
+			<div class="col-sm-2 text-right"><label for="lbName">게임명</label></div>
+			<div class="col-sm-4"><input type="text" class="form-control" id="inputName" placeholder="필수"></div>
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="form-group">    
-			<div class="col-md-2 text-right"><label for="lbVerifyType">확인방법</label></div>
-			<div class="col-md-2">
+			<div class="col-sm-2 text-right"><label for="lbVerifyType">확인방법</label></div>
+			<div class="col-sm-2">
 				<select class="form-control" id ="inputVerifyType">
 					<option value="INSTALL">설치만</option>
 					<option value="VERFILE">버전 체크 </option>
@@ -152,43 +152,43 @@
 
 	<div class="row">
 		<div class="form-group">    
-			<div class="col-md-2 text-right"><label for="lbMajor">Major버전</label></div>
-			<div class="col-md-4"><input type="text" class="form-control" id="inputMajor" placeholder="필수"></div>
+			<div class="col-sm-2 text-right"><label for="lbMajor">Major버전</label></div>
+			<div class="col-sm-4"><input type="text" class="form-control" id="inputMajor" placeholder="필수"></div>
 		</div>
 	</div>
    
 	<div class="row">
 		<div class="form-group">    
-			<div class="col-md-2 text-right"><label for="lbMinor">Minor버전</label></div>
-			<div class="col-md-4"><input type="text" class="form-control" id="inputMinor" placeholder="version file의 수정날짜"></div>
+			<div class="col-sm-2 text-right"><label for="lbMinor">Minor버전</label></div>
+			<div class="col-sm-4"><input type="text" class="form-control" id="inputMinor" placeholder="version file의 수정날짜"></div>
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="form-group">    
-			<div class="col-md-2 text-right"><label for="lbExeFile">실행파일명</label></div>
-			<div class="col-md-4"><input type="text" class="form-control" id="inputExeFile" placeholder="필수"></div>
+			<div class="col-sm-2 text-right"><label for="lbExeFile">실행파일명</label></div>
+			<div class="col-sm-4"><input type="text" class="form-control" id="inputExeFile" placeholder="필수"></div>
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="form-group">    
-			<div class="col-md-2 text-right"><label for="lbDir">상위dir</label></div>
-			<div class="col-md-4"><input type="text" class="form-control" id="inputDirName" placeholder=""></div>
+			<div class="col-sm-2 text-right"><label for="lbDir">상위dir</label></div>
+			<div class="col-sm-4"><input type="text" class="form-control" id="inputDirName" placeholder=""></div>
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="form-group">    
-			<div class="col-md-2 text-right"><label for="lbVerFile">버전파일명</label></div>
-			<div class="col-md-4"><input type="text" class="form-control" id="inputVerFile" placeholder=""></div>
+			<div class="col-sm-2 text-right"><label for="lbVerFile">버전파일명</label></div>
+			<div class="col-sm-4"><input type="text" class="form-control" id="inputVerFile" placeholder=""></div>
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="form-group">    
-			<div class="col-md-2 text-right"><label for="lbVerFileFmt">버전파일포맷</label></div>
-			<div class="col-md-2">
+			<div class="col-sm-2 text-right"><label for="lbVerFileFmt">버전파일포맷</label></div>
+			<div class="col-sm-2">
 				<select class="form-control" id ="inputVerFileFmt">
 					<option value="JSON">JSON</option>
 					<option value="XML">XML</option>
@@ -202,10 +202,10 @@
 
     <div class="row">
 		<div class="form-group">
-		<div class="col-md-2"></div>
- 		<div class="col-md-2"><button type="button" class="btn btn-lg btn-primary btn-block" id="submitGame">저장</button></div>
- 		<div class="col-md-2"><a class="btn btn-lg btn-default btn-block" href="/admin/game" role="button">취소</a></div>
- 		<div class="col-md-2"></div> 		
+		<div class="col-sm-2"></div>
+ 		<div class="col-sm-2"><button type="button" class="btn btn-lg btn-primary btn-block" id="submitGame">저장</button></div>
+ 		<div class="col-sm-2"><a class="btn btn-lg btn-default btn-block" href="/admin/game" role="button">취소</a></div>
+ 		<div class="col-sm-2"></div> 		
  		</div>
     </div>
 	

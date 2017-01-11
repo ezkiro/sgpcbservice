@@ -51,7 +51,7 @@ public class AuthAspect{
 				
 				Permission userPerm = memberService.verifyAccessToken(token);
 				if(userPerm == Permission.NOBODY){ //check
-					throw new InvalidTokenException();
+					return "redirect:/hello";
 				}
 				
 				//check permission
