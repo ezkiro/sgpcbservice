@@ -204,9 +204,9 @@ public class AdminController {
 			existGame.setExeFile(exeFile);
 			
 			if (!StringUtils.isEmpty(minorVer)) existGame.setMinor(minorVer);
-			if (!StringUtils.isEmpty(dirName)) existGame.setMinor(dirName);
-			if (!StringUtils.isEmpty(verFile)) existGame.setMinor(verFile);
-			if (!StringUtils.isEmpty(verFileFmt)) existGame.setMinor(verFileFmt);
+			if (!StringUtils.isEmpty(dirName)) existGame.setDirName(dirName);
+			if (!StringUtils.isEmpty(verFile)) existGame.setVerFile(verFile);
+			if (!StringUtils.isEmpty(verFileFmt)) existGame.setVerFileFmt(verFileFmt);
 			
 			return gameService.updateGame(existGame);
 		}		
