@@ -10,18 +10,26 @@
 		
 		var checkValidInput = function() {								
 			//id 체크
-			if($("#inputID").val().length === 0 ) {
+			if ($("#inputID").val().length === 0 ) {
 				alert("ID를 입력해 주세요.");
 				return false;				
-			}			
+			}
+			
+			//email형식 체크
+			var regEmail = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+			
+			if (!regEmail.test($("#inputID").val())) {
+				alert("ID가  email 형식이 아닙니다. email 형식으로 입력해 주세요.");
+				return false;				
+			}
 			
 			//password 체크
-			if($("#inputPassword1").val().length < 8 ) {
+			if ($("#inputPassword1").val().length < 8 ) {
 				alert("패스워드는 최소 8자 이상이어야 합니다. 다시 입력해주세요.");
 				return false;				
 			}			
 			
-			if($("#inputPassword1").val() !== $("#inputPassword2").val()) {
+			if ($("#inputPassword1").val() !== $("#inputPassword2").val()) {
 				alert("패스워드와 패스워드 확인 이 일치하지 않습니다. 다시 입력해주세요.");
 				return false;
 			}
@@ -31,16 +39,18 @@
 		
 		var duplicateCheck = function(item1, value1, title, controlObj) {
 			var isExist = false;
-		    $.get("/member/isExist",
+		    $.get("/api/member/isExist",
 		    		{
 		    			item:item1,
 		    			value:value1
 		    		},
 		    		function(data, status){
 		    			isExist = data;
-		    			if(isExist){
+		    			if (isExist) {
 		    				alert('중복된 ' + title + ' 입니다. 다시 입력해 주세요.');
 		    				controlObj.focus();
+		    			} else {
+		    				alert('사용가능한 ' + title + ' 입니다.');
 		    			}
 		    		}
 		    );
@@ -50,14 +60,14 @@
 		
 		//check double
 		$("#checkDoubleId").click(function(){
-			if($("#inputID").val() === "") return ;
+			if ($("#inputID").val() === "") return ;
 						
 			duplicateCheck("id", $("#inputID").val(), 'ID', $("#inputID"));
 			
 		});
 		
 		$("#checkDoubleCompanyCode").click(function(){
-			if($("#inputPart1").val() === "") return ;
+			if ($("#inputPart1").val() === "") return ;
 			
 			var companyCode = $("#inputPart1").val() + '-' + $("#inputPart2").val() + '-' + $("#inputPart3").val();
 						
@@ -66,14 +76,14 @@
 		});
 
 		$("#checkDoubleContact").click(function(){
-			if($("#inputContact").val() === "") return ;
+			if ($("#inputContact").val() === "") return ;
 
 			duplicateCheck("contact", $("#inputContact").val(), '연락처', $("#inputContact"));
 			
 		});
 
 		$("#checkDoubleEmail").click(function(){
-			if($("#inputEmail").val() === "") return ;
+			if ($("#inputEmail").val() === "") return ;
 
 			duplicateCheck("email", $("#inputEmail").val(), 'email', $("#inputEmail"));			
 			
@@ -112,7 +122,7 @@
 				companyCode = $("#inputPart1").val() + '-' + $("#inputPart2").val() + '-' + $("#inputPart3").val();
 			}
 			
-		    $.post("/member/signUp",
+		    $.post("/api/member/signUp",
 		    		{
 		    			id: $("#inputID").val(),
 		    			password: $("#inputPassword1").val(),
@@ -143,7 +153,7 @@
  		<h2>SignUp for E-GPMS Game Patch Monitoring System</h2>
     </div>
 
-	<form class="form-horizontal" action>     
+	<form class="form-horizontal">     
     <div class="row">
 		<div class="form-group">    
 		<div class="col-md-2 text-right">

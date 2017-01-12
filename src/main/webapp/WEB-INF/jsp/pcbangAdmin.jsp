@@ -61,12 +61,13 @@
 	<table class="table table-bordered table-hover">
 		<tr class="info">
 			<td>구분</td>
-			<td>사업자번호</td>
+			<td>대표자</td>			
 			<td>상호</td>
 			<td>주소</td>
 			<td>IP대역</td>
 			<td>subnet mask</td>
-			<td>관리업체</td>
+			<td>관리업체1</td>
+			<td>관리업체2</td>			
 			<td>프로그램명</td>
 			<td>상태</td>			
 			<td>등록일</td>
@@ -75,12 +76,13 @@
 	<c:forEach var="pcbang" items="${pcbangList}">
 		<tr>
    			<td><input type="checkbox" value="${pcbang.getPcbId()}">${pcbang.getPcbId()}</td>
-   			<td>${pcbang.getCompanyCode()}</td>
+   			<td>${pcbang.getCeo()}</td>   			
    			<td>${pcbang.getCompanyName()}</td>    			    			    			
    			<td>${pcbang.getAddress()}</td>
    			<td>${pcbang.getIpStart()} - ${pcbang.getIpEnd()}</td>    			    			    			
    			<td>${pcbang.getSubmask()}</td>
-   			<td>${pcbang.getAgent().getCompanyName()}</td>    			    			    			
+   			<td>${pcbang.getAgent().getCompanyName()}</td>
+   			<td>${pcbang.getCompanyCode()}</td>   			    			    			    			
    			<td>${pcbang.getProgram()}</td>
    			<td>${pcbang.getStatus()}</td>   			  			
    			<td>${pcbang.getCrtDt().toString().substring(0,10)}</td>

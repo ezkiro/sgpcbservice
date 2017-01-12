@@ -12,4 +12,5 @@ public interface AgentRepository extends JpaRepository<Agent, Long> {
 	Agent findByContactNum(String contact);
 	Agent findByEmail(String email);
 	List<Agent> findByStatus(StatusCd status);
+	List<Agent> findAllByOrderByCrtDtDesc();
 }

@@ -55,7 +55,7 @@ public class AuthAspect{
 				}
 				
 				//check permission
-				if(userPerm != Permission.valueOf(pcbAuth.permission())){
+				if(userPerm.getLevel() < Permission.valueOf(pcbAuth.permission()).getLevel()){
 					throw new InvalidPermissionException();
 				}
 				
@@ -67,11 +67,11 @@ public class AuthAspect{
 			} catch(InvalidPermissionException e) {
 				if(logger.isDebugEnabled()) logger.debug("invalid permission exception!");
 				
-				return "redirect:/errormsg";
+				return "redirect:/errormsg?message=NO Permission!";
 			} catch(Exception e) {
 				logger.error("error in verifyAuthrization exception:" + e.getMessage());
 				
-				return "redirect:/errormsg";
+				return "redirect:/errormsg?message=Unknown Error!";
 			}
 		}
 

@@ -12,13 +12,28 @@
 		
 		var checkValidInput = function() {
 			
-			if($("#inputCompanyCode").val().length === 0 ) {
-				alert("사업자 번호를 입력해 주세요.");
+			if ($("#inputCeo").val().length === 0 ) {
+				alert("대표자를 입력해 주세요.");
 				return false;				
 			}			
 
-			if($("#inputCompany").val().length === 0 ) {
+			if ($("#inputCompany").val().length === 0 ) {
 				alert("상호 를 입력해 주세요.");
+				return false;				
+			}			
+			
+			if ($("#inputIPStart").val().length === 0 ) {
+				alert("IP대역에서  start IP를 입력하세요.");
+				return false;				
+			}			
+
+			if ($("#inputIPEnd").val().length === 0 ) {
+				alert("IP대역에서  end IP를 입력하세요.");
+				return false;				
+			}			
+
+			if ($("#inputSubmask").val().length === 0 ) {
+				alert("Subnet mask를 입력하세요.");
 				return false;				
 			}			
 			
@@ -33,6 +48,7 @@
 				updateMode = true;
 				$("#inputPcbId").val("${pcbang.getPcbId()}");
 				$("#inputCompanyCode").val("${pcbang.getCompanyCode()}");
+				$("#inputCeo").val("${pcbang.getCeo()}");				
 				$("#inputCompany").val("${pcbang.getCompanyName()}");
 				$("#inputAddress").val("${pcbang.getAddress()}");
 				$("#inputIPStart").val("${pcbang.getIpStart()}");
@@ -52,9 +68,10 @@
 			//add mode
 			if(!updateMode) {
 				
-			    $.post("/member/pcbang/add",
+			    $.post("/api/member/pcbang/add",
 			    		{
 			    			company_code: $("#inputCompanyCode").val(),
+			    			ceo: $("#inputCeo").val(),			    			
 			    			company_name:$("#inputCompany").val(),
 			    			address: $("#inputAddress").val(),
 			    			start_ip: $("#inputIPStart").val(),
@@ -72,10 +89,11 @@
 			    );
 			//update mode    
 			} else {
-			    $.post("/member/pcbang",
+			    $.post("/api/member/pcbang",
 			    		{
 							pcb_id:$("#inputPcbId").val(),	    	
 			    			company_code: $("#inputCompanyCode").val(),
+			    			ceo: $("#inputCeo").val(),			    			
 			    			company_name:$("#inputCompany").val(),
 			    			address: $("#inputAddress").val(),
 			    			start_ip: $("#inputIPStart").val(),
@@ -121,14 +139,14 @@
 		</div>
    </div>
 </c:if>
+
 	<div class="row">
-		<div class="form-group">
-			<div class="col-md-2 text-right"><label for="lbCompanyCode">사업자번호</label></div>
-			<div class="col-md-4"><input type="text" class="form-control" id="inputCompanyCode" placeholder="111-2222-33333"></div>
-			<div class="col-md-2"></div>
-			<div class="col-md-4"></div>
+		<div class="form-group">    
+			<div class="col-md-2 text-right"><label for="lbCeo">대표자</label></div>
+			<div class="col-md-4"><input type="text" class="form-control" id="inputCeo" placeholder=""></div>
+			<div class="col-md-6"></div>
 		</div>
-   </div>
+	</div>
    
 	<div class="row">
 		<div class="form-group">    
@@ -149,8 +167,8 @@
 	<div class="row">
 		<div class="form-group">
 			<div class="col-md-2 text-right"><label for="lbIPScope">IP대역</label></div>
-			<div class="col-md-3"><input type="text" class="form-control" id="inputIPStart" placeholder=""></div>
-			<div class="col-md-3"><input type="text" class="form-control" id="inputIPEnd" placeholder=""></div>
+			<div class="col-md-3"><input type="text" class="form-control" id="inputIPStart" placeholder="Start IP"></div>
+			<div class="col-md-3"><input type="text" class="form-control" id="inputIPEnd" placeholder="End IP"></div>
 		</div>
 	</div>		    
 
@@ -176,6 +194,15 @@
 
 	<div class="row">
 		<div class="form-group">
+			<div class="col-md-2 text-right"><label for="lbCompanyCode">관리업체2</label></div>
+			<div class="col-md-4"><input type="text" class="form-control" id="inputCompanyCode" placeholder="대리점 업체명"></div>
+			<div class="col-md-2"></div>
+			<div class="col-md-4"></div>
+		</div>
+   </div>
+
+	<div class="row">
+		<div class="form-group">
 			<div class="col-md-2 text-right"><label for="lbProgram">프로그램</label></div>
 			<div class="col-md-3"><input type="text" class="form-control" id="inputProgram" placeholder=""></div>
 		</div>
@@ -185,7 +212,7 @@
 	<div class="row">
 		<div class="form-group">
 			<div class="col-md-2 text-right"><label for="lbStatus">status</label></div>
-			<div class="col-md-4">
+			<div class="col-md-2">
 				<select class="form-control" id ="inputStatus">
 					<option value="WAIT">WAIT</option>
 					<option value="OK">OK</option>

@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +21,11 @@ import com.toyfactory.pcb.service.MemberService;
 import com.toyfactory.pcb.service.PcbangService;
 
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/api/member")
 public class MemberController {
 
+	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);	
+	
 	@Autowired
 	private MemberService memberService;
 	
@@ -79,8 +83,9 @@ public class MemberController {
     
     @RequestMapping(value = "/pcbang/add", method=RequestMethod.POST)
     public boolean registerPcbang(
-    		@RequestParam(value="company_code", required = true) String companyCode,
+    		@RequestParam(value="company_code", required = false) String companyCode,
     		@RequestParam(value="company_name", required = true) String companyName,
+    		@RequestParam(value="ceo", required = true) String ceo,    		
     		@RequestParam(value="address", required = false) String address,
     		@RequestParam(value="start_ip", required = true) String startIp,
     		@RequestParam(value="end_ip", required = true) String endIp,
@@ -92,6 +97,7 @@ public class MemberController {
     	Pcbang aPcbang = new Pcbang(new Date());
     	aPcbang.setCompanyCode(companyCode);
     	aPcbang.setCompanyName(companyName);
+    	aPcbang.setCeo(ceo);
     	aPcbang.setAddress(address);
     	aPcbang.setIpStart(startIp);
     	aPcbang.setIpEnd(endIp);
@@ -105,8 +111,9 @@ public class MemberController {
     @RequestMapping(value = "/pcbang", method=RequestMethod.POST)
     public boolean updatePcbang(
     		@RequestParam(value="pcb_id", required = true) Long pcbId,    		
-    		@RequestParam(value="company_code", required = true) String companyCode,
+    		@RequestParam(value="company_code", required = false) String companyCode,
     		@RequestParam(value="company_name", required = true) String companyName,
+    		@RequestParam(value="ceo", required = true) String ceo,    		
     		@RequestParam(value="address", required = false) String address,
     		@RequestParam(value="start_ip", required = true) String startIp,
     		@RequestParam(value="end_ip", required = true) String endIp,
@@ -117,11 +124,14 @@ public class MemberController {
     		) {
     	
     	Pcbang aPcbang = pcbangService.findPcbang(pcbId);
-    	aPcbang.setCompanyCode(companyCode);
     	aPcbang.setCompanyName(companyName);
+    	aPcbang.setCeo(ceo);
     	aPcbang.setIpStart(startIp);
     	aPcbang.setIpEnd(endIp);
     	aPcbang.setSubmask(submask);
+
+    	if (!StringUtils.isEmpty(companyCode))    	
+    		aPcbang.setCompanyCode(companyCode);    	
     	
     	if (!StringUtils.isEmpty(address))
     		aPcbang.setAddress(address);
@@ -162,7 +172,7 @@ public class MemberController {
     		aAgent.setCompanyName(companyName);
     	
     	if (!StringUtils.isEmpty(ceo))
-    		aAgent.setCompanyName(ceo);  	
+    		aAgent.setCeo(ceo);  	
     	
     	if (!StringUtils.isEmpty(address))
     		aAgent.setAddress(address);

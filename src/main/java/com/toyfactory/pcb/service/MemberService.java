@@ -180,7 +180,7 @@ public class MemberService {
 		}	
 		
 		//all agents
-		return agentDao.findAll();		
+		return agentDao.findAllByOrderByCrtDtDesc();		
 	}
 	
 	public Agent findAgent(Long agentId){

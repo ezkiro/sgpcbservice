@@ -23,7 +23,7 @@ public class Pcbang {
 	@Id
 	@GeneratedValue
 	private Long pcbId;
-	private String companyCode;
+	private String companyCode; //관리업체2
 	private String companyName;
 	private String ceo;
 	private String address;
