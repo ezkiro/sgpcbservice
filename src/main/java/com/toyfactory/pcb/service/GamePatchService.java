@@ -80,11 +80,12 @@ public class GamePatchService {
 	 * @return
 	 */
 	public void excuteGamePatchAnalysisBatch() {
+		//기존 GamePatchLog 삭제
+		gamePatchLogDao.deleteAll();
 		
 		//Pcbang별 IP 목록 별 PcbGamePatch 추출
 		List<Pcbang> validPcbangs = pcbangService.findPcbangs("status", StatusCd.OK.toString());
-		for (Pcbang pcbang : validPcbangs) {
-			
+		for (Pcbang pcbang : validPcbangs) {			
 			List<String> pcbangIPs = pcbangService.buildPcbangIPs(pcbang.getIpStart(), pcbang.getIpEnd(), pcbang.getSubmask());
 			
 			for (String ip : pcbangIPs) {

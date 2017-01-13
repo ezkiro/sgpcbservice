@@ -1,5 +1,6 @@
 package com.toyfactory.pcb.web;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import com.toyfactory.pcb.aop.PcbAuthorization;
 import com.toyfactory.pcb.domain.Agent;
 import com.toyfactory.pcb.domain.Game;
 import com.toyfactory.pcb.domain.Pcbang;
+import com.toyfactory.pcb.model.PcbGamePatch;
 import com.toyfactory.pcb.model.PcbGamePatchResult;
 import com.toyfactory.pcb.model.StatusCd;
 import com.toyfactory.pcb.model.VerifyType;
@@ -220,6 +222,28 @@ public class AdminController {
 		gamePatchService.excuteGamePatchAnalysisBatch();
 		
 		return "OK";
+	}
+	
+	@RequestMapping("/pcbgamepatch/detail")
+	@PcbAuthorization(permission="ADMIN")	
+	public String showPcbGamePatch(Model model,
+			@RequestParam(value="pcb_id", required = true) Long pcbId){
+
+		Pcbang pcbang = pcbangService.findPcbang(pcbId);
+		List<String> pcbangIPs = pcbangService.buildPcbangIPs(pcbang.getIpStart(), pcbang.getIpEnd(), pcbang.getSubmask());
+		
+		List<PcbGamePatch> pcbGamePatchList = new ArrayList<PcbGamePatch>();
+		
+		for (String ip : pcbangIPs) {
+			PcbGamePatch pcbGamePatch = gamePatchService.readPcbGamePatchFromCache(ip);
+			if (pcbGamePatch == null) continue;			
+			pcbGamePatch.setClientIp(ip);
+			pcbGamePatchList.add(pcbGamePatch);
+		}			
+		
+		model.addAttribute("pcbGamePatchList",pcbGamePatchList);
+		
+		return "pcbGamePatchLog";
 	}	
 	
 }

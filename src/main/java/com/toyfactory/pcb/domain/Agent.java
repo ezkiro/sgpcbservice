@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -34,7 +35,7 @@ public class Agent {
 	private String email;		//email
 	private String bankAccount;	//계좌번호
 
-	@OneToOne(mappedBy = "agent")
+	@OneToOne(mappedBy = "agent", optional = false, fetch=FetchType.LAZY)
 	private Account account;
 	
 	@Enumerated(EnumType.STRING)

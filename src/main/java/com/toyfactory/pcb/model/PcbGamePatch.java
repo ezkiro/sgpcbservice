@@ -16,6 +16,7 @@ public class PcbGamePatch {
 	private String version; //pcbAgent version
 	private Date crtDt;
 	private List<PcbGame> pcbGames;
+	private String clientIp;
 	
 //	@Override
 //	public String toString(){
