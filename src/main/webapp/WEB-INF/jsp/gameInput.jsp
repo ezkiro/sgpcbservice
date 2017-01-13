@@ -42,6 +42,10 @@
 				$("#inputName").val("${game.getName()}");
 				$("#inputMajor").val("${game.getMajor()}");
 				$("#inputMinor").val("${game.getMinor()}");
+				$("#inputExeFile").val("${game.getExeFile()}");
+				$("#inputDirName").val("${game.getDirName()}");
+				$("#inputVerFile").val("${game.getVerFile()}");
+				$("#inputVerFileFmt").val("${game.getVerFileFmt()}");				
 				
 				$("#frmGame").attr("action","/admin/game/update");			
 			}
