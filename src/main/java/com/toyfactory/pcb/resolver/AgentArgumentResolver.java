@@ -24,8 +24,11 @@ public class AgentArgumentResolver implements HandlerMethodArgumentResolver {
 
 	private static final Logger logger = LoggerFactory.getLogger(AgentArgumentResolver.class);		
 	
-	@Autowired
 	private MemberService memberService;
+	
+	public AgentArgumentResolver(MemberService memberService) {
+		this.memberService = memberService;
+	}
 	
 	public static Long getAgentId(NativeWebRequest webRequest){
 		

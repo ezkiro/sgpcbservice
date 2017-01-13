@@ -10,9 +10,11 @@ buildscript {
 	}
 }
 
-apply plugin: 'java'
+apply plugin: 'war'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+
+
 
 jar {
 	baseName = 'sgpcbservice'
@@ -25,7 +27,6 @@ repositories {
 	mavenCentral()
 }
 
-
 dependencies {
 	compile("org.springframework.boot:spring-boot-starter-data-jpa")
 	compile('org.springframework.boot:spring-boot-starter-web')
@@ -36,7 +37,9 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-redis")
 	compile("commons-net:commons-net:2.0")
 	compile("org.springframework.boot:spring-boot-starter-aop")
-
+	
+	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+	
 	runtime('org.hsqldb:hsqldb')
 	runtime('mysql:mysql-connector-java')		
 	testCompile('org.springframework.boot:spring-boot-starter-test')
