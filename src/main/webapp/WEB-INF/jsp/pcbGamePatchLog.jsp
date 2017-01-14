@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html lang="ko">
   <head>
@@ -14,7 +16,20 @@
 		
   </head>
   <body>
-	<div class="container"> 
+	<div class="container">
+	<p class="bg-info">
+		<table class="table table-bordered">
+			<tr class="info">
+				<td>Pcbang raw data</td>
+				<td>${pcbang.getCompanyName()}</td>
+				<td>전체IP수:${totalIPs}</td>
+				<td>수집된IP수:${pcbGamePatchList.size()}</td>
+				<td><a class="btn btn-default btn-block" href="/admin/gamepatch" role="button">back</a></td>
+			</tr>		
+		</table>
+			
+	</div><!-- container -->	
+	<hr>
 	<table class="table table-bordered table-hover">
 		<tr class="info">
 			<td>IP</td>
@@ -26,13 +41,14 @@
 		<tr>
    			<td>${pcbGamePatch.getClientIp()}</td>   			
    			<td>${pcbGamePatch.getVersion()}</td>    			    			    			
-   			<td>${pcbGamePatch.getCrtDt()}</td>
+   			<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${pcbGamePatch.getCrtDt()}" /></td>
+   			<td>
    		<c:forEach var="pcbGame" items="${pcbGamePatch.getPcbGames()}">
-   			<td>${pcbGame.toString()}</td>
-		</c:forEach>   		
+   			${pcbGame.toString()}
+		</c:forEach>
+			</td>   		
    		</tr>
 	</c:forEach>
-	</table>
-	</div><!-- container -->			
+	</table>			
   </body>
 </html>

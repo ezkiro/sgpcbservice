@@ -39,17 +39,23 @@ public class AuthAspect{
 		if(logger.isDebugEnabled()) logger.debug("verifyAuthrization called! request:" + request.getRequestURL());
 		
 		//before
-		if(pcbAuth.requireAccessToken()) {				
+		if(pcbAuth.requireAccessToken()) {
 			try {
-				Cookie cookie = WebUtils.getCookie(request, "access_token");
-				if(cookie == null) {
-					if(logger.isDebugEnabled()) logger.debug("cookie isn't exist...");
-					throw new InvalidTokenException();
+				//parameter에 값이 있는지 확인한다.
+				String accessToken = request.getParameter("access_token");
+				
+				if (accessToken == null) {
+					//쿠키에서 찾아본다.
+					Cookie cookie = WebUtils.getCookie(request, "access_token");
+					if(cookie == null) {
+						if(logger.isDebugEnabled()) logger.debug("cookie isn't exist...");
+						throw new InvalidTokenException();
+					}
+					
+					accessToken = URLDecoder.decode(cookie.getValue(), "UTF-8");
 				}
 				
-				String token = URLDecoder.decode(cookie.getValue(), "UTF-8");
-				
-				Permission userPerm = memberService.verifyAccessToken(token);
+				Permission userPerm = memberService.verifyAccessToken(accessToken);
 				if(userPerm == Permission.NOBODY){ //check
 					return "redirect:/hello";
 				}

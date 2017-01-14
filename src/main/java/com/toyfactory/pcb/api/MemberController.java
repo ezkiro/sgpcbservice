@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.toyfactory.pcb.aop.PcbAuthorization;
 import com.toyfactory.pcb.domain.Agent;
 import com.toyfactory.pcb.domain.Pcbang;
 import com.toyfactory.pcb.model.Permission;
@@ -82,6 +83,7 @@ public class MemberController {
     }
     
     @RequestMapping(value = "/pcbang/add", method=RequestMethod.POST)
+    @PcbAuthorization(permission="AGENT")
     public boolean registerPcbang(
     		@RequestParam(value="company_code", required = false) String companyCode,
     		@RequestParam(value="company_name", required = true) String companyName,
@@ -109,6 +111,7 @@ public class MemberController {
     }
     
     @RequestMapping(value = "/pcbang", method=RequestMethod.POST)
+    @PcbAuthorization(permission="AGENT")    
     public boolean updatePcbang(
     		@RequestParam(value="pcb_id", required = true) Long pcbId,    		
     		@RequestParam(value="company_code", required = false) String companyCode,
@@ -147,6 +150,7 @@ public class MemberController {
     }    
     
     @RequestMapping(value = "/agent", method=RequestMethod.POST)
+    @PcbAuthorization(permission="ADMIN")   
     public boolean updateAgent(
     		@RequestParam(value="agent_id", required = true) Long agentId,
     		@RequestParam(value="status", required = true) String status,

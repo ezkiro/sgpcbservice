@@ -79,11 +79,14 @@
 			    			submask: $("#inputSubmask").val(),
 			    			program: $("#inputProgram").val(),
 			    			agent_id: "${agent.getAgentId()}",
+			    			access_token: getCookie("access_token")
 			    		},
 			    		function(data, status){
-			    			if(data) {
+			    			if (data) {
 			    				alert("PC방 등록에 성공하였습니다.");
 			    				location.href = '/member/pcbang';
+			    			} else {
+			    				alert("오류가 발생하였습니다.");
 			    			}
 			    		}
 			    );
@@ -100,12 +103,15 @@
 			    			end_ip: $("#inputIPEnd").val(),
 			    			submask: $("#inputSubmask").val(),
 			    			program: $("#inputProgram").val(),
-			    			agent_id: "${agent.getAgentId()}"
+			    			agent_id: "${agent.getAgentId()}",
+			    			access_token: getCookie("access_token")	
 			    		},
 			    		function(data, status){
-			    			if(data) {
+			    			if (data) {
 			    				alert("PC방 수정에 성공하였습니다.");
 			    				location.href = '/member/pcbang';
+			    			} else {
+			    				alert("오류가 발생하였습니다.");
 			    			}
 			    		}
 			    );				

@@ -55,6 +55,7 @@
 		    			address: $("#inputAddress").val(),
 		    			email: $("#inputEmail").val(),
 		    			bank_account: bankAccount,
+		    			access_token: getCookie("access_token")
 		    		},
 		    		function(data, status){
 		    			if(data) {

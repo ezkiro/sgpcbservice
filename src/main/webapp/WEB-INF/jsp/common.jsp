@@ -20,3 +20,21 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
     <script src="/js/bootstrap.min.js"></script>
+
+    <script>
+	function getCookie(cname) {
+	      var name = cname + "=";
+	      var decodedCookie = decodeURIComponent(document.cookie);
+	      var ca = decodedCookie.split(';');
+	      for(var i = 0; i <ca.length; i++) {
+	          var c = ca[i];
+	          while (c.charAt(0) == ' ') {
+	              c = c.substring(1);
+	          }
+	          if (c.indexOf(name) == 0) {
+	              return c.substring(name.length, c.length);
+	          }
+	      }
+	      return "";
+	}    
+    </script>

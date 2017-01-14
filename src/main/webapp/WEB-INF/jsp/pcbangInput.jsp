@@ -79,11 +79,14 @@
 			    			submask: $("#inputSubmask").val(),
 			    			program: $("#inputProgram").val(),
 			    			agent_id: $("#inputAgent option:selected").val(),
+			    			access_token: getCookie("access_token")			    			
 			    		},
 			    		function(data, status){
-			    			if(data) {
+			    			if (data) {
 			    				alert("PC방 등록에 성공하였습니다.");
 			    				location.href = '/admin/pcbang';
+			    			} else {
+			    				alert("오류가 발생하였습니다.");
 			    			}
 			    		}
 			    );
@@ -101,12 +104,15 @@
 			    			submask: $("#inputSubmask").val(),
 			    			program: $("#inputProgram").val(),
 			    			agent_id: $("#inputAgent option:selected").val(),
-			    			status: $("#inputStatus option:selected").val()
+			    			status: $("#inputStatus option:selected").val(),
+			    			access_token: getCookie("access_token")			    			
 			    		},
 			    		function(data, status){
 			    			if(data) {
 			    				alert("PC방 수정에 성공하였습니다.");
 			    				location.href = '/admin/pcbang';
+			    			} else {
+			    				alert("오류가 발생하였습니다.");
 			    			}
 			    		}
 			    );				

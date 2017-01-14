@@ -1,5 +1,6 @@
 package com.toyfactory.pcb.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,7 @@ public class GameService {
 		
 		Map<String,Game> gamesMap = new HashMap<String,Game>();
 		
-		for(Game game : games){
+		for (Game game : games){
 			gamesMap.put(game.getGsn(), game);
 		}
 		
@@ -43,7 +44,7 @@ public class GameService {
 				
 		Game existGame = gameDao.findOne(newGame.getGsn());
 		
-		if(existGame != null ) return false;
+		if (existGame != null ) return false;
 
 		gameDao.save(newGame);
 		
@@ -56,5 +57,27 @@ public class GameService {
 		gameDao.save(existGame);
 		
 		return true;
-	}	
+	}
+	
+	/**
+	 * gsnList가 비어 있거나 null 이면 전체 리스트를 반환
+	 * @param gsnList
+	 * @return
+	 */
+	public List<Game> buildGames(String[] gsnList) {
+	
+		List<Game> games = new ArrayList<Game>();
+		
+		if (gsnList == null || gsnList.length == 0) {
+			return games;
+		}
+				
+		Map<String, Game> gamesMap = buildAllGamesMap();
+		
+		for (String gsn : gsnList) {
+			games.add(gamesMap.get(gsn));
+		}
+				
+		return games;
+	}
 }

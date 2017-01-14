@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.toyfactory.pcb.aop.PcbAuthorization;
+import com.toyfactory.pcb.api.AgentController;
 import com.toyfactory.pcb.domain.Agent;
 import com.toyfactory.pcb.domain.Game;
 import com.toyfactory.pcb.domain.Pcbang;
@@ -33,6 +38,8 @@ import com.toyfactory.pcb.service.PcbangService;
 @RequestMapping("/admin")
 public class AdminController {
 
+	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);	
+	
 	@Autowired
 	private MemberService memberService;
 		
@@ -95,15 +102,29 @@ public class AdminController {
 	
 	@RequestMapping("/gamepatch")
 	@PcbAuthorization(permission="ADMIN")	
-	public String gamePatchPage(Model model){
+	public String gamePatchPage(
+			@RequestParam(value="checked_games", required = false) String[] checkedGames,
+			Model model){
+
+		if (logger.isDebugEnabled()) {
+			logger.debug("checked_games:" + checkedGames);
+		}
+		
+		//게임갯수가 많지 않기 때문에 전체를  가져와서 필터링 하는 방식으로 한다.
+		List<Game> targetGames = gameService.buildGames(checkedGames);
+		List<Game> allGames = gameService.findGames();
+		
+		if (checkedGames == null) {
+			targetGames = allGames;
+		}
 		
 		//status = OK 인 모든 pc방에 대해서 game patch 여부 조사
 		List<Pcbang> pcbangs = pcbangService.findPcbangs("status", StatusCd.OK.toString());	
-		List<Game> games = gameService.findGames();
 				
-		List<PcbGamePatchResult> pcbGamePatchResultList = gamePatchService.buildPcbGamePathResultForPcbang(pcbangs, games);
+		List<PcbGamePatchResult> pcbGamePatchResultList = gamePatchService.buildPcbGamePathResultForPcbang(pcbangs, targetGames);
 		
-		model.addAttribute("gameList",games);
+		model.addAttribute("gameList",allGames);
+		model.addAttribute("targetGameList",targetGames);		
 		model.addAttribute("pcbGamePatchResultList",pcbGamePatchResultList);
 		
 		return "gamePatchAdmin";
@@ -218,9 +239,18 @@ public class AdminController {
 	@ResponseBody
 	@PcbAuthorization(permission="ADMIN")	
 	public String runBatch(){
-
-		gamePatchService.excuteGamePatchAnalysisBatch();
 		
+		//reference http://tutorials.jenkov.com/java-util-concurrent/executorservice.html
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+		executorService.execute(new Runnable() {
+		    public void run() {
+				gamePatchService.excuteGamePatchAnalysisBatch();
+		    }
+		});
+		
+		executorService.shutdown();
+				
 		return "OK";
 	}
 	
@@ -242,6 +272,8 @@ public class AdminController {
 		}			
 		
 		model.addAttribute("pcbGamePatchList",pcbGamePatchList);
+		model.addAttribute("pcbang",pcbang);
+		model.addAttribute("totalIPs",pcbangIPs.size());
 		
 		return "pcbGamePatchLog";
 	}	

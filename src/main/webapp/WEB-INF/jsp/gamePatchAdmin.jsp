@@ -4,6 +4,33 @@
 <html lang="ko">
   <head>
 	<jsp:include page="common.jsp" flush="true"/>
+	<script>
+	$(document).ready(function(){
+		
+		var targetGames = 
+		
+		$("#allGameCheck").click(function(){
+			if ($(this).is(":checked")) {
+				$(".select_subject input").prop('checked', true);				
+			} else {
+				$(".select_subject input").prop('checked', false);
+			}			
+		});
+
+		$("form").submit(function(event){
+			
+			var checkedGames = [];
+			
+			$("input[name=gameCheck]:checked").each(function() {
+				checkedGames.push($(this).val());				
+			});
+			
+			$("input[name=checked_games]").val(checkedGames);			
+		});
+		
+	});  
+	</script>
+		
   </head>
   <body>
 	<div class="container"> 
@@ -17,22 +44,33 @@
 		</ul>
   	</div>
   	<hr>
-
+  		
 	<div class="form-group bg-info">
-		<div class="col-md-1 text-right">
-			<label for="lbGame">게임선택</label>
-		</div>	
-		<label class="checkbox-inline">
-		  <input type="checkbox" id="allGameOpt" value="all"> 전체선택
-		</label>
-	<c:forEach var="game" items="${gameList}">
-		<label class="checkbox-inline">
-		  <input type="checkbox" id="gameOpt" value="${game.getGsn()}"> ${game.getName()}
-		</label>
-	</c:forEach>																																																										
+		<div class="row">
+			<div class="col-md-1 text-right">
+				<label for="lbGame">게임선택</label>
+			</div>
+			
+			<div class="col-md-1">
+				<label class="checkbox-inline">
+					<input type="checkbox" id="allGameCheck" value="all">전체	
+				</label>		
+			</div>
+			<div class="col-md-10">
+				<ul class="select_subject">
+				<c:forEach var="game" items="${gameList}">
+					<label class="checkbox-inline">
+						<input type="checkbox" name="gameCheck" value="${game.getGsn()}"> ${game.getName()}
+					</label>
+				</c:forEach>
+				</ul>																																																				
+			</div>			
+		</div>			
 	</div>
-  	
-	<form class="form-horizontal">
+	
+	<form class="form-horizontal" action="/admin/gamepatch" method="post">
+		<input type="hidden" name="checked_games" value="" />
+	  	
   	<div class="form-group bg-info">
 		<div class="col-md-1 text-right">
 			<label for="lbID">조회조건</label>
@@ -53,7 +91,7 @@
 			<input type="text" class="form-control" id="serachKeyword" placeholder="">
 		</div>
 		<div class="col-md-2">		
-			<button type="submit" class="btn btn-primary btn-block">조회</button>
+			<button type="submit" class="btn btn-primary btn-block" id="search">조회</button>
 		</div>
 	</div>	  
 	</form>	
@@ -71,7 +109,7 @@
 				<td>관리업체2</td>				
 				<td>관리IP수</td>
 				<td>지급대상(Y/N)</td>
-			<c:forEach var="game" items="${gameList}">
+			<c:forEach var="game" items="${targetGameList}">
 				<td>${game.getName()}</td>
 			</c:forEach>																																																						
 			</tr>
@@ -85,9 +123,9 @@
     			<td>${pcbGamePatchResult.getPcbang().getSubmask()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getAgent().getCompanyName()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getCompanyCode()}</td>    			
-    			<td>${pcbGamePatchResult.getPcbang().getIpTotal()}</td>    			    			    			
+    			<td><a class="btn btn-default" href="/admin/pcbgamepatch/detail?pcb_id=${pcbGamePatchResult.getPcbang().getPcbId()}" role="button">${pcbGamePatchResult.getPcbang().getIpTotal()}</a></td>    			    			    			
     			<td>${pcbGamePatchResult.getIsPaymentPcbang().toString()}</td>
-			<c:forEach var="game" items="${gameList}">
+			<c:forEach var="game" items="${targetGameList}">
 				<td>${pcbGamePatchResult.getGamePatchMap().get(game.getGsn())}</td>
 			</c:forEach>																																																						
     		</tr>
