@@ -179,11 +179,17 @@ public class GamePatchService {
     	}
 
     	Date now = new Date();
-    	//마지막으로 저장이 된지 24시간이 지나지 않았으면  pass    	
-    	if ((now.getTime() - pcbGamePatch.getCrtDt().getTime())/1000 < 86400L) {
+    	//마지막으로 저장이 된지 24시간이 지나지 않았으면  pass
+    	long timeGap = (now.getTime() - pcbGamePatch.getCrtDt().getTime())/1000 ;
+
+		if(logger.isDebugEnabled()){
+			logger.debug("[checkGamePatchPass] timeGap:" + timeGap);
+		}    		    	
+    	
+    	if ( timeGap < 86400L) {
     		
     		if(logger.isDebugEnabled()){
-    			logger.debug("[checkGamePatchPass] PASS! client ip:" + clientIp);
+    			logger.debug("[checkGamePatchPass] PASS! valid in 24hours  client ip:" + clientIp);
     		}    		
     		return "PASS";
     	}

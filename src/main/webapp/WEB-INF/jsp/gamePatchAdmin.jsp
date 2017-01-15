@@ -108,6 +108,7 @@
 				<td>관리업체1</td>
 				<td>관리업체2</td>				
 				<td>관리IP수</td>
+				<td>확인IP수</td>
 				<td>지급대상(Y/N)</td>
 			<c:forEach var="game" items="${targetGameList}">
 				<td>${game.getName()}</td>
@@ -123,7 +124,8 @@
     			<td>${pcbGamePatchResult.getPcbang().getSubmask()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getAgent().getCompanyName()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getCompanyCode()}</td>    			
-    			<td><a class="btn btn-default" href="/admin/pcbgamepatch/detail?pcb_id=${pcbGamePatchResult.getPcbang().getPcbId()}" role="button">${pcbGamePatchResult.getPcbang().getIpTotal()}</a></td>    			    			    			
+    			<td>${pcbGamePatchResult.getPcbang().getIpTotal()}</td>
+   				<td><a class="btn btn-success" href="/admin/pcbgamepatch/detail?pcb_id=${pcbGamePatchResult.getPcbang().getPcbId()}" role="button">${pcbGamePatchResult.getCheckIPCnt()}</a></td>    			
     			<td>${pcbGamePatchResult.getIsPaymentPcbang().toString()}</td>
 			<c:forEach var="game" items="${targetGameList}">
 				<td>${pcbGamePatchResult.getGamePatchMap().get(game.getGsn())}</td>
