@@ -284,4 +284,20 @@ public class MemberService {
 		return agentDao.save(agent);
 	}
 	
+	public void unregisterAgent(Agent agent) {
+		//delete Pcbang
+		List<Pcbang> pcbangs = agent.getPcbangs();
+		
+		for (Pcbang pcbang : pcbangs) {
+			if(logger.isDebugEnabled()) logger.debug("unregisterAgent try to delete pcbang:" + pcbang.getPcbId());			
+			pcbangDao.delete(pcbang);
+		}
+
+		//delete account
+		Account account = agent.getAccount();		
+		accountDao.delete(account);
+		
+		//delete agent
+		agentDao.delete(agent.getAgentId());
+	}
 }

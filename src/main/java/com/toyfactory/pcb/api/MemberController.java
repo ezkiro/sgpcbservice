@@ -192,5 +192,20 @@ public class MemberController {
     	    	
     	return (null != memberService.updateAgent(aAgent, Permission.valueOf(permission)));
     }    
-        
+
+    @RequestMapping(value = "/agent/unregister", method=RequestMethod.POST)
+    @PcbAuthorization(permission="ADMIN")   
+    public boolean updateAgent(
+    		@RequestParam(value="agent_id", required = true) Long agentId) {
+
+    	Agent aAgent = memberService.findAgent(agentId);
+    	
+    	if (aAgent == null) return false;
+
+    	memberService.unregisterAgent(aAgent);
+    	
+    	return true;
+    }
+    
+    
 }
