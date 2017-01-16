@@ -286,12 +286,12 @@ public class MemberService {
 	
 	public void unregisterAgent(Agent agent) {
 		//delete Pcbang
-		List<Pcbang> pcbangs = agent.getPcbangs();
-		
-		for (Pcbang pcbang : pcbangs) {
-			if(logger.isDebugEnabled()) logger.debug("unregisterAgent try to delete pcbang:" + pcbang.getPcbId());			
-			pcbangDao.delete(pcbang);
-		}
+//		List<Pcbang> pcbangs = agent.getPcbangs();
+//		
+//		for (Pcbang pcbang : pcbangs) {
+//			if(logger.isDebugEnabled()) logger.debug("unregisterAgent try to delete pcbang:" + pcbang.getPcbId());			
+//			pcbangDao.delete(pcbang);
+//		}
 
 		//delete account
 		Account account = agent.getAccount();		

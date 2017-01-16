@@ -195,7 +195,7 @@ public class MemberController {
 
     @RequestMapping(value = "/agent/unregister", method=RequestMethod.POST)
     @PcbAuthorization(permission="ADMIN")   
-    public boolean updateAgent(
+    public boolean unregisterAgent(
     		@RequestParam(value="agent_id", required = true) Long agentId) {
 
     	Agent aAgent = memberService.findAgent(agentId);
