@@ -8,7 +8,7 @@
 	$(document).ready(function(){
 		$("#removeAgent").click(function(){
 						
-			if (!confirm($("#removeAgent").val() + '번 Agent 정보를 삭제 하시겠습니까?\n 로그인 계정 및 가맹점 정보도 같이 삭제가 됩니다.')) {
+			if (!confirm($("#removeAgent").val() + '번 Agent 정보를 삭제 하시겠습니까?\n 로그인 계정 정보도 같이 삭제가 됩니다.')) {
 				return;
 			}
 			

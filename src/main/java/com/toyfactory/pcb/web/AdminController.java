@@ -234,6 +234,19 @@ public class AdminController {
 			return gameService.updateGame(existGame);
 		}		
 	}
+
+	@RequestMapping(value="/api/game/remove", method=RequestMethod.POST)
+	@ResponseBody
+	@PcbAuthorization(permission="ADMIN")	
+	public boolean removeGame(
+			@RequestParam(value="gsn_list[]", required = true) String[] gsnList) {
+	
+		for (String gsn : gsnList) {
+			gameService.removeGame(gsn);
+		}
+		
+		return true;
+	}	
 	
 	@RequestMapping("/batch")
 	@ResponseBody

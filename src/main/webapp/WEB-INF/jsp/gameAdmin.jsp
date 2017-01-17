@@ -7,8 +7,39 @@
 	
   <script>
 	$(document).ready(function(){
-				
-	});  
+		$("#removeGame").click(function(){
+			
+			var targetGames = new Array();
+			
+			$(":checked").each(function(){
+				targetGames.push($(this).val());
+			});
+			
+			if (targetGames.length == 0) {
+				return;
+			}
+			
+			if (!confirm(targetGames + ' Game 정보를 삭제 하시겠습니까?')) {
+				return;
+			}
+			
+		    $.post("/admin/api/game/remove",
+		    		{
+		    			gsn_list:targetGames,
+		    			access_token: getCookie("access_token")
+		    		},
+		    		function(data, status){
+		    			if(data) {
+		    				alert('game 정보 삭제에 성공했습니다.');		    				
+		    				location.href = '/admin/game';
+		    			} else {
+		    				alert('game 삭제에 실패했습니다. 다시 시도 하세요.');
+		    			}
+		    		}
+		    );			
+		});
+		
+	});				
   </script> 
 	
 		
@@ -65,7 +96,7 @@
 		<div class="col-md-2"></div>
 		<div class="col-md-2"></div>		    
 		<div class="col-md-2"><a class="btn btn-default btn-block" href="/admin/game/add" role="button">등록</a></div>
-		<div class="col-md-2"><a class="btn btn-default btn-block" href="/admin/game/remove" role="button">삭제</a></div>	
+		<div class="col-md-2"><button type="button" class="btn btn-default btn-block" id="removeGame">삭제</button></div>
 	</div>
 	
 	</div><!-- container -->	

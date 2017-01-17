@@ -59,6 +59,10 @@ public class GameService {
 		return true;
 	}
 	
+	public void removeGame(String gsn) {
+		gameDao.delete(gsn);
+	}
+	
 	/**
 	 * gsnList가 비어 있거나 null 이면 전체 리스트를 반환
 	 * @param gsnList
