@@ -107,10 +107,16 @@ public class GamePatchService {
 		return redisTemplate.opsForValue().get(clientIp);
 	}
 	
-	public boolean processFromPcbGamePatchToGamePatchLog(Long pcbId, PcbGamePatch pcbGamePatch) {		
+	public boolean processFromPcbGamePatchToGamePatchLog(Long pcbId, PcbGamePatch pcbGamePatch) {
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("[processFromPcbGamePatchToGamePatchLog] pcbId:" + pcbId + ",pcbGamePatch:" + pcbGamePatch);
+		}
+		
 		List<PcbGame> pcbGames = pcbGamePatch.getPcbGames();
 
 		if (pcbGames.isEmpty()) return false;
+		
 		
 		for (PcbGame pcbGame : pcbGames) {
 			//GSN별 기존 데이터 저장된 데이터 검색 없는 경우 새로 생성			
@@ -126,7 +132,7 @@ public class GamePatchService {
 			}
 			
 			gamePatchLog.incrInstall();
-			
+						
 			gamePatchLogDao.save(gamePatchLog);
 		}
 		
@@ -136,7 +142,9 @@ public class GamePatchService {
 	public boolean verifyPcbGamePatch(PcbGame pcbGame) {
 		
 		Game game = gameService.findGame(pcbGame.getGsn());
-				
+		
+		if (game == null) return false;
+		
 		//TODO: Game 별로 다른 검증 방법을 사용하는 것을 지원해야 한다.
 		if (!game.getMajor().equals(pcbGame.getMajor())) {
 			return false;

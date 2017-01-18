@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -95,9 +96,8 @@ public class PcbangService {
 	public boolean insertBulkData(MultipartFile multipart) {
 
 		try {
-			File inputFile = multipartToFile(multipart);
 			
-			List<Pcbang> pcbangs = readFromFile(inputFile);
+			List<Pcbang> pcbangs = readFromMultipartFile(multipart);
 			
 			for (Pcbang pcbang : pcbangs) {				
 				memberService.addPcbang(pcbang, pcbang.getAgent().getAgentId());
@@ -110,29 +110,23 @@ public class PcbangService {
 		}
 		return true;
 	}
-	
-	private File multipartToFile(MultipartFile multipart) throws IllegalStateException, IOException {
-	    File convFile = new File( multipart.getOriginalFilename());
-	    multipart.transferTo(convFile);
-	    return convFile;
-	}
-	
-	private List<Pcbang> readFromFile(File inputFile) throws IOException {
+		
+	private List<Pcbang> readFromMultipartFile(MultipartFile multipart) throws IOException {
 		List<Pcbang> outputList = new ArrayList<Pcbang>();
 		
-		FileReader fileReader = null;
 		BufferedReader bufferedReader = null;
-		
+				
 		try {
-			
-			fileReader = new FileReader(inputFile);
-			bufferedReader = new BufferedReader(fileReader);
+			bufferedReader = new BufferedReader(new InputStreamReader(multipart.getInputStream(), "MS949"));			
 			String pcbData = null;
 			
-			while ((pcbData = bufferedReader.readLine()) != null) {
-				//공백문자 제거
-				pcbData = pcbData.replaceAll("\\s+","");
+			while ((pcbData = bufferedReader.readLine()) != null) {				
+				if (logger.isDebugEnabled()) logger.debug("[readFromMultipartFile] pcbData:" + pcbData);				
+				
 				Pcbang pcbang = parseCsv(pcbData);
+				
+				if (pcbang == null) continue;
+				
 				outputList.add(pcbang);
 			}
 						
@@ -151,23 +145,21 @@ public class PcbangService {
 		String[] pcbData = csvLine.split(",");
 
 		if (pcbData.length < 8) return null;
-		
-		if (logger.isDebugEnabled()) logger.debug("[parseCsv] pcbData:" + pcbData);
-		
+				
     	Pcbang aPcbang = new Pcbang(new Date());
     	
     	Agent aAgent = new Agent(new Date());
-    	aAgent.setAgentId(Long.valueOf(pcbData[0]));
+    	aAgent.setAgentId(Long.valueOf(pcbData[0].trim()));
     	
     	aPcbang.setAgent(aAgent);    	
-    	aPcbang.setCeo(pcbData[1]);
-    	aPcbang.setCompanyName(pcbData[2]);    	
-    	aPcbang.setAddress(pcbData[3]);
-    	aPcbang.setIpStart(pcbData[4]);
-    	aPcbang.setIpEnd(pcbData[5]);
-    	aPcbang.setSubmask(pcbData[6]);
-    	aPcbang.setCompanyCode(pcbData[7]);    	
-    	aPcbang.setProgram(pcbData[8]);
+    	aPcbang.setCeo(pcbData[1].trim());
+    	aPcbang.setCompanyName(pcbData[2].trim());    	
+    	aPcbang.setAddress(pcbData[3].trim());
+    	aPcbang.setIpStart(pcbData[4].trim());
+    	aPcbang.setIpEnd(pcbData[5].trim());
+    	aPcbang.setSubmask(pcbData[6].trim());
+    	aPcbang.setCompanyCode(pcbData[7].trim());    	
+    	aPcbang.setProgram(pcbData[8].trim());
     	aPcbang.setStatus(StatusCd.WAIT);
 				
 		return aPcbang;
