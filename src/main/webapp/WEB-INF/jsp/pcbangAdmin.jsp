@@ -95,7 +95,7 @@
 	<br>
 	<div class="form-group">    
 		<div class="col-md-2"></div>
-		<div class="col-md-2"><a class="btn btn-default btn-block" href="#" role="button">일괄등록</a></div>		
+		<div class="col-md-2"><a class="btn btn-default btn-block" href="/admin/pcbang/upload" role="button">일괄등록</a></div>		
 		<div class="col-md-2"><a class="btn btn-default btn-block" href="/admin/pcbang/add" role="button">등록</a></div>
 		<div class="col-md-2"><a class="btn btn-default btn-block" href="/admin/pcbang/remove" role="button">삭제</a></div>		
 	</div>
