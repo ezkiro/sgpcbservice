@@ -7,6 +7,37 @@
 	
   <script>
 	$(document).ready(function(){
+		$("#removePcbang").click(function(){
+			
+			var targetPcbangs = new Array();
+			
+			$(":checkbox:checked").each(function(){
+				targetPcbangs.push($(this).val());
+			});
+			
+			if (targetPcbangs.length == 0) {
+				return;
+			}
+			
+			if (!confirm(targetPcbangs + ' Pcbang 정보를 삭제 하시겠습니까?')) {
+				return;
+			}
+			
+		    $.post("/api/member/pcbang/remove",
+		    		{
+		    			pcbid_list: targetPcbangs,
+		    			access_token: getCookie("access_token")
+		    		},
+		    		function(data, status){
+		    			if(data) {
+		    				alert('pcbang 정보 삭제에 성공했습니다.');		    				
+		    				location.href = '/admin/pcbang';
+		    			} else {
+		    				alert('pcbang 삭제에 실패했습니다. 다시 시도 하세요.');
+		    			}
+		    		}
+		    );			
+		});
 				
 	});  
   </script> 
@@ -97,7 +128,7 @@
 		<div class="col-md-2"></div>
 		<div class="col-md-2"><a class="btn btn-default btn-block" href="/admin/pcbang/upload" role="button">일괄등록</a></div>		
 		<div class="col-md-2"><a class="btn btn-default btn-block" href="/admin/pcbang/add" role="button">등록</a></div>
-		<div class="col-md-2"><a class="btn btn-default btn-block" href="/admin/pcbang/remove" role="button">삭제</a></div>		
+		<div class="col-md-2"><button type="button" class="btn btn-default btn-block" id="removePcbang">삭제</button></div>		
 	</div>
 		
   </body>

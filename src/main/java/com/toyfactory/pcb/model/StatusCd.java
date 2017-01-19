@@ -1,5 +1,5 @@
 package com.toyfactory.pcb.model;
 
 public enum StatusCd {
-	OK,WAIT,UNAPPROVED
+	OK,WAIT,UNAPPROVED,DEL
 }

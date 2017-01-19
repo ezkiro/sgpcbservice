@@ -6,9 +6,9 @@
 	<jsp:include page="common.jsp" flush="true"/>
   <script>
 	$(document).ready(function(){
-		$("#removeAgent").click(function(){
+		$(":button").click(function(){
 						
-			if (!confirm($("#removeAgent").val() + '번 Agent 정보를 삭제 하시겠습니까?\n 로그인 계정 정보도 같이 삭제가 됩니다.')) {
+			if (!confirm($(this).val() + '번 Agent 정보를 삭제 하시겠습니까?\n 로그인 계정 정보도 같이 삭제가 됩니다.')) {
 				return;
 			}
 			
@@ -117,7 +117,7 @@
     			<td>${agent.getStatus()}</td>    			    			    			
     			<td>${agent.getAccount().getPermission()}</td>
     			<td><a class="btn btn-default" href="/admin/agent/update?agent_id=${agent.getAgentId()}" role="button">수정</a></td>
-    			<td><button type="button" class="btn btn-danger btn-block" id="removeAgent" value="${agent.getAgentId()}">삭제</button></td>
+    			<td><button type="button" class="btn btn-danger btn-block" name="removeAgent" value="${agent.getAgentId()}">삭제</button></td>
     		</tr>
 		</c:forEach>
 		</table>

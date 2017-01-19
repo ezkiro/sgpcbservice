@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.toyfactory.pcb.aop.PcbAuthorization;
@@ -46,10 +47,10 @@ public class MemberController {
     public boolean signUp(
     		@RequestParam(value="id", required = true) String id,
     		@RequestParam(value="password", required = true) String password,
-    		@RequestParam(value="company_code", required = true) String companyCode,
-    		@RequestParam(value="company_name", required = true) String companyName,
+    		@RequestParam(value="company_code", required = false) String companyCode,
+    		@RequestParam(value="company_name", required = false) String companyName,
     		@RequestParam(value="ceo", required = false) String ceo,
-    		@RequestParam(value="contact_num", required = true) String contactNum,
+    		@RequestParam(value="contact_num", required = false) String contactNum,
     		@RequestParam(value="address", required = false) String address,
     		@RequestParam(value="email", required = false) String email,
     		@RequestParam(value="bank_account", required = false) String bankAccount   		
@@ -59,9 +60,16 @@ public class MemberController {
     	
     	params.put("id", id);
     	params.put("password", password);
-    	params.put("companyCode", companyCode);
-    	params.put("companyName", companyName);
-    	params.put("contactNum", contactNum);
+    	
+    	if (!StringUtils.isEmpty(companyCode)) {
+        	params.put("companyCode", companyCode);
+    	}
+    	if (!StringUtils.isEmpty(companyName)) {
+        	params.put("companyName", companyName);
+    	}
+    	if (!StringUtils.isEmpty(contactNum)) {
+        	params.put("contactNum", contactNum);
+    	}
     	
     	if (!StringUtils.isEmpty(ceo)) {
         	params.put("ceo", ceo);
@@ -148,6 +156,20 @@ public class MemberController {
     	
     	return (null != memberService.updatePcbang(aPcbang, agentId));
     }    
+  
+	@RequestMapping(value="/pcbang/remove", method=RequestMethod.POST)
+	@ResponseBody
+	@PcbAuthorization(permission="ADMIN")	
+	public boolean removePcbang(
+			@RequestParam(value="pcbid_list[]", required = true) String[] pcbIdList) {
+	
+		for (String pcbId : pcbIdList) {
+			memberService.removePcbang(Long.valueOf(pcbId));
+		}
+		
+		return true;
+	}	
+    
     
     @RequestMapping(value = "/agent", method=RequestMethod.POST)
     @PcbAuthorization(permission="ADMIN")   
@@ -161,7 +183,8 @@ public class MemberController {
     		@RequestParam(value="address", required = false) String address,
     		@RequestParam(value="contact_num", required = false) String contactNum,
     		@RequestParam(value="bank_account", required = false) String bankAccount,
-    		@RequestParam(value="email", required = false) String email 		
+    		@RequestParam(value="email", required = false) String email,
+    		@RequestParam(value="password", required = false) String password    		
     		) {
     	
     	Agent aAgent = memberService.findAgent(agentId);
@@ -189,6 +212,10 @@ public class MemberController {
     	
     	if (!StringUtils.isEmpty(email))
     		aAgent.setEmail(email);
+    	
+    	//TODO: 단독으로 변경하는 I/F 추가 필요
+    	if (!StringUtils.isEmpty(password))
+    		memberService.changePassword(aAgent, password);	
     	    	
     	return (null != memberService.updateAgent(aAgent, Permission.valueOf(permission)));
     }    

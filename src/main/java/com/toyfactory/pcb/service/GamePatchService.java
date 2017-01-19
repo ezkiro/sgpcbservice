@@ -21,6 +21,7 @@ import com.toyfactory.pcb.model.PcbGame;
 import com.toyfactory.pcb.model.PcbGamePatch;
 import com.toyfactory.pcb.model.PcbGamePatchResult;
 import com.toyfactory.pcb.model.StatusCd;
+import com.toyfactory.pcb.model.VerifyType;
 import com.toyfactory.pcb.model.YN;
 import com.toyfactory.pcb.repository.GamePatchLogRepository;
 import com.toyfactory.pcb.repository.GameRepository;
@@ -146,11 +147,24 @@ public class GamePatchService {
 		if (game == null) return false;
 		
 		//TODO: Game 별로 다른 검증 방법을 사용하는 것을 지원해야 한다.
-		if (!game.getMajor().equals(pcbGame.getMajor())) {
-			return false;
+		if (game.getVerifyType() == VerifyType.INSTALL) {
+			//INSTALL은 무조건 성공
+			return true;
 		}
-
-		return true;
+		
+		if (game.getVerifyType() == VerifyType.VERFILE) {
+			if (game.getMajor().equals(pcbGame.getMajor())) {
+				return true;
+			}
+		}
+		
+		if (game.getVerifyType() == VerifyType.VERDATE) {
+			if (game.getMajor().equals(pcbGame.getMajor())) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public boolean isMissionCompletePcbang(Pcbang pcbang, List<Game> games) {

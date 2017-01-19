@@ -27,6 +27,21 @@
 				return false;				
 			}
 			
+			//password 체크
+			if ($("#inputPassword1").val().length > 0 ) {
+				
+				if ($("#inputPassword1").val().length < 8 ) {
+					alert("암호는 최소 8자 이상이어야 합니다. 다시 입력해주세요.");
+					return false;				
+				}			
+				
+				if ($("#inputPassword1").val() !== $("#inputPassword2").val()) {
+					alert("암호 와 암호 확인 이 일치하지 않습니다. 다시 입력해주세요.");
+					return false;
+				}							
+			}
+			
+			
 			return true;
 		}
 				
@@ -55,6 +70,7 @@
 		    			address: $("#inputAddress").val(),
 		    			email: $("#inputEmail").val(),
 		    			bank_account: bankAccount,
+		    			password: $("#inputPassword1").val(),
 		    			access_token: getCookie("access_token")
 		    		},
 		    		function(data, status){
@@ -84,6 +100,20 @@
 		<div class="form-group">    
 			<div class="col-md-2 text-right"><label for="lbID">Agent ID</label></div>
 	 		<div class="col-md-4"><input type="text" class="form-control" id="inputID" placeholder="" disabled></div>
+ 		</div>
+    </div>
+
+    <div class="row">
+		<div class="form-group">    
+			<div class="col-md-2 text-right"><label for="lbPassWord">암호</label></div>
+	 		<div class="col-md-4"><input type="password" class="form-control" id="inputPassword1" placeholder="변경할 경우만 입력하세요"></div>
+ 		</div>
+    </div>
+
+    <div class="row">
+		<div class="form-group">    
+			<div class="col-md-2 text-right"><label for="lbPassWord">암호확인</label></div>
+	 		<div class="col-md-4"><input type="password" class="form-control" id="inputPassword2" placeholder="암호확인"></div>
  		</div>
     </div>
     

@@ -173,6 +173,20 @@ public class MemberService {
 		return accessToken;
 	}
 	
+	public boolean changePassword(Agent agent, String password) {		
+		Account account = agent.getAccount();
+		if (account != null) {
+			account.setPassword(crpytoService.generateSHA1Hash(password));
+			account.setUptDt(new Date());
+			
+			accountDao.save(account);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
 	public List<Agent> findAgents(String item, String keyworkd) {
 		
 		if ("status".equals(item)) {
@@ -225,6 +239,11 @@ public class MemberService {
 		return pcbangDao.save(pcbang);
 	}
 	
+	public void removePcbang(Long pcbId) {
+		
+		pcbangDao.delete(pcbId);
+	}
+	
 	public Permission verifyAccessToken(String accessToken) throws InvalidTokenException{
 		
 		if (accessToken == null) throw new InvalidTokenException();
@@ -272,7 +291,7 @@ public class MemberService {
 	public Agent updateAgent(Agent agent, Permission permission) {
 		
 		Account account = agent.getAccount();
-		if (account != null) {
+		if (account != null && account.getPermission() != permission) {
 			account.setPermission(permission);
 			account.setUptDt(new Date());
 			
