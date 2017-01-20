@@ -33,8 +33,29 @@
 		$("form").submit(function(event){			
 			if(!checkValidInput()) {
 				event.preventDefault();
-			}
-		});		
+			}	
+		});
+		
+		$("#login").click(function(){
+			
+			if(!checkValidInput()) return;		
+			
+		    $.post("/api/member/login",
+		    		{
+		    			id: $("#inputEmail").val(),
+		    			password: $("#inputPassword").val(),			    			
+		    		},
+		    		function(data, status){
+		    			//alert('data:' + data + ', status:' + status);
+		    			//alert(document.cookie);
+		    			if (status == 'success') {
+			    			location.href = data;		    				
+		    			}
+		    		}
+		    );
+			
+		});
+			
 	});
 	
 </script>
@@ -78,7 +99,7 @@
 		<div class="col-sm-3"></div>
 		<div class="col-sm-2"><a class="btn btn-default btn-block" href="/signup" role="button">회원가입</a></div>
 		<div class="col-sm-2"><a class="btn btn-default btn-block" href="/findIDOrPassword" role="button">ID/패스워드찾기</a></div>		
- 		<div class="col-sm-2"><button type="submit" class="btn btn-lg btn-primary btn-block">로그인</button></div>
+ 		<div class="col-sm-2"><button type="button" class="btn btn-lg btn-primary btn-block" id="login">로그인</button></div>
  		</div>
     </div>
       

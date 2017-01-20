@@ -101,6 +101,13 @@ public class AdminController {
 		model.addAttribute("pcbangList",pcbangList);
 		return "pcbangAdmin";
 	}
+
+	@RequestMapping("/gamepatch/excel")
+	@PcbAuthorization(permission="ADMIN")	
+	public String gamePatchExcelDownload(Model model){
+		
+		return "gamePatchExcelDownload";
+	}	
 	
 	@RequestMapping("/gamepatch")
 	@PcbAuthorization(permission="ADMIN")	

@@ -44,40 +44,6 @@ public class WebController {
 		return "login";
 	}
 
-    @RequestMapping(value="/login", method=RequestMethod.POST)
-    public String login(
-    		@RequestParam(value="id", required = true) String id,
-    		@RequestParam(value="password", required = true) String password, 
-    		HttpServletResponse response) {
-
-    	String accessToken = memberService.authenticate(id, password);
-    	
-    	if(accessToken.isEmpty()) {
-        	return "redirect:/login?error=invaild id or password";    		
-    	}
-    	
-		try {
-			Cookie cookie;
-			cookie = new Cookie("access_token", URLEncoder.encode(accessToken, "UTF-8"));
-			cookie.setPath("/");
-			cookie.setMaxAge(3600); //1시간 유효
-			//if(!Strings.isNullOrEmpty(cookieDomain)) cookie.setDomain(cookieDomain);
-			//if(!Strings.isNullOrEmpty(cookiePath)) cookie.setPath(cookiePath);
-			
-			response.addCookie(cookie);
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
-		}
-
-		//go to process for permission
-		
-		if(accessToken.contains(Permission.ADMIN.toString()) || accessToken.contains(Permission.PARTNER.toString())){			
-			return "redirect:/admin/agent";
-		} else {
-	    	return "redirect:/member/gamepatch";			
-		}
-    }
-
     @RequestMapping(value="/logout")
     public String logout(HttpServletResponse response) {
     	
