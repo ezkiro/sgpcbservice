@@ -18,7 +18,7 @@ import com.toyfactory.pcb.service.GamePatchService;
 public class BatchController {
 	private static final Logger logger = LoggerFactory.getLogger(BatchController.class);
 	
-	private static final String AUTH_KEY = "!b@tch9ey!";
+	private static final String AUTH_KEY = "bb@tch99ey!";
 	
 	@Autowired
 	private GamePatchService gamePatchService;	
@@ -32,7 +32,7 @@ public class BatchController {
     	
     	if (!AUTH_KEY.equals(authKey)) {
     		
-    		return "fail: no auth key!";
+    		return "fail: invaild auth key!";
     	}
     	
 		//reference http://tutorials.jenkov.com/java-util-concurrent/executorservice.html
@@ -46,6 +46,6 @@ public class BatchController {
 		
 		executorService.shutdown();
 				
-		return "OK";
+		return "success";
     }	
 }
