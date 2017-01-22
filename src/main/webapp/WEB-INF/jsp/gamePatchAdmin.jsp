@@ -6,9 +6,7 @@
 	<jsp:include page="common.jsp" flush="true"/>
 	<script>
 	$(document).ready(function(){
-		
-		var targetGames = 
-		
+				
 		$("#allGameCheck").click(function(){
 			if ($(this).is(":checked")) {
 				$(".select_subject input").prop('checked', true);				
@@ -17,6 +15,12 @@
 			}			
 		});
 
+		$("#inputSerachKey").click(function(){
+			if ($(this).val() == "all") {
+				$("#inputSerachValue").val("");			
+			}			
+		});
+		
 		$("form").submit(function(event){
 			
 			var checkedGames = [];
@@ -25,8 +29,24 @@
 				checkedGames.push($(this).val());				
 			});
 			
-			$("input[name=checked_games]").val(checkedGames);			
+			$("input[name=checked_games]").val(checkedGames);
+			
+			$("input[name=search_key]").val($("#inputSerachKey option:selected").val());
+			
+			$("input[name=search_value]").val($("#inputSerachValue").val());	
+			
 		});
+		
+		var searchKey = "${search_key}";
+		var searchValue = "${search_value}";
+		
+		if (searchKey.length > 0) {
+			$("#inputSerachKey").val(searchKey);
+		}
+		
+		if (searchValue.length > 0) {
+			$("#inputSerachValue").val(searchValue);
+		}		
 		
 	});  
 	</script>
@@ -70,25 +90,27 @@
 	
 	<form class="form-horizontal" action="/admin/gamepatch" method="post">
 		<input type="hidden" name="checked_games" value="" />
+		<input type="hidden" name="search_key" value="" />
+		<input type="hidden" name="search_value" value="" />
 	  	
   	<div class="form-group bg-info">
 		<div class="col-md-1 text-right">
 			<label for="lbID">조회조건</label>
 		</div>
 		<div class="col-md-2">		
-			<select class="form-control" id ="inputKeyword">
-			  <option>대표자</option>
-			  <option>상호</option>			  
-			  <option>주소</option>			  
-			  <option>IP대역</option>
-			  <option>관리업체1</option>
-			  <option>관리업체2</option>			  
-			  <option>패치유무</option>
-			  <option>지급대상</option>			  			  			  
+			<select class="form-control" id ="inputSerachKey">
+			  <option value="all">전체</option>
+			  <option value="agentName">관리업체1</option>
+			  <option value="companyCode">관리업체2</option>			
+			  <option value="ceo">대표자</option>
+			  <option value="companyName">상호</option>			  
+			  <option value="address">주소</option>			  
+			  <option value="iprange">IP대역</option>
+			  <option value="patchYN">지급대상</option>			  			  			  
 			</select>
 		</div>
 		<div class="col-md-4">	  			
-			<input type="text" class="form-control" id="serachKeyword" placeholder="">
+			<input type="text" class="form-control" id="inputSerachValue" placeholder="">
 		</div>
 		<div class="col-md-2">		
 			<button type="submit" class="btn btn-primary btn-block" id="search">조회</button>

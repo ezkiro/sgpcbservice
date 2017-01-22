@@ -76,8 +76,21 @@ public class PcbangService {
 	}
 	
 	public List<Pcbang> findPcbangs(String key, String keyworkd) {		
-		//key:status 
-		if("status".equals(key)){
+		
+		if ("agentName".equals(key)) {
+			return pcbangDao.findByAgentNameAndStatus(keyworkd, StatusCd.OK);
+		}
+		
+		if ("companyCode".equals(key)) {
+			return pcbangDao.findByCompanyCodeAndStatus(keyworkd, StatusCd.OK);
+		}
+
+		if ("all".equals(key)) {
+			return pcbangDao.findByStatus(StatusCd.OK);
+		}		
+		
+		//key:status
+		if ("status".equals(key)) {
 			return pcbangDao.findByStatus(StatusCd.valueOf(keyworkd));
 		}
 		

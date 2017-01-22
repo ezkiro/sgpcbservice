@@ -20,8 +20,8 @@ import com.toyfactory.pcb.service.MemberService;
 @Controller
 public class WebController {
 
-	@Autowired
-	private MemberService memberService;	
+//	@Autowired
+//	private MemberService memberService;	
 	
 	@RequestMapping("/hello")
 //	@PcbAuthorization(permission="NOBODY")

@@ -14,4 +14,9 @@ public interface PcbangRepository extends JpaRepository<Pcbang, Long> {
 	
 	@Query("select p from Pcbang p where p.agent.agentId = :agentId and p.status = :status")
 	List<Pcbang> findByAgentAndStatus(@Param(value = "agentId")Long agentId, @Param(value = "status") StatusCd status);
+
+	@Query("select p from Pcbang p where p.agent.companyName = :companyName and p.status = :status")
+	List<Pcbang> findByAgentNameAndStatus(@Param(value = "companyName")String agentName, @Param(value = "status") StatusCd status);
+	
+	List<Pcbang> findByCompanyCodeAndStatus(String companyCode, StatusCd status);
 }
