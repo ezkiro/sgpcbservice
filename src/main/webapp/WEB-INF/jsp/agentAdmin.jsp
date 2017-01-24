@@ -57,7 +57,6 @@
 			  <option>아이디</option>			  
 			  <option>상호</option>			  
 			  <option>대표자</option>
-			  <option>주소</option>			  
 			  <option>상태</option>
 			</select>
 		</div>

@@ -104,8 +104,33 @@ public class AdminController {
 
 	@RequestMapping("/gamepatch/excel")
 	@PcbAuthorization(permission="ADMIN")	
-	public String gamePatchExcelDownload(Model model){
+	public String gamePatchExcelDownload(
+			@RequestParam(value="search_key", required = false) String searchKey,
+			@RequestParam(value="search_value", required = false) String searchValue,			
+			Model model){
 		
+		if (logger.isDebugEnabled()) {
+			//logger.debug("checked_games:" + checkedGames);
+			logger.debug("searchKey:" + searchKey + ", searchValue:" + searchValue);
+		}
+		
+		//게임갯수가 많지 않기 때문에 전체를  가져와서 필터링 하는 방식으로 한다.
+		List<Game> targetGames = gameService.findGames();
+		
+		List<Pcbang> pcbangs = null;
+		
+		if (!StringUtils.isEmpty(searchKey) && !StringUtils.isEmpty(searchValue)) {
+			pcbangs = pcbangService.findPcbangs(searchKey, searchValue);
+		} else {
+			//status = OK 인 모든 pc방에 대해서 game patch 여부 조사
+			pcbangs = pcbangService.findPcbangs("status", StatusCd.OK.toString());				
+		}
+				
+		List<PcbGamePatchResult> pcbGamePatchResultList = gamePatchService.buildPcbGamePathResultForPcbang(pcbangs, targetGames);
+		
+		model.addAttribute("targetGameList",targetGames);		
+		model.addAttribute("pcbGamePatchResultList",pcbGamePatchResultList);
+				
 		return "gamePatchExcelDownload";
 	}	
 	

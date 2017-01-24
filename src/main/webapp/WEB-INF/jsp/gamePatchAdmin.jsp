@@ -46,7 +46,15 @@
 		
 		if (searchValue.length > 0) {
 			$("#inputSerachValue").val(searchValue);
-		}		
+		}
+		
+		$("#excelDownload").click(function(){
+			if (searchKey.length > 0 && searchValue.length > 0) {
+				location.href='/admin/gamepatch/excel?search_key=' + searchKey + '&search_value=' + searchValue;				
+			} else {
+				location.href='/admin/gamepatch/excel';
+			}
+		});		
 		
 	});  
 	</script>
@@ -104,7 +112,6 @@
 			  <option value="companyCode">관리업체2</option>			
 			  <option value="ceo">대표자</option>
 			  <option value="companyName">상호</option>			  
-			  <option value="address">주소</option>			  
 			  <option value="iprange">IP대역</option>
 			  <option value="patchYN">지급대상</option>			  			  			  
 			</select>
@@ -136,7 +143,12 @@
 				<td>${game.getName()}</td>
 			</c:forEach>																																																						
 			</tr>
+		<c:set var="paymentCnt" value = "0" scope="page"/>			
 		<c:forEach var="pcbGamePatchResult" items="${pcbGamePatchResultList}">
+			<c:if test="${pcbGamePatchResult.getIsPaymentPcbang().toString() eq 'Y'}">
+				<c:set var="paymentCnt" value="${paymentCnt+1}" scope="page"/>
+			</c:if>
+		
 			<tr>
     			<td>${pcbGamePatchResult.getPcbang().getPcbId()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getCeo()}</td>
@@ -155,6 +167,19 @@
     		</tr>
 		</c:forEach>
 		</table>
+	<br>
+  	<div class="form-group">
+		<div class="col-md-2 col-md-offset-6 bg-warning">
+			<label for="lbTotal">전체 결과 : ${pcbGamePatchResultList.size()}</label>
+		</div>
+		<div class="col-md-2 bg-warning">
+			<label for="lbPay">지급 대상 : ${paymentCnt}</label>
+		</div>		
+	</div>
+	<br>
+	<div class="form-group">
+		<div class="col-md-2 col-md-offset-6"><button type="button" class="btn btn-default btn-block" id="excelDownload">Excel download</button></div>
+	</div>
 		
   </body>
 </html>

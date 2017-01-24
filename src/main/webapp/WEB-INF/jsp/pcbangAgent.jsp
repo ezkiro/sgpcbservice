@@ -33,7 +33,6 @@
 			<select class="form-control" id ="inputKeyword">
 			  <option>대표자</option>
 			  <option>상호</option>			  
-			  <option>주소</option>			  
 			  <option>IP대역</option>
 			  <option>프로그램명</option>
 			</select>

@@ -39,10 +39,8 @@
 			<select class="form-control" id ="inputKeyword">
 			  <option>대표자</option>
 			  <option>상호</option>			  
-			  <option>주소</option>			  
 			  <option>IP대역</option>
-			  <option>관리업체</option>
-			  <option>패치유무</option>
+			  <option>관리업체2</option>
 			  <option>지급대상</option>			  			  			  
 			</select>
 		</div>
@@ -72,10 +70,10 @@
 				<td>${game.getName()}</td>
 			</c:forEach>																																																						
 			</tr>
-		<c:set var="paymentCnt" value = "0" scope="page"/>
+		<c:set var="paymentCnt" value="0" scope="page"/>
 		<c:forEach var="pcbGamePatchResult" items="${pcbGamePatchResultList}">
 			<c:if test="${pcbGamePatchResult.getIsPaymentPcbang().toString() eq 'Y'}">
-				<c:set var="paymentCnt" value="${paymentCnt+1}" scope="page"/>
+				<c:set var="paymentCnt" value="${paymentCnt+1}" scope="page"/>				
 			</c:if>
 			<tr>
     			<td>${pcbGamePatchResult.getPcbang().getPcbId()}</td>
@@ -93,12 +91,16 @@
 			</c:forEach>																																																						
     		</tr>
 		</c:forEach>
-			<!-- 집계결과 -->
-			<tr>
-				<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>설치/패치결과</td>
-				<td>${paymentCnt}</td>
-			</tr>		
 		</table>
-		
+
+		<br>
+	  	<div class="form-group">
+			<div class="col-md-2 col-md-offset-6 bg-warning">
+				<label for="lbTotal">전체 결과 : ${pcbGamePatchResultList.size()}</label>
+			</div>
+			<div class="col-md-2 bg-warning">
+				<label for="lbPay">지급 대상 : ${paymentCnt}</label>
+			</div>		
+		</div>
   </body>
 </html>

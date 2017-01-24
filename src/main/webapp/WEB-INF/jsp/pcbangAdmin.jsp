@@ -64,11 +64,10 @@
 		</div>
 		<div class="col-md-2">		
 			<select class="form-control" id ="inputKeyword">
-			  <option>사업자번호</option>
+			  <option>관리업체1</option>
+			  <option>관리업체2</option>			  
 			  <option>상호</option>			  
-			  <option>주소</option>			  
 			  <option>IP대역</option>
-			  <option>관리업체</option>
 			  <option>프로그램명</option>
 			  <option>상태</option>		  			  			  			  
 			</select>
