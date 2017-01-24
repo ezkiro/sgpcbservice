@@ -126,7 +126,7 @@ public class AdminController {
 		List<Game> targetGames = gameService.buildGames(checkedGames);
 		List<Game> allGames = gameService.findGames();
 		
-		if (checkedGames == null) {
+		if (checkedGames == null || checkedGames.length == 0) {
 			targetGames = allGames;
 		}
 		
