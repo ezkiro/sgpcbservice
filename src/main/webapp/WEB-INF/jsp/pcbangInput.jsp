@@ -12,11 +12,6 @@
 		
 		var checkValidInput = function() {
 			
-			if ($("#inputCeo").val().length === 0 ) {
-				alert("대표자를 입력해 주세요.");
-				return false;				
-			}			
-
 			if ($("#inputCompany").val().length === 0 ) {
 				alert("상호 를 입력해 주세요.");
 				return false;				

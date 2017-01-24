@@ -12,11 +12,6 @@
 		
 		var checkValidInput = function() {
 			
-			if($("#inputCompanyCode").val().length === 0 ) {
-				alert("사업자 번호를 입력해 주세요.");
-				return false;				
-			}			
-
 			if($("#inputCompany").val().length === 0 ) {
 				alert("상호 를 입력해 주세요.");
 				return false;				

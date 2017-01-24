@@ -14,7 +14,7 @@
 			
 		    $.post("/api/member/agent/unregister",
 		    		{
-		    			agent_id:$("#removeAgent").val(),
+		    			agent_id:$(this).val(),
 		    			access_token: getCookie("access_token")
 		    		},
 		    		function(data, status){
