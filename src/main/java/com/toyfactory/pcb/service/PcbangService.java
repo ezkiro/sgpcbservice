@@ -173,7 +173,7 @@ public class PcbangService {
     	aPcbang.setSubmask(pcbData[6].trim());
     	aPcbang.setCompanyCode(pcbData[7].trim());    	
     	aPcbang.setProgram(pcbData[8].trim());
-    	aPcbang.setStatus(StatusCd.WAIT);
+    	aPcbang.setStatus(StatusCd.OK);
 				
 		return aPcbang;
 	}
