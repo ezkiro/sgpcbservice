@@ -1,8 +1,6 @@
 package com.toyfactory.pcb.service;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -31,6 +29,13 @@ public class PcbangService {
 	
 	@Autowired
 	private MemberService memberService;	
+	
+	public Long getPcbId(String ipAddress) {
+		
+		
+		
+		return 0L;
+	}
 	
 	public boolean isPcbangIP(String ipAddress){
 		String cidrNotation = "192.168.0.3/31";
@@ -106,26 +111,51 @@ public class PcbangService {
 		return pcbangDao.findByAgentAndStatus(agentId, status);
 	}
 	
-	public boolean insertBulkData(MultipartFile multipart) {
+	/**
+	 * PC방 가맹점 일괄 입력 처리, 실패 목록을 반환한다.
+	 * @param multipart
+	 * @return
+	 */
+	public List<String> insertBulkData(MultipartFile multipart) {
 
+		List<String> invalidDatas = new ArrayList<String>();
+		
 		try {
+
+			List<String> rawDatas = readFromMultipartFile(multipart);
 			
-			List<Pcbang> pcbangs = readFromMultipartFile(multipart);
+			List<Pcbang> pcbangs = new ArrayList<Pcbang>();
+			
+			//검증작업
+			for (String rawData : rawDatas) {
+				Pcbang pcbang = parseCsv(rawData);
+				if (pcbang == null) {
+					invalidDatas.add(rawData);
+					continue;
+				}
+				
+				pcbangs.add(pcbang);
+			}			
+			
+			if (!invalidDatas.isEmpty()) {
+				return invalidDatas;
+			}
 			
 			for (Pcbang pcbang : pcbangs) {				
 				memberService.addPcbang(pcbang, pcbang.getAgent().getAgentId());
 			}
 			
-		} catch (Exception e) {
-			logger.error("[readFromFile] exception:" + e.getMessage());
+			return invalidDatas;
 			
-			return false;
-		}
-		return true;
+		} catch (Exception e) {
+			logger.error("[insertBulkData] exception:" + e.getMessage());
+			invalidDatas.add("fail to addPcbang:" + e.getMessage());
+			return invalidDatas;
+		}		
 	}
 		
-	private List<Pcbang> readFromMultipartFile(MultipartFile multipart) throws IOException {
-		List<Pcbang> outputList = new ArrayList<Pcbang>();
+	private List<String> readFromMultipartFile(MultipartFile multipart) throws IOException {
+		List<String> outputList = new ArrayList<String>();
 		
 		BufferedReader bufferedReader = null;
 				
@@ -134,13 +164,9 @@ public class PcbangService {
 			String pcbData = null;
 			
 			while ((pcbData = bufferedReader.readLine()) != null) {				
-				if (logger.isDebugEnabled()) logger.debug("[readFromMultipartFile] pcbData:" + pcbData);				
-				
-				Pcbang pcbang = parseCsv(pcbData);
-				
-				if (pcbang == null) continue;
-				
-				outputList.add(pcbang);
+				if (logger.isDebugEnabled()) logger.debug("[readFromMultipartFile] pcbData:" + pcbData);
+								
+				outputList.add(pcbData);
 			}
 						
 		} catch (Exception e) {
@@ -153,28 +179,40 @@ public class PcbangService {
 	}
 	
 	private Pcbang parseCsv(String csvLine) {
-		
-		//0 agent id(관리업체1), 1 대표자,2 상호,3 주소,4 start ip, 5 end ip, 6 submask, 7 관리업체2, 8 프로그램
-		String[] pcbData = csvLine.split(",");
 
-		if (pcbData.length < 8) return null;
-				
-    	Pcbang aPcbang = new Pcbang(new Date());
-    	
-    	Agent aAgent = new Agent(new Date());
-    	aAgent.setAgentId(Long.valueOf(pcbData[0].trim()));
-    	
-    	aPcbang.setAgent(aAgent);    	
-    	aPcbang.setCeo(pcbData[1].trim());
-    	aPcbang.setCompanyName(pcbData[2].trim());    	
-    	aPcbang.setAddress(pcbData[3].trim());
-    	aPcbang.setIpStart(pcbData[4].trim());
-    	aPcbang.setIpEnd(pcbData[5].trim());
-    	aPcbang.setSubmask(pcbData[6].trim());
-    	aPcbang.setCompanyCode(pcbData[7].trim());    	
-    	aPcbang.setProgram(pcbData[8].trim());
-    	aPcbang.setStatus(StatusCd.OK);
-				
-		return aPcbang;
+		try {
+			//0 agent id(관리업체1), 1 대표자, 2 상호, 3 start ip, 4 end ip, 5 submask, 6 관리업체2, 7 프로그램, 8 주소
+			String[] pcbData = csvLine.split(",");
+
+			if (pcbData.length < 9) return null;
+					
+	    	Pcbang aPcbang = new Pcbang(new Date());
+	    	
+	    	Agent aAgent = new Agent(new Date());
+	    	aAgent.setAgentId(Long.valueOf(pcbData[0].trim()));
+	    	
+	    	aPcbang.setAgent(aAgent);    	
+	    	aPcbang.setCeo(pcbData[1].trim());
+	    	aPcbang.setCompanyName(pcbData[2].trim());    	
+	    	aPcbang.setIpStart(pcbData[3].trim());
+	    	aPcbang.setIpEnd(pcbData[4].trim());
+	    	aPcbang.setSubmask(pcbData[5].trim());
+	    	aPcbang.setCompanyCode(pcbData[6].trim());    	
+	    	aPcbang.setProgram(pcbData[7].trim());
+	    	aPcbang.setStatus(StatusCd.OK);	    	
+	    	
+	    	//주소에 구분자 , 가 포함되는 경우에 대비해서 아래와 같이 처리
+    		StringBuilder sb = new StringBuilder();
+    		for (int i = 8; i < pcbData.length; i++ ) {
+    			sb.append(pcbData[i]);
+    		}
+    		
+	    	aPcbang.setAddress(sb.toString());
+			return aPcbang;
+			
+		} catch (Exception e) {
+			logger.error("[parseCsv] exception:" + e.getMessage());
+			return null;
+		}
 	}
 }

@@ -217,11 +217,20 @@ public class MemberService {
 		//맵핑할 Agent 가 없으면 입력 실패
 		if (agent == null ) return null;
 		
+		//ipStart 와 ipEnd가 동일하면 중복 PC방으로 보고 입력하지 않는다.
+		List<Pcbang> duplicatePcbangs = pcbangDao.findByIpStartAndIpEnd(pcbang.getIpStart(),pcbang.getIpEnd());
+		
+		if (!duplicatePcbangs.isEmpty()) {	
+			logger.error("[addPcbang] duplicate pcbang! ipStart:" + pcbang.getIpStart() + ", ipEnd:" + pcbang.getIpEnd());			
+			return null;
+		}
+
+		//아래 같이 set을 하면 반듯이 save를 해 줘야 한다.
 		pcbang.setAgent(agent);
 
 		List<String> pcbangIPs = pcbangService.buildPcbangIPs(pcbang.getIpStart(), pcbang.getIpEnd(), pcbang.getSubmask());
 		pcbang.setIpTotal(Long.valueOf(pcbangIPs.size()));
-		
+				
 		return pcbangDao.save(pcbang);
 	}
 	

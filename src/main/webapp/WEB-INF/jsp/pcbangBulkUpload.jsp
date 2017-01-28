@@ -21,11 +21,18 @@
 	</div>
 	
 <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/admin/pcbang/upload">
-
+	<div class="row">
+	
+		<ul>
+  			<li>입력포맷을 꼭 확인하세요.</li>
+  			<li>ip start 와 ip end 가 동일하면 중복 처리되어서 입력이 되지 않습니다.</li>
+			<li>Agent id가 존재하지 않는 경우에도  입력이 되지 않습니다.</li>
+		</ul>
+	</div>
 	<div class="row">
 		<div class="form-group">
 			<div class="col-sm-2 text-right"><label for="lbFileFormat">파일포맷</label></div>
-			<div class="col-sm-8"><label for="lbExample">agent id(관리업체1),대표자,상호,주소,start ip,end ip,submask,관리업체2,프로그램</label></div>
+			<div class="col-sm-8"><label for="lbExample">agent id(관리업체1),대표자,상호,start ip,end ip,submask,관리업체2,프로그램,주소</label></div>
 		</div>
 	</div>
 

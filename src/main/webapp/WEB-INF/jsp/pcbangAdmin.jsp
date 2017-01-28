@@ -129,6 +129,6 @@
 		<div class="col-md-2"><a class="btn btn-default btn-block" href="/admin/pcbang/add" role="button">등록</a></div>
 		<div class="col-md-2"><button type="button" class="btn btn-default btn-block" id="removePcbang">삭제</button></div>		
 	</div>
-		
+	<br>	
   </body>
 </html>

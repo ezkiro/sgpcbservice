@@ -348,16 +348,19 @@ public class AdminController {
 	@PcbAuthorization(permission="ADMIN")		
 	public String uploadBulkPcbangList(
 			@RequestParam(value = "file", required = true) MultipartFile file,
-            RedirectAttributes redirectAttributes) {
+            Model model) {
 		
 		if(logger.isDebugEnabled()) {
 			logger.debug("[uploadBulkPcbangList] filename:" + file.getOriginalFilename());
 		}
 		
-		pcbangService.insertBulkData(file);
+		List<String> invalidDatas = pcbangService.insertBulkData(file);
+		
+		if ((invalidDatas != null) && (!invalidDatas.isEmpty())) {
+			model.addAttribute("invalidDatas", invalidDatas);			
+			return "pcbangBulkUploadFail";
+		}
 	
-		redirectAttributes.addFlashAttribute("message","You successfully uploaded " + file.getOriginalFilename() + "!");
-
         return "redirect:/admin/pcbang";				
 	}
 }
