@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.toyfactory.pcb.domain.Pcbang;
+import com.toyfactory.pcb.model.AgentCommand;
 import com.toyfactory.pcb.model.PcbGamePatch;
 import com.toyfactory.pcb.model.Version;
 import com.toyfactory.pcb.service.GamePatchService;
+import com.toyfactory.pcb.service.GameService;
 import com.toyfactory.pcb.service.PcbangService;
 
 @RestController
@@ -31,6 +33,9 @@ public class AgentController {
     
     @Autowired
     private PcbangService pcbangService;
+    
+    @Autowired
+    private GameService gameService;
     
     @RequestMapping("/version")
     public Version version(@RequestParam(value="name", defaultValue="World") String name) {
@@ -81,4 +86,13 @@ public class AgentController {
         return gamePatchService.checkGamePatchPass(client_ip);
     }
     
+    @RequestMapping(value = "/command", method = RequestMethod.GET)
+    public AgentCommand requestCommand(@RequestParam(name="client_ip") String client_ip) {
+    	
+    	if(logger.isDebugEnabled()){
+        	logger.debug("[requestCommand] ip:" + client_ip);    		
+    	}    	
+    	
+    	return gameService.buildAgentCommand("CHECK");
+    }
 }

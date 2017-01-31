@@ -10,13 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.toyfactory.pcb.domain.Game;
+import com.toyfactory.pcb.domain.InstallPath;
+import com.toyfactory.pcb.model.AgentCommand;
+import com.toyfactory.pcb.model.GameCommand;
 import com.toyfactory.pcb.repository.GameRepository;
+import com.toyfactory.pcb.repository.InstallPathRepository;
 
 @Service("gameService")
 public class GameService {
 
 	@Autowired	
 	private GameRepository gameDao;
+	
+	@Autowired
+	private InstallPathRepository installPathDao;
 
 	public Map<String,Game> buildAllGamesMap() {
 		
@@ -83,5 +90,30 @@ public class GameService {
 		}
 				
 		return games;
+	}
+	
+	public List<InstallPath> findInstallPath(String gsn) {
+		return installPathDao.findByGsn(gsn);
+	}
+	
+	public AgentCommand buildAgentCommand(String command) {
+		
+		AgentCommand agentCmd = new AgentCommand(command);
+		agentCmd.setCmd(command);
+		
+		if ("PASS".equals(command)) {
+			return agentCmd;
+		}
+		
+		List<Game> games = findGames();
+		
+		for (Game game : games) {
+			GameCommand gameCmd = new GameCommand(game);			
+			gameCmd.setExpectedPaths(findInstallPath(game.getGsn()));
+			
+			agentCmd.getGameCommands().add(gameCmd);
+		}
+		
+		return agentCmd;
 	}
 }
