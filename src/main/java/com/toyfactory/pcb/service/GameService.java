@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.toyfactory.pcb.domain.Game;
 import com.toyfactory.pcb.domain.InstallPath;
@@ -93,7 +94,24 @@ public class GameService {
 	}
 	
 	public List<InstallPath> findInstallPath(String gsn) {
+		
+		if (StringUtils.isEmpty(gsn)) {
+			return installPathDao.findAll();
+		}
+		
 		return installPathDao.findByGsn(gsn);
+	}
+	
+	public InstallPath findInstallPathById(Long id) {
+		return installPathDao.findOne(id);
+	}
+	
+	public boolean updateInstallPath(InstallPath existPath) {		
+		existPath.setUptDt(new Date());
+		
+		installPathDao.save(existPath);
+		
+		return true;
 	}
 	
 	public AgentCommand buildAgentCommand(String command) {

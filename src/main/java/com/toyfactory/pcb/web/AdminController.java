@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.toyfactory.pcb.aop.PcbAuthorization;
 import com.toyfactory.pcb.domain.Agent;
 import com.toyfactory.pcb.domain.Game;
+import com.toyfactory.pcb.domain.InstallPath;
 import com.toyfactory.pcb.domain.Pcbang;
 import com.toyfactory.pcb.model.PcbGamePatch;
 import com.toyfactory.pcb.model.PcbGamePatchResult;
@@ -363,4 +364,51 @@ public class AdminController {
 	
         return "redirect:/admin/pcbang";				
 	}
+	
+	@RequestMapping("/installpath")
+	@PcbAuthorization(permission="ADMIN")	
+	public String installPathPage(Model model){
+		
+		List<InstallPath> installPathList = gameService.findInstallPath("");
+
+		model.addAttribute("installPathList",installPathList);
+		return "installPathAdmin";
+	}	
+
+	@RequestMapping(value="/installpath/update", method=RequestMethod.GET)
+	@PcbAuthorization(permission="ADMIN")	
+	public String updateInstallPathPage(Model model,
+    		@RequestParam(value="id", required = true) Long id){
+		
+		InstallPath path = gameService.findInstallPathById(id);
+		
+		List<Game> allGames = gameService.findGames();
+		
+		model.addAttribute("installPath",path);
+		model.addAttribute("gameList",allGames);		
+		return  "installPathUpdate";
+	}		
+	
+	@RequestMapping(value="/api/installpath/update", method=RequestMethod.POST)
+	@ResponseBody
+	@PcbAuthorization(permission="ADMIN")	
+	public boolean updateInstallPath(Model model,
+    		@RequestParam(value="id", required = true) Long id,			
+    		@RequestParam(value="gsn", required = true) String gsn,
+    		@RequestParam(value="path", required = true) String path,
+    		@RequestParam(value="type", required = true) String type	
+			){
+		
+		InstallPath existPath = gameService.findInstallPathById(id);
+		
+		if(existPath == null ) return false;			
+		
+		existPath.setGsn(gsn);
+		existPath.setPath(path);
+		existPath.setType(type);
+				
+		return gameService.updateInstallPath(existPath);
+	}
+	
+	
 }
