@@ -40,6 +40,7 @@
 				updateMode = true;
 				$("#inputGsn").val("${game.getGsn()}");
 				$("#inputName").val("${game.getName()}");
+				$("#inputVerifyType").val("${game.getVerifyType().toString()}");		
 				$("#inputMajor").val("${game.getMajor()}");
 				$("#inputMinor").val("${game.getMinor()}");
 				$("#inputExeFile").val("${game.getExeFile()}");
