@@ -388,6 +388,16 @@ public class AdminController {
 		model.addAttribute("gameList",allGames);		
 		return  "installPathUpdate";
 	}		
+
+	@RequestMapping(value="/installpath/add", method=RequestMethod.GET)
+	@PcbAuthorization(permission="ADMIN")	
+	public String addInstallPathPage(Model model){
+		
+		List<Game> allGames = gameService.findGames();		
+		model.addAttribute("gameList",allGames);
+		return  "installPathInput";
+	}		
+	
 	
 	@RequestMapping(value="/api/installpath/update", method=RequestMethod.POST)
 	@ResponseBody
@@ -410,5 +420,34 @@ public class AdminController {
 		return gameService.updateInstallPath(existPath);
 	}
 	
+	@RequestMapping(value="/api/installpath/new", method=RequestMethod.POST)
+	@ResponseBody
+	@PcbAuthorization(permission="ADMIN")	
+	public boolean addInstallPath(Model model,		
+    		@RequestParam(value="gsn", required = true) String gsn,
+    		@RequestParam(value="path", required = true) String path,
+    		@RequestParam(value="type", required = true) String type	
+			){
+		
+		String[] paths = path.split(";");
+		
+		for (String aPath : paths) {
+
+			if(logger.isDebugEnabled()) {
+				logger.debug("[addInstallPath] aPath:" + aPath);
+			}			
+			
+			InstallPath newPath = new InstallPath(new Date());
+			
+			newPath.setGsn(gsn);
+			newPath.setPath(aPath);
+			newPath.setType(type);
+					
+			gameService.addInstallPath(newPath);			
+		}
+						
+		return true;
+	}
+
 	
 }

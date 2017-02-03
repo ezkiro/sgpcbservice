@@ -29,5 +29,12 @@ public class InstallPath {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date crtDt;
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date uptDt;	
+	private Date uptDt;
+	
+	protected InstallPath() {}
+	
+	public InstallPath(Date date) {
+		this.crtDt = date;
+		this.uptDt = date;
+	}
 }

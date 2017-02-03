@@ -58,7 +58,7 @@
   
 <div class="container bg-info">  
 	<div class="row text-center">
-		<h3>Install Path 정보 입력/수정</h3>
+		<h3>Install Path 정보 수정</h3>
 	</div>
 	
 <form class="form-horizontal">

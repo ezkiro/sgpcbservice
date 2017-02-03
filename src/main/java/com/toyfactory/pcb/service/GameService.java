@@ -96,7 +96,7 @@ public class GameService {
 	public List<InstallPath> findInstallPath(String gsn) {
 		
 		if (StringUtils.isEmpty(gsn)) {
-			return installPathDao.findAll();
+			return installPathDao.findAllByOrderByGsn();
 		}
 		
 		return installPathDao.findByGsn(gsn);
@@ -112,6 +112,11 @@ public class GameService {
 		installPathDao.save(existPath);
 		
 		return true;
+	}
+	
+	public InstallPath addInstallPath(InstallPath newPath) {
+		
+		return installPathDao.save(newPath);
 	}
 	
 	public AgentCommand buildAgentCommand(String command) {
