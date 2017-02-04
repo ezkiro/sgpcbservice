@@ -9,6 +9,9 @@ public class AgentCommand {
 	private String cmd;
 	private List<GameCommand> gameCommands;
 	
+	//for cache
+	public AgentCommand() {}
+	
 	public AgentCommand(String command) {
 		this.cmd = command;
 		this.gameCommands = new ArrayList<GameCommand>();

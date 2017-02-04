@@ -17,6 +17,9 @@ public class GameCommand {
 	
 	private List<InstallPath> expectedPaths;
 	
+	//for cache
+	public GameCommand() {}
+	
 	public GameCommand(Game game) {
 		this.gsn = game.getGsn();
 		this.verifyType = game.getVerifyType().toString();

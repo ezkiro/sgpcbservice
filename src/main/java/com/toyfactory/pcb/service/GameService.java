@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -48,6 +50,7 @@ public class GameService {
 		return gameDao.findOne(gsn);
 	}
 	
+	@CacheEvict(cacheNames="agentCmdCache", allEntries=true)
 	public boolean addGame(Game newGame) {
 				
 		Game existGame = gameDao.findOne(newGame.getGsn());
@@ -59,6 +62,7 @@ public class GameService {
 		return true;
 	}
 	
+	@CacheEvict(cacheNames="agentCmdCache", allEntries=true)	
 	public boolean updateGame(Game existGame) {		
 		existGame.setUptDt(new Date());
 		
@@ -67,6 +71,7 @@ public class GameService {
 		return true;
 	}
 	
+	@CacheEvict(cacheNames="agentCmdCache", allEntries=true)	
 	public void removeGame(String gsn) {
 		gameDao.delete(gsn);
 	}
@@ -106,6 +111,7 @@ public class GameService {
 		return installPathDao.findOne(id);
 	}
 	
+	@CacheEvict(cacheNames="agentCmdCache", allEntries=true)	
 	public boolean updateInstallPath(InstallPath existPath) {		
 		existPath.setUptDt(new Date());
 		
@@ -113,12 +119,15 @@ public class GameService {
 		
 		return true;
 	}
-	
+
+	@CacheEvict(cacheNames="agentCmdCache", allEntries=true)	
 	public InstallPath addInstallPath(InstallPath newPath) {
 		
 		return installPathDao.save(newPath);
 	}
 	
+	
+	@Cacheable(cacheNames="agentCmdCache", key="#command")
 	public AgentCommand buildAgentCommand(String command) {
 		
 		AgentCommand agentCmd = new AgentCommand(command);
