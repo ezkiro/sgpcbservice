@@ -14,6 +14,8 @@ public interface PcbangRepository extends JpaRepository<Pcbang, Long> {
 	List<Pcbang> findByIpStartAndIpEnd(String ipStart, String ipEnd);
 	List<Pcbang> findByProgram(String program);
 	
+	List<Pcbang> findAllByOrderByUptDtDesc();
+	
 	@Query("select p from Pcbang p where p.agent.agentId = :agentId and p.status = :status")
 	List<Pcbang> findByAgentAndStatus(@Param(value = "agentId")Long agentId, @Param(value = "status") StatusCd status);
 
@@ -41,6 +43,4 @@ public interface PcbangRepository extends JpaRepository<Pcbang, Long> {
 	
 	//%companyName% search
 	List<Pcbang> findByCompanyNameContaining(String companyName);
-	
-	
 }

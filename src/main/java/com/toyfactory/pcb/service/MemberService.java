@@ -236,8 +236,8 @@ public class MemberService {
 			return pcbangDao.findByStatus(StatusCd.valueOf(keyword));
 		}
 		
-		//all pcbangs
-		return pcbangDao.findAll();		
+		//all pcbangs order by uptdt desc
+		return pcbangDao.findAllByOrderByUptDtDesc();		
 	}
 		
 	public Pcbang addPcbang(Pcbang pcbang, Long agentId) {		
