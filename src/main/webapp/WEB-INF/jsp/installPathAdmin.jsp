@@ -25,13 +25,13 @@
 			
 		    $.post("/admin/api/installpath/remove",
 		    		{
-		    			gsn_list:targetGames,
+		    			id_list: targetItems,
 		    			access_token: getCookie("access_token")
 		    		},
 		    		function(data, status){
 		    			if(data) {
 		    				alert('install path 정보 삭제에 성공했습니다.');		    				
-		    				location.href = '/admin/game';
+		    				location.href = '/admin/installpath';
 		    			} else {
 		    				alert('install path 삭제에 실패했습니다. 다시 시도 하세요.');
 		    			}
@@ -60,15 +60,17 @@
 	
 	<table class="table table-bordered table-hover">
 		<tr class="info">
-			<td>GSN</td>
+			<td>id</td>
+			<td>Game</td>			
 			<td>category</td>
 			<td>path</td>
 			<td>변경날짜</td>
 			<td>관리</td>
 		</tr>
 	<c:forEach var="installPath" items="${installPathList}">
-		<tr>
-   			<td><input type="checkbox" value="${installPath.getId()}">${installPath.getGsn()}</td>
+		<tr>		
+   			<td><input type="checkbox" value="${installPath.getId()}">${installPath.getId()}</td>
+   			<td>${gameMap.get(installPath.getGsn()).getName()}</td>
    			<td>${installPath.getType()}</td>
    			<td>${installPath.getPath()}</td>   			   			   			   			
    			<td>${installPath.getUptDt().toString()}</td>   			

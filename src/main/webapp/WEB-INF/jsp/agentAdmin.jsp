@@ -53,11 +53,10 @@
 		</div>
 		<div class="col-md-2">		
 			<select class="form-control" id ="inputKeyword">
-			  <option>사업자번호</option>
 			  <option>아이디</option>			  
-			  <option>상호</option>			  
-			  <option>대표자</option>
+			  <option>대표자</option>			  
 			  <option>상태</option>
+			  <option>상호</option>			  
 			</select>
 		</div>
 		<div class="col-md-4">	  			

@@ -31,7 +31,7 @@
 		</div>
 		<div class="col-md-2">		
 			<select class="form-control" id ="inputKeyword">
-			  <option>대표자</option>
+			  <option>관리업체</option>
 			  <option>상호</option>			  
 			  <option>IP대역</option>
 			  <option>프로그램명</option>
@@ -60,7 +60,7 @@
 			<td>주소</td>
 			<td>IP대역</td>
 			<td>subnet mask</td>
-			<td>관리업체2</td>
+			<td>관리업체</td>
 			<td>프로그램</td>						
 			<td>상태</td>			
 			<td>등록일</td>

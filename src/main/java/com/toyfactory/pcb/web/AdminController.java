@@ -3,6 +3,7 @@ package com.toyfactory.pcb.web;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -94,17 +95,34 @@ public class AdminController {
 	
 	@RequestMapping("/pcbang")
 	@PcbAuthorization(permission="ADMIN")	
-	public String pcbangPage(Model model){
-		
-		List<Pcbang> pcbangList = memberService.findPcbangs(null, null);
+	public String pcbangPage(
+			@RequestParam(value="search_key", required = false) String searchKey,
+			@RequestParam(value="search_value", required = false) String searchValue,			
+			Model model){
 
+		if (logger.isDebugEnabled()) {
+			//logger.debug("checked_games:" + checkedGames);
+			logger.debug("searchKey:" + searchKey + ", searchValue:" + searchValue);
+		}
+		
+		List<Pcbang> pcbangList;
+
+		if (!StringUtils.isEmpty(searchKey) && !StringUtils.isEmpty(searchValue)) {
+			pcbangList = memberService.findPcbangs(searchKey, searchValue);
+			model.addAttribute("search_key",searchKey);
+			model.addAttribute("search_value",searchValue);			
+		} else {
+			//all pcbang
+			pcbangList = memberService.findPcbangs(null, null);
+		}
+		
 		model.addAttribute("pcbangCnt", pcbangList.size());
 		model.addAttribute("pcbangList",pcbangList);
 		return "pcbangAdmin";
 	}
 
 	@RequestMapping("/gamepatch/excel")
-	@PcbAuthorization(permission="ADMIN")	
+	@PcbAuthorization(permission="PARTNER")	
 	public String gamePatchExcelDownload(
 			@RequestParam(value="search_key", required = false) String searchKey,
 			@RequestParam(value="search_value", required = false) String searchValue,			
@@ -136,7 +154,7 @@ public class AdminController {
 	}	
 	
 	@RequestMapping("/gamepatch")
-	@PcbAuthorization(permission="ADMIN")	
+	@PcbAuthorization(permission="PARTNER")	
 	public String gamePatchPage(
 			@RequestParam(value="checked_games", required = false) String[] checkedGames,
 			@RequestParam(value="search_key", required = false) String searchKey,
@@ -370,8 +388,11 @@ public class AdminController {
 	public String installPathPage(Model model){
 		
 		List<InstallPath> installPathList = gameService.findInstallPath("");
+		
+		Map<String,Game> gameMap = gameService.buildAllGamesMap();
 
 		model.addAttribute("installPathList",installPathList);
+		model.addAttribute("gameMap",gameMap);
 		return "installPathAdmin";
 	}	
 
@@ -449,5 +470,17 @@ public class AdminController {
 		return true;
 	}
 
+
+	@RequestMapping(value="/api/installpath/remove", method=RequestMethod.POST)
+	@ResponseBody
+	@PcbAuthorization(permission="ADMIN")	
+	public boolean removeInstallPath(
+			@RequestParam(value="id_list[]", required = true) String[] idList) {
 	
+		for (String id : idList) {
+			gameService.removeInstallPath(Long.valueOf(id));
+		}
+		
+		return true;
+	}		
 }

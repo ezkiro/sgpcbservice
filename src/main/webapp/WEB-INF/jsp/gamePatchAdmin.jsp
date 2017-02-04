@@ -65,7 +65,7 @@
   	<div class="row">
 		<ul class="nav nav-pills">
 		  <li role="presentation"><a href="/admin/agent">업체관리</a></li>
-		  <li role="presentation" class="active"><a href="#">설치/패치관리</a></li>
+		  <li role="presentation" class="active"><a href="#">설치/패치관리</a></li>		  
 		  <li role="presentation"><a href="/admin/pcbang">가맹점관리</a></li>
 		  <li role="presentation"><a href="/admin/game">Game관리</a></li>	
 		  <li role="presentation"><a href="/logout">로그아웃</a></li>		  	  
@@ -110,9 +110,8 @@
 			  <option value="all">전체</option>
 			  <option value="agentName">관리업체1</option>
 			  <option value="companyCode">관리업체2</option>			
-			  <option value="ceo">대표자</option>
 			  <option value="companyName">상호</option>			  
-			  <option value="iprange">IP대역</option>
+			  <option value="ipRange">IP</option>
 			  <option value="patchYN">지급대상</option>			  			  			  
 			</select>
 		</div>

@@ -80,23 +80,34 @@ public class PcbangService {
 		return pcbangIPs;
 	}
 	
-	public List<Pcbang> findPcbangs(String key, String keyworkd) {		
+	public List<Pcbang> findPcbangs(String key, String keyword) {		
 		
 		if ("agentName".equals(key)) {
-			return pcbangDao.findByAgentNameAndStatus(keyworkd, StatusCd.OK);
+			return pcbangDao.findByAgentNameAndStatus(keyword, StatusCd.OK);
 		}
 		
 		if ("companyCode".equals(key)) {
-			return pcbangDao.findByCompanyCodeAndStatus(keyworkd, StatusCd.OK);
+			return pcbangDao.findByCompanyCodeAndStatus(keyword, StatusCd.OK);
+		}
+		
+		if ("companyName".equals(key)) {
+			return pcbangDao.findByCompanyNameContainingAndStatus(keyword, StatusCd.OK);
 		}
 
+		if ("ipRange".equals(key)) {
+			// 100.1.1.1 -> 100.1.1% search
+			String ipKey = keyword.substring(0,keyword.lastIndexOf("."));
+			if (logger.isDebugEnabled()) logger.debug("[findPcbangs] ipKey:" + ipKey);
+			return pcbangDao.findByIpStartStartingWithAndStatus(ipKey, StatusCd.OK);
+		}
+		
 		if ("all".equals(key)) {
 			return pcbangDao.findByStatus(StatusCd.OK);
 		}		
 		
 		//key:status
 		if ("status".equals(key)) {
-			return pcbangDao.findByStatus(StatusCd.valueOf(keyworkd));
+			return pcbangDao.findByStatus(StatusCd.valueOf(keyword));
 		}
 		
 		//all pcbangs

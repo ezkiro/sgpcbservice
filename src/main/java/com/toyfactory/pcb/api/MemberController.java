@@ -122,8 +122,10 @@ public class MemberController {
 
 		//go to process for permission
 		
-		if(accessToken.contains(Permission.ADMIN.toString()) || accessToken.contains(Permission.PARTNER.toString())){			
+		if(accessToken.contains(Permission.ADMIN.toString())){			
 			return "/admin/agent";
+		} else if (accessToken.contains(Permission.PARTNER.toString())) {
+			return "/admin/gamepatch";
 		} else {
 	    	return "/member/gamepatch";			
 		}

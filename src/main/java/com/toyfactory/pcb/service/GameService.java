@@ -126,6 +126,10 @@ public class GameService {
 		return installPathDao.save(newPath);
 	}
 	
+	@CacheEvict(cacheNames="agentCmdCache", allEntries=true)	
+	public void removeInstallPath(Long id) {
+		installPathDao.delete(id);
+	}	
 	
 	@Cacheable(cacheNames="agentCmdCache", key="#command")
 	public AgentCommand buildAgentCommand(String command) {

@@ -202,12 +202,40 @@ public class MemberService {
 	}
 	
 
-	public List<Pcbang> findPcbangs(String item, String keyworkd) {
-		
-		if ("status".equals(item)) {
-			return pcbangDao.findByStatus(StatusCd.valueOf(keyworkd));
+	public List<Pcbang> findPcbangs(String key, String keyword) {
+
+		if ("agentName".equals(key)) {
+			return pcbangDao.findByAgentName(keyword);
 		}
-				
+		
+		if ("companyCode".equals(key)) {
+			return pcbangDao.findByCompanyCode(keyword);
+		}
+		
+		if ("companyName".equals(key)) {
+			return pcbangDao.findByCompanyNameContaining(keyword);
+		}
+
+		if ("ipRange".equals(key)) {
+			// 100.1.1.1 -> 100.1.1% search
+			String ipKey = keyword.substring(0,keyword.lastIndexOf("."));
+			if (logger.isDebugEnabled()) logger.debug("[findPcbangs] ipKey:" + ipKey);
+			return pcbangDao.findByIpStartStartingWith(ipKey);
+		}
+		
+		if ("program".equals(key)) {
+			return pcbangDao.findByProgram(keyword);
+		}
+		
+		if ("all".equals(key)) {
+			return pcbangDao.findAll();
+		}		
+		
+		//key:status
+		if ("status".equals(key)) {
+			return pcbangDao.findByStatus(StatusCd.valueOf(keyword));
+		}
+		
 		//all pcbangs
 		return pcbangDao.findAll();		
 	}
