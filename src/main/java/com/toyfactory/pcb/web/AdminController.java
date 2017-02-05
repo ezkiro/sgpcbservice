@@ -61,9 +61,25 @@ public class AdminController {
 	
 	@RequestMapping("/agent")
 	@PcbAuthorization(permission="ADMIN")	
-	public String agentPage(Model model){
+	public String agentPage(
+			@RequestParam(value="search_key", required = false) String searchKey,
+			@RequestParam(value="search_value", required = false) String searchValue,			
+			Model model){
+
+		if (logger.isDebugEnabled()) {
+			logger.debug("searchKey:" + searchKey + ", searchValue:" + searchValue);
+		}
 		
-		List<Agent> agentList = memberService.findAgents(null, null);
+		List<Agent> agentList;
+		
+		if (!StringUtils.isEmpty(searchKey) && !StringUtils.isEmpty(searchValue)) {
+			agentList = memberService.findAgents(searchKey, searchValue);
+			model.addAttribute("search_key",searchKey);
+			model.addAttribute("search_value",searchValue);			
+		} else {
+			agentList = memberService.findAgents(null, null);
+		}
+		
 		
 		int agentOKCnt = 0;
 		int agentWaitCnt = 0;
@@ -101,7 +117,6 @@ public class AdminController {
 			Model model){
 
 		if (logger.isDebugEnabled()) {
-			//logger.debug("checked_games:" + checkedGames);
 			logger.debug("searchKey:" + searchKey + ", searchValue:" + searchValue);
 		}
 		

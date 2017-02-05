@@ -187,10 +187,22 @@ public class MemberService {
 	}
 	
 	
-	public List<Agent> findAgents(String item, String keyworkd) {
+	public List<Agent> findAgents(String key, String keyword) {
 		
-		if ("status".equals(item)) {
-			return agentDao.findByStatus(StatusCd.valueOf(keyworkd));
+		if ("account".equals(key)) {
+			return agentDao.findByAccount(keyword);
+		}
+		
+		if ("ceo".equals(key)) {
+			return agentDao.findByCeo(keyword);
+		}
+		
+		if ("companyName".equals(key)) {
+			return agentDao.findByCompanyNameContaining(keyword);
+		}
+		
+		if ("status".equals(key)) {
+			return agentDao.findByStatus(StatusCd.valueOf(keyword));
 		}	
 		
 		//all agents
