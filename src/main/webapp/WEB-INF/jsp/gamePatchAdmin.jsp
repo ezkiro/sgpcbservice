@@ -20,8 +20,27 @@
 				$("#inputSerachValue").val("");			
 			}			
 		});
-		
+	
+		var checkValidSearch = function() {								
+			//id 체크
+			if ($("#inputSerachKey").val() != "all" && $("#inputSerachValue").val().length === 0 ) {
+				alert("조회할 값을 입력하세요.");
+				return false;				
+			}
+			
+			if ($("#inputSerachKey").val() == "patchYN" && !($("#inputSerachValue").val() == "Y" || $("#inputSerachValue").val() == "N")) {
+				alert("입력오류! 지급대상은 'Y' 또는 'N'를  입력하세요.");
+				return false;								
+			}
+			
+			return true;
+		}
+				
 		$("form").submit(function(event){
+			
+			if (!checkValidSearch()) {
+				event.preventDefault();
+			}
 			
 			var checkedGames = [];
 			
@@ -67,7 +86,8 @@
 		  <li role="presentation"><a href="/admin/agent">업체관리</a></li>
 		  <li role="presentation" class="active"><a href="#">설치/패치관리</a></li>		  
 		  <li role="presentation"><a href="/admin/pcbang">가맹점관리</a></li>
-		  <li role="presentation"><a href="/admin/game">Game관리</a></li>	
+		  <li role="presentation"><a href="/admin/game">Game관리</a></li>
+		  <li role="presentation"><a href="/admin/installpath">InstallPath관리</a></li>		  	
 		  <li role="presentation"><a href="/logout">로그아웃</a></li>		  	  
 		</ul>
   	</div>

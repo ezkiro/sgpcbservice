@@ -32,6 +32,7 @@ import com.toyfactory.pcb.model.PcbGamePatch;
 import com.toyfactory.pcb.model.PcbGamePatchResult;
 import com.toyfactory.pcb.model.StatusCd;
 import com.toyfactory.pcb.model.VerifyType;
+import com.toyfactory.pcb.model.YN;
 import com.toyfactory.pcb.repository.PcbangRepository;
 import com.toyfactory.pcb.service.GamePatchService;
 import com.toyfactory.pcb.service.GameService;
@@ -199,13 +200,26 @@ public class AdminController {
 			//status = OK 인 모든 pc방에 대해서 game patch 여부 조사
 			pcbangs = pcbangService.findPcbangs("status", StatusCd.OK.toString());				
 		}
-				
+		
 		List<PcbGamePatchResult> pcbGamePatchResultList = gamePatchService.buildPcbGamePathResultForPcbang(pcbangs, targetGames);
 		
 		model.addAttribute("gameList",allGames);
-		model.addAttribute("targetGameList",targetGames);		
-		model.addAttribute("pcbGamePatchResultList",pcbGamePatchResultList);
+		model.addAttribute("targetGameList",targetGames);
 		
+		if ("patchYN".equals(searchKey)) {
+			List<PcbGamePatchResult> pcbGamePatchResultListByPatchYN = new ArrayList<PcbGamePatchResult>();
+			
+			for (PcbGamePatchResult item :pcbGamePatchResultList) {
+				if (item.getIsPaymentPcbang() == YN.valueOf(searchValue)) {
+					pcbGamePatchResultListByPatchYN.add(item);
+				}
+			}
+			
+			model.addAttribute("pcbGamePatchResultList",pcbGamePatchResultListByPatchYN);			
+		} else {
+			model.addAttribute("pcbGamePatchResultList",pcbGamePatchResultList);			
+		}
+				
 		return "gamePatchAdmin";
 	}
 

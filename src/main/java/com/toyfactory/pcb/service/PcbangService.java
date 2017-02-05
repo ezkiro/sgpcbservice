@@ -101,7 +101,7 @@ public class PcbangService {
 			return pcbangDao.findByIpStartStartingWithAndStatus(ipKey, StatusCd.OK);
 		}
 		
-		if ("all".equals(key)) {
+		if ("all".equals(key) || "patchYN".equals(key)) {
 			return pcbangDao.findByStatus(StatusCd.OK);
 		}		
 		
@@ -109,7 +109,7 @@ public class PcbangService {
 		if ("status".equals(key)) {
 			return pcbangDao.findByStatus(StatusCd.valueOf(keyword));
 		}
-		
+				
 		//all pcbangs
 		return pcbangDao.findAll();
 	}
