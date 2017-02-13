@@ -75,6 +75,48 @@ public class GamePatchService {
 		return pcbGamePatchResultList;
 	}
 	
+	public List<PcbGamePatchResult> buildPcbGamePathResultForPcbangV2(List<Pcbang> pcbangs, List<Game> games) {
+		//최종 결과 
+		//gamePatchMapForPcbang = { pcbId: 123, games:{{key(gsn1):value(설치여부)},{key(gsn2):value(설치여부),...}, ...}			
+		List<PcbGamePatchResult> pcbGamePatchResultList = new ArrayList<PcbGamePatchResult>();
+			
+		//성능향상을 위해서 gamePatchLog를 먼저 read 한다.
+		List<GamePatchLog> allGamePatchLogs = gamePatchLogDao.findAll();
+		
+		//map for pcbid
+		Map<Long,List<GamePatchLog>> pcbGamePatchLogMap = new HashMap<Long,List<GamePatchLog>>();
+		for (GamePatchLog gamePatchLog : allGamePatchLogs) {
+			
+			List<GamePatchLog> gamePatchLogs = pcbGamePatchLogMap.get(gamePatchLog.getPcbId());
+			if (gamePatchLogs == null) {
+				gamePatchLogs = new ArrayList<GamePatchLog>();
+				pcbGamePatchLogMap.put(gamePatchLog.getPcbId(), gamePatchLogs);
+			}
+			gamePatchLogs.add(gamePatchLog);
+		}
+		
+		for (Pcbang pcbang : pcbangs) {
+			
+			if (logger.isDebugEnabled()) logger.debug("pcbGamePatchResultV2 pcb_id:" + pcbang.getPcbId());
+			
+			PcbGamePatchResult pcbGamePatchResult = new PcbGamePatchResult(pcbang);
+			
+			List<GamePatchLog> gamePatchLogs = pcbGamePatchLogMap.get(pcbang.getPcbId());
+			
+			if (gamePatchLogs == null) {
+				gamePatchLogs = new ArrayList<GamePatchLog>();
+			}
+			
+			pcbGamePatchResult.buildResult(gamePatchLogs, games);
+			
+			pcbGamePatchResultList.add(pcbGamePatchResult);
+		}
+		
+		return pcbGamePatchResultList;
+	}
+
+	
+	
 	/**
 	 * redis에 저장된 PC방 별 데이터를 취합하여 GamePatchLog table에 데이터를 넣는 batch작업
 	 * executeService를 통해서 실행해야 하고 중복으로 실행이 되지 않도록 해야 한다.

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.toyfactory.pcb.domain.Game;
 import com.toyfactory.pcb.domain.GamePatchLog;
+import com.toyfactory.pcb.domain.GamePatchLogPK;
 import com.toyfactory.pcb.domain.Pcbang;
 
 import lombok.Data;
@@ -35,11 +36,32 @@ public class PcbGamePatchResult {
 			gamePatchMap.put(game.getGsn(), 0L);
 		}
 		
+		//mapping gsn:gamePatchLog
 		for (GamePatchLog gamePatchLog : gamePatchLogs) {
 			gamePatchMap.put(gamePatchLog.getGsn(), gamePatchLog.getPatch());
 			
 			//checkIPCnt는  Install의 최대 값을 구해야 한다.
 			if (checkIPCnt < gamePatchLog.getInstall()) checkIPCnt = gamePatchLog.getInstall();			
 		}
-	}	
+		
+		//check mission complete
+		isPaymentPcbang = isMissionCompletePcbang(games) ? YN.Y : YN.N;
+		
+	}
+	
+	public boolean isMissionCompletePcbang(List<Game> games) {
+		//현재 지급대상 PC방은 모든 게임의 patch 수가  전체 IP 수의 50% 이상이어야 한다.
+						
+		for (Game aGame : games) {
+			Long patchCnt = gamePatchMap.get(aGame.getGsn());
+			
+			// 50% 미만은 지급 대상이 아니다.
+			if ((patchCnt * 2L) < pcbang.getIpTotal()) {
+				return false;
+			}			
+		}
+		
+		return true;
+	}
+	
 }
