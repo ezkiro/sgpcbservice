@@ -1,14 +1,20 @@
 package com.toyfactory.pcb.service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.util.WebUtils;
 
 import com.toyfactory.pcb.domain.Account;
 import com.toyfactory.pcb.domain.Agent;
@@ -367,5 +373,20 @@ public class MemberService {
 		
 		//delete agent
 		agentDao.delete(agent.getAgentId());
+	}
+	
+	public String getAccessTokenFromCookie(HttpServletRequest request) {
+		Cookie cookie = WebUtils.getCookie(request, "access_token");
+		if(cookie == null) {
+			if(logger.isDebugEnabled()) logger.debug("cookie isn't exist...");
+			return null;
+		}
+		
+		try {
+			return URLDecoder.decode(cookie.getValue(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return null;
+		}		
 	}
 }

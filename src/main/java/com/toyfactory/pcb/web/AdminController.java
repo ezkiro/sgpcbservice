@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ import com.toyfactory.pcb.domain.InstallPath;
 import com.toyfactory.pcb.domain.Pcbang;
 import com.toyfactory.pcb.model.PcbGamePatch;
 import com.toyfactory.pcb.model.PcbGamePatchResult;
+import com.toyfactory.pcb.model.Permission;
 import com.toyfactory.pcb.model.StatusCd;
 import com.toyfactory.pcb.model.VerifyType;
 import com.toyfactory.pcb.model.YN;
@@ -97,6 +100,33 @@ public class AdminController {
 		return "agentAdmin";
 	}
 
+	@RequestMapping("/agent/excel")
+	@PcbAuthorization(permission="ADMIN")	
+	public String agentExcelDownload(
+			@RequestParam(value="search_key", required = false) String searchKey,
+			@RequestParam(value="search_value", required = false) String searchValue,			
+			Model model){
+
+		if (logger.isDebugEnabled()) {
+			logger.debug("searchKey:" + searchKey + ", searchValue:" + searchValue);
+		}
+		
+		List<Agent> agentList;
+		
+		if (!StringUtils.isEmpty(searchKey) && !StringUtils.isEmpty(searchValue)) {
+			agentList = memberService.findAgents(searchKey, searchValue);
+			model.addAttribute("search_key",searchKey);
+			model.addAttribute("search_value",searchValue);			
+		} else {
+			agentList = memberService.findAgents(null, null);
+		}
+		
+		model.addAttribute("agentList",agentList);
+		
+		return "agentAdminExcelDownload";
+	}
+	
+	
 	@RequestMapping("/agent/update")
 	public String agentUpdatePage(
 			@RequestParam(value="agent_id", required = true) Long agentId,
@@ -175,6 +205,7 @@ public class AdminController {
 			@RequestParam(value="checked_games", required = false) String[] checkedGames,
 			@RequestParam(value="search_key", required = false) String searchKey,
 			@RequestParam(value="search_value", required = false) String searchValue,
+			HttpServletRequest request,
 			Model model){
 
 		if (logger.isDebugEnabled()) {
@@ -218,6 +249,14 @@ public class AdminController {
 			model.addAttribute("pcbGamePatchResultList",pcbGamePatchResultListByPatchYN);			
 		} else {
 			model.addAttribute("pcbGamePatchResultList",pcbGamePatchResultList);			
+		}
+
+		String accessToken = memberService.getAccessTokenFromCookie(request);
+		
+		if (accessToken.contains(Permission.PARTNER.toString())) {
+			model.addAttribute("permission", Permission.PARTNER.toString());
+		} else {
+			model.addAttribute("permission", Permission.ADMIN.toString());
 		}
 				
 		return "gamePatchAdmin";

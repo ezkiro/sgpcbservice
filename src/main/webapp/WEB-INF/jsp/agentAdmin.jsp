@@ -30,6 +30,14 @@
 			$("#inputSerachValue").val(searchValue);
 		}
 		
+		$("#excelDownload").click(function(){
+			if (searchKey.length > 0 && searchValue.length > 0) {
+				location.href='/admin/agent/excel?search_key=' + searchKey + '&search_value=' + searchValue;				
+			} else {
+				location.href='/admin/agent/excel';
+			}
+		});
+		
 		$(":button").click(function(){
 			
 			if ($(this).attr("name") != "removeAgent") {
@@ -152,6 +160,11 @@
     		</tr>
 		</c:forEach>
 		</table>
+	<br>
+	
+	<div class="form-group">
+		<div class="col-md-2 col-md-offset-6"><button type="button" class="btn btn-default btn-block" id="excelDownload">Excel download</button></div>
+	</div>
 		
   </body>
 </html>
