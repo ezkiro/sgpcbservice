@@ -121,8 +121,15 @@
 				
 				companyCode = $("#inputPart1").val() + '-' + $("#inputPart2").val() + '-' + $("#inputPart3").val();
 			}
+
+			var signUpUrl = "/api/member/signUp";
 			
-		    $.post("/api/member/signUp",
+			//https for live server
+			if ($(location).attr('hostname') != 'localhost') {
+				signUpUrl = "https://" + $(location).attr('hostname') + signUpUrl;	
+			}			
+			
+		    $.post(signUpUrl,
 		    		{
 		    			id: $("#inputID").val(),
 		    			password: $("#inputPassword1").val(),

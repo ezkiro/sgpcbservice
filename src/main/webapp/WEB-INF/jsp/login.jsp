@@ -6,22 +6,21 @@
 	<jsp:include page="common.jsp" flush="true"/>
 
   <script>
-	$(document).ready(function(){
-		
+	$(document).ready(function(){		
 		var errorMsg = '${error}';
-		if(errorMsg.length > 0 ) {
+		if (errorMsg.length > 0 ) {
 			alert('Error! ' + errorMsg);
 		}
 		
 		var checkValidInput = function() {								
 			//id 체크
-			if($("#inputEmail").val().length === 0 ) {
+			if ($("#inputEmail").val().length === 0 ) {
 				alert("ID를 입력해 주세요.");
 				return false;				
 			}			
 			
 			//password 체크
-			if($("#inputPassword").val().length === 0 ) {
+			if ($("#inputPassword").val().length === 0 ) {
 				alert("패스워드를 입력해주세요.");
 				return false;				
 			}
@@ -31,16 +30,23 @@
 		
 		//submit
 		$("form").submit(function(event){			
-			if(!checkValidInput()) {
+			if (!checkValidInput()) {
 				event.preventDefault();
 			}	
 		});
 		
 		$("#login").click(function(){
 			
-			if(!checkValidInput()) return;		
+			if (!checkValidInput()) return;		
 			
-		    $.post("/api/member/login",
+			var loginUrl = "/api/member/login";
+			
+			//https for live server
+			if ($(location).attr('hostname') != 'localhost') {
+				loginUrl = "https://" + $(location).attr('hostname') + loginUrl;	
+			}
+			
+		    $.post(loginUrl,
 		    		{
 		    			id: $("#inputEmail").val(),
 		    			password: $("#inputPassword").val(),			    			
