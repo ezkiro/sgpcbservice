@@ -12,7 +12,8 @@ response.setHeader("Content-Disposition", "attachment;filename=excelResult.html"
 			<td>대표자</td>
 			<td>상호</td>
 			<td>주소</td>				
-			<td>IP대역</td>
+			<td>IPstart</td>
+			<td>IPend</td>			
 			<td>submask</td>
 			<td>관리업체1</td>
 			<td>관리업체2</td>				
@@ -29,7 +30,8 @@ response.setHeader("Content-Disposition", "attachment;filename=excelResult.html"
 	  			<td>${pcbGamePatchResult.getPcbang().getCeo()}</td>
 	  			<td>${pcbGamePatchResult.getPcbang().getCompanyName()}</td>
 	  			<td>${pcbGamePatchResult.getPcbang().getAddress()}</td>    			    			    			
-	  			<td>${pcbGamePatchResult.getPcbang().getIpStart()} - ${pcbGamePatchResult.getPcbang().getIpEnd()}</td>
+	  			<td>${pcbGamePatchResult.getPcbang().getIpStart()}</td>
+	  			<td>${pcbGamePatchResult.getPcbang().getIpEnd()}</td>	  			
 	  			<td>${pcbGamePatchResult.getPcbang().getSubmask()}</td>
 	  			<td>${pcbGamePatchResult.getPcbang().getAgent().getCompanyName()}</td>
 	  			<td>${pcbGamePatchResult.getPcbang().getCompanyCode()}</td>    			
