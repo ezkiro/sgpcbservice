@@ -40,12 +40,7 @@
 			if (!checkValidInput()) return;		
 			
 			var loginUrl = "/api/member/login";
-			
-			//https for live server
-			if ($(location).attr('hostname') != 'localhost') {
-				loginUrl = "https://" + $(location).attr('hostname') + loginUrl;	
-			}
-			
+						
 		    $.post(loginUrl,
 		    		{
 		    			id: $("#inputEmail").val(),
