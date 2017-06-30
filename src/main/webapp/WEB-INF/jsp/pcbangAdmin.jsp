@@ -30,7 +30,24 @@
 		if (searchValue.length > 0) {
 			$("#inputSerachValue").val(searchValue);
 		}
-				
+		
+		//select all checkboxes
+		$("#select_all").change(function(){  //"select all" change 
+		    $(".checkbox").prop('checked', $(this).prop("checked")); //change all ".checkbox" checked status
+		});
+
+		//".checkbox" change 
+		$('.checkbox').change(function(){ 
+		    //uncheck "select all", if one of the listed checkbox item is unchecked
+		    if(false == $(this).prop("checked")){ //if this item is unchecked
+		        $("#select_all").prop('checked', false); //change "select all" checked status to false
+		    }
+		    //check "select all" if all checkbox items are checked
+		    if ($('.checkbox:checked').length == $('.checkbox').length ){
+		        $("#select_all").prop('checked', true);
+		    }
+		});		
+		
 		$("#removePcbang").click(function(){
 			
 			var targetPcbangs = new Array();
@@ -119,7 +136,7 @@
 	
 	<table class="table table-bordered table-hover">
 		<tr class="info">
-			<td>구분</td>
+			<td><input type="checkbox" id="select_all"/>All</td>
 			<td>대표자</td>			
 			<td>상호</td>
 			<td>주소</td>
