@@ -165,7 +165,7 @@
 	<div class="row">
 		<div class="form-group">    
 			<div class="col-sm-2 text-right"><label for="lbMinor">Minor버전</label></div>
-			<div class="col-sm-4"><input type="text" class="form-control" id="inputMinor" placeholder="exe file의 수정날짜"></div>
+			<div class="col-sm-4"><input type="text" class="form-control" id="inputMinor" placeholder="exe file의 수정날짜 or 버전파일 체크인 경우는 이전 버전"></div>
 		</div>
 	</div>
 

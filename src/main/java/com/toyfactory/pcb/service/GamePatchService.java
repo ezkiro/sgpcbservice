@@ -198,6 +198,11 @@ public class GamePatchService {
 			if (game.getMajor().equals(pcbGame.getMajor())) {
 				return true;
 			}
+
+			//버전파일 체크인 경우는 minor version이 있는 경우 그 값이 동일해도 설치로 간주
+			if (game.getMinor() != null && game.getMinor().equals(pcbGame.getMajor())) {
+				return true;
+			}
 		}
 		
 		if (game.getVerifyType() == VerifyType.VERDATE) {
