@@ -52,8 +52,8 @@
 			
 			var targetPcbangs = new Array();
 			
-			$(":checkbox:checked").each(function(){
-				targetPcbangs.push($(this).val());
+			$(":checkbox:checked").not("#select_all").each(function(){
+			    targetPcbangs.push($(this).val());
 			});
 			
 			if (targetPcbangs.length == 0) {
