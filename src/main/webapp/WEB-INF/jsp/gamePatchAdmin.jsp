@@ -101,19 +101,22 @@
 		</ul>
   	</div>
   	<hr>
-  		
+
+    <div class="row">
+    <div class="col-md-9">
+
 	<div class="form-group bg-info">
-		<div class="row">
-			<div class="col-md-1 text-right">
+	    <div class="row">
+			<div class="col-md-2 text-right">
 				<label for="lbGame">게임선택</label>
 			</div>
 			
-			<div class="col-md-1">
+			<div class="col-md-2">
 				<label class="checkbox-inline">
 					<input type="checkbox" id="allGameCheck" value="all">전체	
 				</label>		
 			</div>
-			<div class="col-md-10">
+			<div class="col-md-8">
 				<ul class="select_subject">
 				<c:forEach var="game" items="${gameList}">
 					<label class="checkbox-inline">
@@ -121,8 +124,8 @@
 					</label>
 				</c:forEach>
 				</ul>																																																				
-			</div>			
-		</div>			
+			</div>
+		</div>
 	</div>
 	
 	<form class="form-horizontal" action="/admin/gamepatch" method="post">
@@ -130,28 +133,45 @@
 		<input type="hidden" name="search_key" value="" />
 		<input type="hidden" name="search_value" value="" />
 	  	
-  	<div class="form-group bg-info">
-		<div class="col-md-1 text-right">
-			<label for="lbID">조회조건</label>
+        <div class="form-group bg-info">
+            <div class="row">
+            <div class="col-md-2 text-right">
+                <label for="lbID">조회조건</label>
+            </div>
+            <div class="col-md-2">
+                <select class="form-control" id ="inputSerachKey">
+                  <option value="all">전체</option>
+                  <option value="agentName">관리업체1</option>
+                  <option value="companyCode">관리업체2</option>
+                  <option value="companyName">상호</option>
+                  <option value="ipRange">IP</option>
+                  <option value="patchYN">지급대상</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" id="inputSerachValue" placeholder="">
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary btn-block" id="search">조회</button>
+            </div>
+            </div>
+        </div>
+	</form>
+	</div>
+
+    <div class="col-md-3">
+  	<div class="form-group">
+		<div class="col-md-10 col-md-offset-2 bg-warning">
+			<label for="lbTotal">등록 PC방 : ${pcbGamePatchResultList.size()} 개</label>
+			<br>
+			<label for="lbInstall">설치 PC방 : 개</label>
+			<br>
+			<label for="lbPay">지급 PC방 : ${paymentCnt} 개</label>
 		</div>
-		<div class="col-md-2">		
-			<select class="form-control" id ="inputSerachKey">
-			  <option value="all">전체</option>
-			  <option value="agentName">관리업체1</option>
-			  <option value="companyCode">관리업체2</option>			
-			  <option value="companyName">상호</option>			  
-			  <option value="ipRange">IP</option>
-			  <option value="patchYN">지급대상</option>			  			  			  
-			</select>
-		</div>
-		<div class="col-md-4">	  			
-			<input type="text" class="form-control" id="inputSerachValue" placeholder="">
-		</div>
-		<div class="col-md-2">		
-			<button type="submit" class="btn btn-primary btn-block" id="search">조회</button>
-		</div>
-	</div>	  
-	</form>	
+	</div>
+    </div>
+
+	</div><!-- row -->
 	</div><!-- container -->	
 	
 		<table class="table table-bordered table-hover">
@@ -198,14 +218,6 @@
 		</c:forEach>
 		</table>
 	<br>
-  	<div class="form-group">
-		<div class="col-md-2 col-md-offset-6 bg-warning">
-			<label for="lbTotal">전체 결과 : ${pcbGamePatchResultList.size()}</label>
-		</div>
-		<div class="col-md-2 bg-warning">
-			<label for="lbPay">지급 대상 : ${paymentCnt}</label>
-		</div>		
-	</div>
 	<br>
 	<div class="form-group">
 		<div class="col-md-2 col-md-offset-6"><button type="button" class="btn btn-default btn-block" id="excelDownload">Excel download</button></div>
