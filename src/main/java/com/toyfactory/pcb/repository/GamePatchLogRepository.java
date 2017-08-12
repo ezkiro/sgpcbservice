@@ -13,4 +13,6 @@ public interface GamePatchLogRepository extends JpaRepository<GamePatchLog, Game
 	List<GamePatchLog> findByPcbId(Long pcbId);
 	List<GamePatchLog> findByPcbIdAndUptDt(Long pcbId, Date uptDt);
 	void deleteByPcbId(Long pcbId);
+	
+	List<GamePatchLog> findByGsn(String gsn);
 }
