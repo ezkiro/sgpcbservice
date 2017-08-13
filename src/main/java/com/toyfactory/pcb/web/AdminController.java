@@ -236,6 +236,8 @@ public class AdminController {
 		
 		model.addAttribute("gameList",allGames);
 		model.addAttribute("targetGameList",targetGames);
+
+		long paymentPcbCnt = 0;
 		
 		if ("patchYN".equals(searchKey)) {
 			List<PcbGamePatchResult> pcbGamePatchResultListByPatchYN = new ArrayList<PcbGamePatchResult>();
@@ -245,11 +247,19 @@ public class AdminController {
 					pcbGamePatchResultListByPatchYN.add(item);
 				}
 			}
-			
+
+			if ("Y".equals(searchValue)) {
+				paymentPcbCnt = pcbGamePatchResultListByPatchYN.size();
+			}
+
 			model.addAttribute("pcbGamePatchResultList",pcbGamePatchResultListByPatchYN);			
 		} else {
-			model.addAttribute("pcbGamePatchResultList",pcbGamePatchResultList);			
+			model.addAttribute("pcbGamePatchResultList",pcbGamePatchResultList);
+
+			paymentPcbCnt = pcbGamePatchResultList.stream().filter(pcbGamePatch -> pcbGamePatch.getIsPaymentPcbang() == YN.Y).count();
 		}
+
+		model.addAttribute("paymentPcbCnt", paymentPcbCnt);
 
 		String accessToken = memberService.getAccessTokenFromCookie(request);
 		

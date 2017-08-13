@@ -258,7 +258,12 @@ public class MemberService {
 		return pcbangDao.findAllByOrderByUptDtDesc();		
 	}
 		
-	public Pcbang addPcbang(Pcbang pcbang, Long agentId) {		
+	public Pcbang addPcbang(Pcbang pcbang, Long agentId) {
+
+		if (logger.isDebugEnabled()) {
+			logger.debug("[addPcbang] pcbang:" + pcbang.getIpStart());
+		}
+
 		Agent agent = agentDao.findOne(agentId);		
 		//맵핑할 Agent 가 없으면 입력 실패
 		if (agent == null ) return null;

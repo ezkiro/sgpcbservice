@@ -82,5 +82,9 @@ public class HistoryService {
 				gamePatchHistoryDao.save(newHistory);
 			}
 		}
+
+		if (logger.isInfoEnabled()) {
+			logger.info("end history batch");
+		}
 	}
 }

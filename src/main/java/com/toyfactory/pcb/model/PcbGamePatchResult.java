@@ -54,7 +54,12 @@ public class PcbGamePatchResult {
 						
 		for (Game aGame : games) {
 			Long patchCnt = gamePatchMap.get(aGame.getGsn());
-			
+
+			//잘못된 PC방 IP 정보로 인해서 전체 IP수가 0이 나오면 무조건 false 반환
+			if (pcbang.getIpTotal() == 0L) {
+				return false;
+			}
+
 			// 50% 미만은 지급 대상이 아니다.
 			if ((patchCnt * 2L) < pcbang.getIpTotal()) {
 				return false;

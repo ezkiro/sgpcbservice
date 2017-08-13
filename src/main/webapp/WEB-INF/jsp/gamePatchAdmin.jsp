@@ -164,9 +164,7 @@
 		<div class="col-md-10 col-md-offset-2 bg-warning">
 			<label for="lbTotal">등록 PC방 : ${pcbGamePatchResultList.size()} 개</label>
 			<br>
-			<label for="lbInstall">설치 PC방 : 개</label>
-			<br>
-			<label for="lbPay">지급 PC방 : ${paymentCnt} 개</label>
+			<label for="lbPay">지급 PC방 : ${paymentPcbCnt} 개</label>
 		</div>
 	</div>
     </div>
@@ -192,12 +190,8 @@
 				<td>${game.getName()}</td>
 			</c:forEach>																																																						
 			</tr>
-		<c:set var="paymentCnt" value = "0" scope="page"/>			
+
 		<c:forEach var="pcbGamePatchResult" items="${pcbGamePatchResultList}">
-			<c:if test="${pcbGamePatchResult.getIsPaymentPcbang().toString() eq 'Y'}">
-				<c:set var="paymentCnt" value="${paymentCnt+1}" scope="page"/>
-			</c:if>
-		
 			<tr>
     			<td>${pcbGamePatchResult.getPcbang().getPcbId()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getCeo()}</td>

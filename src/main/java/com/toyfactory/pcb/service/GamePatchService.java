@@ -86,7 +86,8 @@ public class GamePatchService {
 		//map for pcbid
 		Map<Long,List<GamePatchLog>> pcbGamePatchLogMap = new HashMap<Long,List<GamePatchLog>>();
 		for (GamePatchLog gamePatchLog : allGamePatchLogs) {
-			
+
+			//pcbid 별 게임별 패치 로그 생성
 			List<GamePatchLog> gamePatchLogs = pcbGamePatchLogMap.get(gamePatchLog.getPcbId());
 			if (gamePatchLogs == null) {
 				gamePatchLogs = new ArrayList<GamePatchLog>();
@@ -123,6 +124,11 @@ public class GamePatchService {
 	 * @return
 	 */
 	public void excuteGamePatchAnalysisBatch() {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("start AnalysisBatch");
+		}
+
 		//기존 GamePatchLog 삭제
 		gamePatchLogDao.deleteAll();
 		
@@ -137,7 +143,11 @@ public class GamePatchService {
 				
 				processFromPcbGamePatchToGamePatchLog(pcbang.getPcbId(), pcbGamePatch);
 			}			
-		}		
+		}
+
+		if (logger.isInfoEnabled()) {
+			logger.info("end AnalysisBatch");
+		}
 	}
 	
 	public boolean writePcbGamePatchToCache(String clientIp, PcbGamePatch pcbGamePatch) {
