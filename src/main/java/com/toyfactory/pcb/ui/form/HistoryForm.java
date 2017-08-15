@@ -111,15 +111,15 @@ public class HistoryForm extends VerticalLayout {
     private void buildDeltaFooter(FooterRow footerRow, HistoryItem item1, HistoryItem item2) {
 
         Long pcbCntDayDelta = item1.getPcbCnt() - item2.getPcbCnt();
-        footerRow.getCell("pcb_cnt").setHtml("<b>" + pcbCntDayDelta.toString() + "<b>");
+        footerRow.getCell("pcb_cnt").setHtml(colorNumberHtml(pcbCntDayDelta));
 
         for(Game game : games) {
             Long installDayDelta = item1.getInstallPcbCntByGsn(game.getGsn()) - item2.getInstallPcbCntByGsn(game.getGsn());
-            footerRow.getCell("game_" + game.getGsn()).setHtml("<b>" + installDayDelta.toString() + "<b>");
+            footerRow.getCell("game_" + game.getGsn()).setHtml(colorNumberHtml(installDayDelta));
         }
 
         Long paidPcbCntDayDelta = item1.getPaidPcbCnt() - item2.getPaidPcbCnt();
-        footerRow.getCell("paid_pcb_cnt").setHtml("<b>" + paidPcbCntDayDelta.toString() + "<b>");
+        footerRow.getCell("paid_pcb_cnt").setHtml(colorNumberHtml(paidPcbCntDayDelta));
     }
 
     private void clearDeltaFooter() {
@@ -135,5 +135,23 @@ public class HistoryForm extends VerticalLayout {
         dayDelta.getCell("date").setText("증감(일일)");
         weekDelta = historyGrid.appendFooterRow();
         weekDelta.getCell("date").setText("증감(주간)");
+    }
+
+    private String colorNumberHtml(Long num) {
+        //if num > 0 then red color
+        //<font color="red">num</font>
+        //else then blue color
+        //<font color="blue">num</font>
+
+        StringBuilder sb = new StringBuilder();
+        if (num > 0L) {
+            sb.append("<font color=\"red\">");
+        } else {
+            sb.append("<font color=\"blue\">");
+        }
+        sb.append(num.toString());
+        sb.append("</font>");
+
+        return sb.toString();
     }
 }
