@@ -87,7 +87,8 @@
 	<c:choose>
 		<c:when test="${permission eq 'ADMIN'}">
 		  <li role="presentation"><a href="/admin/agent">업체관리</a></li>
-		  <li role="presentation" class="active"><a href="#">설치/패치관리</a></li>		  
+		  <li role="presentation" class="active"><a href="#">설치/패치관리</a></li>
+		  <li role="presentation"><a href="/statistics">통계</a></li>
 		  <li role="presentation"><a href="/admin/pcbang">가맹점관리</a></li>
 		  <li role="presentation"><a href="/admin/game">Game관리</a></li>
 		  <li role="presentation"><a href="/admin/installpath">InstallPath관리</a></li>
@@ -95,6 +96,7 @@
 		</c:when>
 		<c:otherwise>
 		  <li role="presentation" class="active"><a href="#">설치/패치관리</a></li>
+          <li role="presentation"><a href="/statistics">통계</a></li>
 		  <li role="presentation"><a href="/logout">로그아웃</a></li>		  		
 		</c:otherwise>
 	</c:choose>	

@@ -87,4 +87,12 @@ public class HistoryService {
 			logger.info("end history batch");
 		}
 	}
+
+	public List<History> getHistorysBetween(String startKey, String endKey) {
+		return historyDao.findByDateKeyBetweenOrderByDateKeyDesc(startKey, endKey);
+	}
+
+	public List<GamePatchHistory> getGamePatchHistorysBetween(String startKey, String endKey) {
+		return gamePatchHistoryDao.findByDateKeyBetween(startKey, endKey);
+	}
 }
