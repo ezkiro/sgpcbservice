@@ -45,8 +45,8 @@ public class AgentController {
     @RequestMapping(value = "/gamepatch", method = RequestMethod.POST)
     public boolean putPcbGamePatch(@RequestParam(name="client_ip") String client_ip ,@RequestBody PcbGamePatch pcbGamePatch)throws Exception{
     	
-    	if(logger.isDebugEnabled()){
-        	logger.debug("[pcbgamepatch] ip:" + client_ip + ", data:" + pcbGamePatch.toString());    		
+    	if(logger.isInfoEnabled()){
+        	logger.info("[pcbgamepatch] ip:" + client_ip + ", data:" + pcbGamePatch.toString());
     	}
     	
     	if("127.0.0.1".equals(client_ip)){
@@ -60,8 +60,8 @@ public class AgentController {
 
     @RequestMapping(value = "/gamepatch", method = RequestMethod.GET)
     public PcbGamePatch getPcbGamePatch(@RequestParam(name="client_ip") String client_ip) throws Exception {
-    	if(logger.isDebugEnabled()){
-        	logger.debug("[getPcbGamePatch] ip:" + client_ip);   		
+    	if(logger.isInfoEnabled()){
+        	logger.info("[getPcbGamePatch] ip:" + client_ip);
     	}    	
     	
         return gamePatchService.readPcbGamePatchFromCache(client_ip);
@@ -79,8 +79,8 @@ public class AgentController {
     @RequestMapping(value = "/check", method = RequestMethod.GET)
     public String preCheck(@RequestParam(name="client_ip") String client_ip) {
 
-    	if(logger.isDebugEnabled()){
-        	logger.debug("[precheck] ip:" + client_ip);    		
+    	if(logger.isInfoEnabled()){
+        	logger.info("[precheck] ip:" + client_ip);
     	}    	
     	
         return gamePatchService.checkGamePatchPass(client_ip);
@@ -89,8 +89,8 @@ public class AgentController {
     @RequestMapping(value = "/command", method = RequestMethod.GET)
     public AgentCommand requestCommand(@RequestParam(name="client_ip") String client_ip) {
     	
-    	if(logger.isDebugEnabled()){
-        	logger.debug("[requestCommand] ip:" + client_ip);    		
+    	if(logger.isInfoEnabled()){
+        	logger.info("[requestCommand] ip:" + client_ip);
     	}    	
     	
     	return gameService.buildAgentCommand("CHECK");

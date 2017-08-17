@@ -34,8 +34,8 @@ public class BatchController {
     @PostMapping("/gamepatchlog")
     public String buildGamePatchLog(@RequestParam(value="auth_key", required = true) String authKey) {
     	
-    	if (logger.isDebugEnabled()) {
-    		logger.debug("batch gamepatchlog: auth_key:" + authKey);
+    	if (logger.isInfoEnabled()) {
+    		logger.info("batch gamepatchlog: auth_key:" + authKey);
     	}
     	
     	if (!AUTH_KEY.equals(authKey)) {

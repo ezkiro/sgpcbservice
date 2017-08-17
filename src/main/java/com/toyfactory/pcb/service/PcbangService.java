@@ -118,10 +118,33 @@ public class PcbangService {
 		return pcbangDao.findOne(pcbId);
 	}
 	
-	public List<Pcbang> findPcbangs(Long agentId, StatusCd status){
-		return pcbangDao.findByAgentAndStatus(agentId, status);
+	public List<Pcbang> findPcbangs(Long agentId, String key, String keyword){
+
+		//관리업체2
+		if ("companyCode".equals(key)) {
+			return pcbangDao.findByAgentAndCompanyCodeAndStatus(agentId, keyword, StatusCd.OK);
+		}
+
+		//상호
+		if ("companyName".equals(key)) {
+			return pcbangDao.findByAgentAndCompanyNameContainingAndStatus(agentId, keyword, StatusCd.OK);
+		}
+
+		//IP대역
+		if ("ipRange".equals(key)) {
+			// 100.1.1.1 -> 100.1.1% search
+			String ipKey = keyword.substring(0,keyword.lastIndexOf("."));
+			if (logger.isDebugEnabled()) logger.debug("[findPcbangs] ipKey:" + ipKey);
+			return pcbangDao.findByAgentAndIpStartStartingWithAndStatus(agentId, ipKey, StatusCd.OK);
+		}
+
+		if ("all".equals(key) || "patchYN".equals(key)) {
+			return pcbangDao.findByAgentAndStatus(agentId, StatusCd.OK);
+		}
+
+		return pcbangDao.findByAgentAndStatus(agentId, StatusCd.OK);
 	}
-	
+
 	/**
 	 * PC방 가맹점 일괄 입력 처리, 실패 목록을 반환한다.
 	 * @param multipart

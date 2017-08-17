@@ -220,16 +220,48 @@ public class MemberService {
 	}
 	
 
+	public List<Pcbang> findPcbangs(Long agentId, String key, String keyword) {
+
+		//관리업체2
+		if ("companyCode".equals(key)) {
+			return pcbangDao.findByAgentAndCompanyCode(agentId, keyword);
+		}
+
+		//상호
+		if ("companyName".equals(key)) {
+			return pcbangDao.findByAgentAndCompanyNameContaining(agentId, keyword);
+		}
+
+		//IP대역
+		if ("ipRange".equals(key)) {
+			// 100.1.1.1 -> 100.1.1% search
+			String ipKey = keyword.substring(0,keyword.lastIndexOf("."));
+			if (logger.isDebugEnabled()) logger.debug("[findPcbangs] ipKey:" + ipKey);
+			return pcbangDao.findByAgentAndIpStartStartingWith(agentId, ipKey);
+		}
+
+		//프로그램명
+		if ("program".equals(key)) {
+			return pcbangDao.findByAgentAndProgram(agentId, keyword);
+		}
+		
+		if ("all".equals(key)) {
+			return pcbangDao.findByAgent(agentId);
+		}		
+
+		return pcbangDao.findByAgent(agentId);
+	}
+
 	public List<Pcbang> findPcbangs(String key, String keyword) {
 
 		if ("agentName".equals(key)) {
 			return pcbangDao.findByAgentName(keyword);
 		}
-		
+
 		if ("companyCode".equals(key)) {
 			return pcbangDao.findByCompanyCode(keyword);
 		}
-		
+
 		if ("companyName".equals(key)) {
 			return pcbangDao.findByCompanyNameContaining(keyword);
 		}
@@ -240,24 +272,24 @@ public class MemberService {
 			if (logger.isDebugEnabled()) logger.debug("[findPcbangs] ipKey:" + ipKey);
 			return pcbangDao.findByIpStartStartingWith(ipKey);
 		}
-		
+
 		if ("program".equals(key)) {
 			return pcbangDao.findByProgram(keyword);
 		}
-		
+
 		if ("all".equals(key)) {
 			return pcbangDao.findAll();
-		}		
-		
+		}
+
 		//key:status
 		if ("status".equals(key)) {
 			return pcbangDao.findByStatus(StatusCd.valueOf(keyword));
 		}
-		
+
 		//all pcbangs order by uptdt desc
-		return pcbangDao.findAllByOrderByUptDtDesc();		
+		return pcbangDao.findAllByOrderByUptDtDesc();
 	}
-		
+
 	public Pcbang addPcbang(Pcbang pcbang, Long agentId) {
 
 		if (logger.isDebugEnabled()) {
