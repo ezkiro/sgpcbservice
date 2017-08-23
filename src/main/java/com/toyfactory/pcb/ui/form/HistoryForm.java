@@ -98,6 +98,10 @@ public class HistoryForm extends VerticalLayout {
 
         historyGrid.setItems(historyItemList);
 
+        if (historyItemList.size() > 0) {
+            historyGrid.setHeightByRows(historyItemList.size());
+        }
+
         clearDeltaFooter();
 
         if (historyItemList.size() > 1) {
