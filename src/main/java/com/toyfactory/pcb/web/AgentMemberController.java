@@ -92,7 +92,7 @@ public class AgentMemberController {
 
 		//게임갯수가 많지 않기 때문에 전체를  가져와서 필터링 하는 방식으로 한다.
 		List<Game> targetGames = gameService.buildGames(checkedGames);
-		List<Game> allGames = gameService.findGames();
+		List<Game> allGames = gameService.findEnableGames();
 
 		if (checkedGames == null || checkedGames.length == 0) {
 			targetGames = allGames;

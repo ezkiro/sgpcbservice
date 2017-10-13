@@ -180,7 +180,7 @@ public class AdminController {
 		}
 		
 		//게임갯수가 많지 않기 때문에 전체를  가져와서 필터링 하는 방식으로 한다.
-		List<Game> targetGames = gameService.findGames();
+		List<Game> targetGames = gameService.findEnableGames();
 		
 		List<Pcbang> pcbangs = null;
 		
@@ -215,7 +215,7 @@ public class AdminController {
 		
 		//게임갯수가 많지 않기 때문에 전체를  가져와서 필터링 하는 방식으로 한다.
 		List<Game> targetGames = gameService.buildGames(checkedGames);
-		List<Game> allGames = gameService.findGames();
+		List<Game> allGames = gameService.findEnableGames();
 		
 		if (checkedGames == null || checkedGames.length == 0) {
 			targetGames = allGames;
@@ -332,6 +332,7 @@ public class AdminController {
 	@PcbAuthorization(permission="ADMIN")	
 	public boolean addOrUpdateGame(Model model,
     		@RequestParam(value="gsn", required = true) String gsn,
+		    @RequestParam(value="enable", required = true) String enable,
     		@RequestParam(value="name", required = true) String name,
     		@RequestParam(value="verify_type", required = true) String verifyType,    		
     		@RequestParam(value="major", required = true) String majorVer,
@@ -346,6 +347,7 @@ public class AdminController {
 			Game newGame = new Game(new Date());
 			
 			newGame.setGsn(gsn);
+			newGame.setEnable(enable);
 			newGame.setName(name);
 			newGame.setVerifyType(VerifyType.valueOf(verifyType));			
 			newGame.setMajor(majorVer);
@@ -364,6 +366,7 @@ public class AdminController {
 			if(existGame == null ) return false;			
 			
 			existGame.setName(name);
+			existGame.setEnable(enable);
 			existGame.setVerifyType(VerifyType.valueOf(verifyType));
 			existGame.setMajor(majorVer);
 			existGame.setExeFile(exeFile);

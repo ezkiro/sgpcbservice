@@ -39,6 +39,7 @@
 			if(gsn !== "") {
 				updateMode = true;
 				$("#inputGsn").val("${game.getGsn()}");
+				$("#inputEnable").val("${game.getEnable()}");
 				$("#inputName").val("${game.getName()}");
 				$("#inputVerifyType").val("${game.getVerifyType().toString()}");		
 				$("#inputMajor").val("${game.getMajor()}");
@@ -62,6 +63,7 @@
 			    $.post("/admin/game/new",
 			    		{
 			    			gsn: $("#inputGsn").val(),
+			    			enable: $("#inputEnable").val(),
 			    			name:$("#inputName").val(),
 			    			verify_type:$("#inputVerifyType option:selected").val(),			    			
 			    			major: $("#inputMajor").val(),
@@ -85,6 +87,7 @@
 			    $.post("/admin/game/update",
 			    		{
 			    			gsn: $("#inputGsn").val(),
+                            enable: $("#inputEnable").val(),
 			    			name:$("#inputName").val(),
 			    			verify_type:$("#inputVerifyType option:selected").val(),			    			
 			    			major: $("#inputMajor").val(),
@@ -135,6 +138,19 @@
 	</c:choose>			
 		</div>
    </div>
+
+	<div class="row">
+		<div class="form-group">
+			<div class="col-sm-2 text-right"><label for="lbEnable">사용여부</label></div>
+			<div class="col-sm-2">
+				<select class="form-control" id ="inputEnable">
+					<option value="Y">사용</option>
+					<option value="N">미사용</option>
+				</select>
+			</div>
+		</div>
+	</div>
+
 	<div class="row">
 		<div class="form-group">    
 			<div class="col-sm-2 text-right"><label for="lbName">게임명</label></div>

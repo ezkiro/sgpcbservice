@@ -33,7 +33,7 @@ public class Game {
 	@Column(nullable=true, length=50)
 	private String minor; //minor version
 
-	@Column(nullable=true)	
+	@Column(nullable=true)
 	private String exeFile;
 	
 	private String dirName;
@@ -42,7 +42,10 @@ public class Game {
 	
 	private String verFileFmt; //JSON/XML/BIN
 	
-	private String etc;	
+	private String etc;
+
+	@Column(nullable=true, length=2)
+	private String enable; //Y/N
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date crtDt;

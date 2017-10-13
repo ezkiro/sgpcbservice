@@ -75,7 +75,7 @@ public class StatisticsUI extends UI {
 
         screenLayout.addComponent(searchForm);
 
-        historyForm = new HistoryForm(gameService.findGames());
+        historyForm = new HistoryForm(gameService.findEnableGames());
 
         screenLayout.addComponent(historyForm);
 

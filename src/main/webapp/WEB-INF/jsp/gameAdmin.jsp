@@ -61,6 +61,7 @@
 	<table class="table table-bordered table-hover">
 		<tr class="info">
 			<td>GSN</td>
+		    <td>사용여부</td>
 			<td>게임명</td>
 			<td>확인방법</td>
 			<td>major버전</td>
@@ -76,6 +77,7 @@
 	<c:forEach var="game" items="${gameList}">
 		<tr>
    			<td><input type="checkbox" value="${game.getGsn()}">${game.getGsn()}</td>
+   			<td>${game.getEnable()}</td>
    			<td>${game.getName()}</td>
    			<td>${game.getVerifyType()}</td>   			
    			<td>${game.getMajor()}</td>    			    			    			

@@ -46,6 +46,11 @@ public class GameService {
 		return gameDao.findAll();
 	}
 
+	public List<Game> findEnableGames() {
+
+		return gameDao.findByEnable("Y");
+	}
+
 	public Game findGame(String gsn){
 		return gameDao.findOne(gsn);
 	}

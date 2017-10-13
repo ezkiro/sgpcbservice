@@ -49,7 +49,7 @@ public class BatchController {
 		executorService.execute(new Runnable() {
 		    public void run() {
 				gamePatchService.excuteGamePatchAnalysisBatch();
-				historyService.executeHistoryBatch(gameService.findGames());
+				historyService.executeHistoryBatch(gameService.findEnableGames());
 		    }
 		});
 		
