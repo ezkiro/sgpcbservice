@@ -4,6 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,7 +18,10 @@ import org.springframework.stereotype.Service;
 @Service("crpytoService")
 public class CrpytoService {
 	
-	private static String _salt = "jdhe34fhid$&i38e";
+	//private static String _salt = "jdhe34fhid$&i38e";
+
+    @Value("${pcbservice.crypto.salt}")
+    private String _salt;
 
 	private static String get_SHA_1_SecureHashValue(String plainText, byte[] salt)
     {

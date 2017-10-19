@@ -19,6 +19,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.Cookie;
@@ -33,6 +34,9 @@ import java.time.format.DateTimeFormatter;
 public class StatisticsUI extends UI {
 
     private static final Logger logger = LoggerFactory.getLogger(StatisticsUI.class);
+
+    @Value("${pcbservice.statistics.title}")
+    private String title;
 
     @Autowired
     private MemberService memberService;
@@ -59,7 +63,7 @@ public class StatisticsUI extends UI {
 
         screenLayout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 
-        screenLayout.addComponent(new HeaderLayout("스마일게이트 게임 별 설치 및 패치 현황", "BACK", "/admin/gamepatch"));
+        screenLayout.addComponent(new HeaderLayout(title + " 게임 별 설치 및 패치 현황", "BACK", "/admin/gamepatch"));
 
         Label searchLabel = new Label("기간 별 통계");
         searchLabel.addStyleName(ValoTheme.LABEL_H3);
