@@ -21,7 +21,7 @@
   <body>
 	<div class="jumbotron text-center">
 	  <h2>${message}</h2>
-	  <p><a class="btn btn-primary btn-lg" href="/login" role="button">goto login</a></p>
+	  <p><a class="btn btn-primary btn-lg" href="login" role="button">goto login</a></p>
 	  <p><button type="button" class="btn btn-primary btn-lg" id="historyback">back to previous page</button></p>	  
 	</div>
   </body>

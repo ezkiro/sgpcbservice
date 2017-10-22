@@ -22,7 +22,7 @@
 		$("#submitItem").click(function(){			
 			if(!checkValidInput()) return;
 						
-		    $.post("/admin/api/installpath/new",
+		    $.post("/v2/admin/api/installpath/new",
 		    		{
 		    			gsn: $("#inputGsn option:selected").val(),
 		    			path: $("#inputPath").val(),
@@ -88,7 +88,7 @@
 		<div class="form-group">
 		<div class="col-sm-2"></div>
  		<div class="col-sm-2"><button type="button" class="btn btn-lg btn-primary btn-block" id="submitItem">저장</button></div>
- 		<div class="col-sm-2"><a class="btn btn-lg btn-default btn-block" href="/admin/installpath" role="button">취소</a></div>
+ 		<div class="col-sm-2"><a class="btn btn-lg btn-default btn-block" href="/v2/admin/installpath" role="button">취소</a></div>
  		<div class="col-sm-2"></div> 		
  		</div>
     </div>

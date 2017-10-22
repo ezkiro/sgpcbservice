@@ -34,7 +34,7 @@
 		</c:forEach>	
 	  </table>
 	  
-	  <p><a class="btn btn-primary btn-lg" href="/admin/pcbang" role="button">가맹점관리</a></p>
+	  <p><a class="btn btn-primary btn-lg" href="/v2/admin/pcbang" role="button">가맹점관리</a></p>
 	</div>
 	
 	

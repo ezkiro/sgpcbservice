@@ -17,7 +17,7 @@
 	<div class="jumbotron text-center">
 	  <h1>가입을 환영합니다.</h1>
 	  <h2>가입된 계정으로 로그인을 하려면 먼저 승인을 받아야 합니다.</h2>
-	  <p><a class="btn btn-primary btn-lg" href="/login" role="button">GO Login!</a></p>
+	  <p><a class="btn btn-primary btn-lg" href="login" role="button">GO Login!</a></p>
 	</div>
   </body>
 </html>

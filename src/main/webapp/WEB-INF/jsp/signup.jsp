@@ -39,7 +39,7 @@
 		
 		var duplicateCheck = function(item1, value1, title, controlObj) {
 			var isExist = false;
-		    $.get("/api/member/isExist",
+		    $.get("api/member/isExist",
 		    		{
 		    			item:item1,
 		    			value:value1
@@ -122,7 +122,7 @@
 				companyCode = $("#inputPart1").val() + '-' + $("#inputPart2").val() + '-' + $("#inputPart3").val();
 			}
 
-			var signUpUrl = "/api/member/signUp";
+			var signUpUrl = "api/member/signUp";
 						
 		    $.post(signUpUrl,
 		    		{
@@ -138,7 +138,7 @@
 		    		},
 		    		function(data, status){
 		    			if(data) {
-		    				location.href = '/hello';
+		    				location.href = 'hello';
 		    			}
 		    		}
 		    );			

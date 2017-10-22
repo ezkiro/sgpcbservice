@@ -58,7 +58,7 @@
 				bankAccount = $("#inputBankAccount").val();
 			}
 			
-		    $.post("/api/member/agent",
+		    $.post("/v2/api/member/agent",
 		    		{
 		    			agent_id: $("#inputID").val(),
 		    			status: $("#inputStatus option:selected").val(),
@@ -76,7 +76,7 @@
 		    		function(data, status){
 		    			if(data) {
 		    				alert('업체 정보 수정에 성공했습니다.');		    				
-		    				location.href = '/admin/agent';
+		    				location.href = 'admin/agent';
 		    			} else {
 		    				alert('업체 정보 수정에 실패했습니다. 다시 시도 하세요.');
 		    			}
@@ -209,7 +209,7 @@
 		<div class="form-group">
 			<div class="col-md-2"></div>
 	 		<div class="col-md-2"><button type="button" class="btn btn-lg btn-primary btn-block" id="saveAgentInfo">수정</button></div>
-	 		<div class="col-md-2"><a class="btn btn-lg btn-default btn-block" href="/admin/agent" role="button">취소</a></div>
+	 		<div class="col-md-2"><a class="btn btn-lg btn-default btn-block" href="/v2/admin/agent" role="button">취소</a></div>
  		</div>
     </div>
     

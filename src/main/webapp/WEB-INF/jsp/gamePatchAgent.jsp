@@ -76,8 +76,8 @@
   	<div class="row">
 		<ul class="nav nav-pills">
 		  <li role="presentation" class="active"><a href="#">설치/패치관리</a></li>
-		  <li role="presentation"><a href="/member/pcbang">가맹점관리</a></li>
-		  <li role="presentation"><a href="/logout">로그아웃</a></li>		  
+		  <li role="presentation"><a href="/v2/member/pcbang">가맹점관리</a></li>
+		  <li role="presentation"><a href="/v2/logout">로그아웃</a></li>
 		</ul>
   	</div>
   	<hr>
@@ -108,7 +108,7 @@
 		</div>
 	</div>
 
-	<form class="form-horizontal" action="/member/gamepatch" method="post">
+	<form class="form-horizontal" action="/v2/member/gamepatch" method="post">
 		<input type="hidden" name="checked_games" value="" />
 		<input type="hidden" name="search_key" value="" />
 		<input type="hidden" name="search_value" value="" />

@@ -55,14 +55,14 @@
 	<div class="container"> 
   	<div class="row">
 		<ul class="nav nav-pills">
-		  <li role="presentation"><a href="/member/gamepatch">설치/패치관리</a></li>
+		  <li role="presentation"><a href="/v2/member/gamepatch">설치/패치관리</a></li>
 		  <li role="presentation" class="active"><a href="#">가맹점관리</a></li>
-		  <li role="presentation"><a href="/logout">로그아웃</a></li>		  
+		  <li role="presentation"><a href="/v2/logout">로그아웃</a></li>
 		</ul>
   	</div>
   	<hr>
 
-	<form class="form-horizontal" action="/member/pcbang" method="post">
+	<form class="form-horizontal" action="/v2/member/pcbang" method="post">
 		<input type="hidden" name="search_key" value="" />
 		<input type="hidden" name="search_value" value="" />
 
@@ -126,7 +126,7 @@
 	<br>
 	<div class="form-group">    
 		<div class="col-md-4"></div>
-		<div class="col-md-2"><a class="btn btn-default btn-block" href="/member/pcbang/add" role="button">등록</a></div>
+		<div class="col-md-2"><a class="btn btn-default btn-block" href="/v2/member/pcbang/add" role="button">등록</a></div>
 		<div class="col-md-2"><button type="button" class="btn btn-default btn-block" id="removePcbang">삭제</button></div>
 	</div>
 	<br>

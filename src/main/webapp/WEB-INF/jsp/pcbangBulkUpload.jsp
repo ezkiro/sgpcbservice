@@ -20,7 +20,7 @@
 		<h3>PC Bang 정보 대량 등록</h3>
 	</div>
 	
-<form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/admin/pcbang/upload">
+<form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/v2/admin/pcbang/upload">
 	<div class="row">
 	
 		<ul>
@@ -48,7 +48,7 @@
 		<div class="form-group">
 		<div class="col-sm-2"></div>
  		<div class="col-sm-2"><button type="submit" class="btn btn-lg btn-primary btn-block" id="submitPcbang">Upload</button></div>
- 		<div class="col-sm-2"><a class="btn btn-lg btn-default btn-block" href="/admin/pcbang" role="button">취소</a></div>
+ 		<div class="col-sm-2"><a class="btn btn-lg btn-default btn-block" href="/v2/admin/pcbang" role="button">취소</a></div>
  		</div>
     </div>
 	

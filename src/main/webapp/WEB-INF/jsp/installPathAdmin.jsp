@@ -23,7 +23,7 @@
 				return;
 			}
 			
-		    $.post("/admin/api/installpath/remove",
+		    $.post("/v2/admin/api/installpath/remove",
 		    		{
 		    			id_list: targetItems,
 		    			access_token: getCookie("access_token")
@@ -31,7 +31,7 @@
 		    		function(data, status){
 		    			if(data) {
 		    				alert('install path 정보 삭제에 성공했습니다.');		    				
-		    				location.href = '/admin/installpath';
+		    				location.href = '/v2/admin/installpath';
 		    			} else {
 		    				alert('install path 삭제에 실패했습니다. 다시 시도 하세요.');
 		    			}
@@ -48,12 +48,12 @@
 	<div class="container"> 
   	<div class="row">
 		<ul class="nav nav-pills">
-		  <li role="presentation"><a href="/admin/agent">업체관리</a></li>
-		  <li role="presentation"><a href="/admin/gamepatch">설치/패치관리</a></li>
-		  <li role="presentation"><a href="/admin/pcbang">가맹점관리</a></li>
-		  <li role="presentation"><a href="/admin/game">Game관리</a></li>
+		  <li role="presentation"><a href="/v2/admin/agent">업체관리</a></li>
+		  <li role="presentation"><a href="/v2/admin/gamepatch">설치/패치관리</a></li>
+		  <li role="presentation"><a href="/v2/admin/pcbang">가맹점관리</a></li>
+		  <li role="presentation"><a href="/v2/admin/game">Game관리</a></li>
 		  <li role="presentation" class="active"><a href="#">InstallPath관리</a></li>
-		  <li role="presentation"><a href="/logout">로그아웃</a></li>  	  
+		  <li role="presentation"><a href="/v2/logout">로그아웃</a></li>
 		</ul>
   	</div>
   	<hr>  		
@@ -75,7 +75,7 @@
    			<td>${installPath.getPath()}</td>   			   			   			   			
    			<td>${installPath.getUptDt().toString()}</td>   			
    			<td>
-				<a class="btn btn-default" href="/admin/installpath/update?id=${installPath.getId()}" role="button">수정</a>
+				<a class="btn btn-default" href="/v2/admin/installpath/update?id=${installPath.getId()}" role="button">수정</a>
    			</td>
    		</tr>
 	</c:forEach>
@@ -84,7 +84,7 @@
 	<div class="form-group">
 		<div class="col-md-2"></div>
 		<div class="col-md-2"></div>		    
-		<div class="col-md-2"><a class="btn btn-default btn-block" href="/admin/installpath/add" role="button">등록</a></div>
+		<div class="col-md-2"><a class="btn btn-default btn-block" href="/v2/admin/installpath/add" role="button">등록</a></div>
 		<div class="col-md-2"><button type="button" class="btn btn-default btn-block" id="removeItem">삭제</button></div>
 	</div>
 	

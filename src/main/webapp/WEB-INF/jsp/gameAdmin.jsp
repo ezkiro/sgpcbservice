@@ -23,7 +23,7 @@
 				return;
 			}
 			
-		    $.post("/admin/api/game/remove",
+		    $.post("/v2/admin/api/game/remove",
 		    		{
 		    			gsn_list:targetGames,
 		    			access_token: getCookie("access_token")
@@ -48,12 +48,12 @@
 	<div class="container"> 
   	<div class="row">
 		<ul class="nav nav-pills">
-		  <li role="presentation"><a href="/admin/agent">업체관리</a></li>
-		  <li role="presentation"><a href="/admin/gamepatch">설치/패치관리</a></li>
-		  <li role="presentation"><a href="/admin/pcbang">가맹점관리</a></li>
+		  <li role="presentation"><a href="/v2/admin/agent">업체관리</a></li>
+		  <li role="presentation"><a href="/v2/admin/gamepatch">설치/패치관리</a></li>
+		  <li role="presentation"><a href="/v2/admin/pcbang">가맹점관리</a></li>
 		  <li role="presentation" class="active"><a href="#">Game관리</a></li>
-		  <li role="presentation"><a href="/admin/installpath">InstallPath관리</a></li>
-		  <li role="presentation"><a href="/logout">로그아웃</a></li>		  	  
+		  <li role="presentation"><a href="/v2/admin/installpath">InstallPath관리</a></li>
+		  <li role="presentation"><a href="/v2/logout">로그아웃</a></li>
 		</ul>
   	</div>
   	<hr>  		
@@ -89,7 +89,7 @@
    			<td>${game.getUptDt().toString()}</td>   			
    			<td>${game.getCrtDt().toString()}</td>
    			<td>
-				<a class="btn btn-default" href="/admin/game/update?gsn=${game.getGsn()}" role="button">수정</a>
+				<a class="btn btn-default" href="/v2/admin/game/update?gsn=${game.getGsn()}" role="button">수정</a>
    			</td>
    		</tr>
 	</c:forEach>
@@ -98,7 +98,7 @@
 	<div class="form-group">
 		<div class="col-md-2"></div>
 		<div class="col-md-2"></div>		    
-		<div class="col-md-2"><a class="btn btn-default btn-block" href="/admin/game/add" role="button">등록</a></div>
+		<div class="col-md-2"><a class="btn btn-default btn-block" href="/v2/admin/game/add" role="button">등록</a></div>
 		<div class="col-md-2"><button type="button" class="btn btn-default btn-block" id="removeGame">삭제</button></div>
 	</div>
 	

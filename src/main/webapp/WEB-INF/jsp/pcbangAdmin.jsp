@@ -64,7 +64,7 @@
 				return;
 			}
 			
-		    $.post("/api/member/pcbang/remove",
+		    $.post("/v2/api/member/pcbang/remove",
 		    		{
 		    			pcbid_list: targetPcbangs,
 		    			access_token: getCookie("access_token")
@@ -72,7 +72,7 @@
 		    		function(data, status){
 		    			if(data) {
 		    				alert('pcbang 정보 삭제에 성공했습니다.');		    				
-		    				location.href = '/admin/pcbang';
+		    				location.href = '/v2/admin/pcbang';
 		    			} else {
 		    				alert('pcbang 삭제에 실패했습니다. 다시 시도 하세요.');
 		    			}
@@ -89,17 +89,17 @@
 	<div class="container"> 
   	<div class="row">
 		<ul class="nav nav-pills">
-		  <li role="presentation"><a href="/admin/agent">업체관리</a></li>
-		  <li role="presentation"><a href="/admin/gamepatch">설치/패치관리</a></li>
+		  <li role="presentation"><a href="/v2/admin/agent">업체관리</a></li>
+		  <li role="presentation"><a href="/v2/admin/gamepatch">설치/패치관리</a></li>
 		  <li role="presentation" class="active"><a href="#">가맹점관리</a></li>
-		  <li role="presentation"><a href="/admin/game">Game관리</a></li>
-		  <li role="presentation"><a href="/admin/installpath">InstallPath관리</a></li>		  
-		  <li role="presentation"><a href="/logout">로그아웃</a></li>		    
+		  <li role="presentation"><a href="/v2/admin/game">Game관리</a></li>
+		  <li role="presentation"><a href="/v2/admin/installpath">InstallPath관리</a></li>
+		  <li role="presentation"><a href="/v2/logout">로그아웃</a></li>
 		</ul>
   	</div>
   	<hr>
   	
-	<form class="form-horizontal" action="/admin/pcbang" method="post">
+	<form class="form-horizontal" action="/v2/admin/pcbang" method="post">
 		<input type="hidden" name="search_key" value="" />
 		<input type="hidden" name="search_value" value="" />
 		
@@ -163,7 +163,7 @@
    			<td>${pcbang.getStatus()}</td>   			  			
    			<td>${pcbang.getCrtDt().toString().substring(0,10)}</td>
    			<td>
-				<a class="btn btn-default" href="/admin/pcbang/update?pcb_id=${pcbang.getPcbId()}" role="button">수정</a>
+				<a class="btn btn-default" href="/v2/admin/pcbang/update?pcb_id=${pcbang.getPcbId()}" role="button">수정</a>
    			</td>
    		</tr>
 	</c:forEach>
@@ -171,8 +171,8 @@
 	<br>
 	<div class="form-group">    
 		<div class="col-md-2"></div>
-		<div class="col-md-2"><a class="btn btn-default btn-block" href="/admin/pcbang/upload" role="button">일괄등록</a></div>		
-		<div class="col-md-2"><a class="btn btn-default btn-block" href="/admin/pcbang/add" role="button">등록</a></div>
+		<div class="col-md-2"><a class="btn btn-default btn-block" href="/v2/admin/pcbang/upload" role="button">일괄등록</a></div>
+		<div class="col-md-2"><a class="btn btn-default btn-block" href="/v2/admin/pcbang/add" role="button">등록</a></div>
 		<div class="col-md-2"><button type="button" class="btn btn-default btn-block" id="removePcbang">삭제</button></div>		
 	</div>
 	<br>	

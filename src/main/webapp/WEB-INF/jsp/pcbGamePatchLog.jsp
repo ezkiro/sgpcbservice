@@ -24,7 +24,7 @@
 				<td>${pcbang.getCompanyName()}</td>
 				<td>전체IP수:${totalIPs}</td>
 				<td>수집된IP수:${pcbGamePatchList.size()}</td>
-				<td><a class="btn btn-default btn-block" href="/admin/gamepatch" role="button">back</a></td>
+				<td><a class="btn btn-default btn-block" href="/v2/admin/gamepatch" role="button">back</a></td>
 			</tr>		
 		</table>
 			

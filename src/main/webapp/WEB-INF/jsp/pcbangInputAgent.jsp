@@ -63,7 +63,7 @@
 			//add mode
 			if(!updateMode) {
 				
-			    $.post("/api/member/pcbang/add",
+			    $.post("/v2/api/member/pcbang/add",
 			    		{
 			    			company_code: $("#inputCompanyCode").val(),
 			    			ceo: $("#inputCeo").val(),
@@ -79,7 +79,7 @@
 			    		function(data, status){
 			    			if (data) {
 			    				alert("PC방 등록에 성공하였습니다.");
-			    				location.href = '/member/pcbang';
+			    				location.href = '/v2/member/pcbang';
 			    			} else {
 			    				alert("오류가 발생하였습니다.");
 			    			}
@@ -87,7 +87,7 @@
 			    );
 			//update mode    
 			} else {
-			    $.post("/api/member/pcbang",
+			    $.post("/v2/api/member/pcbang",
 			    		{
 							pcb_id:$("#inputPcbId").val(),	    	
 			    			company_code: $("#inputCompanyCode").val(),
@@ -104,7 +104,7 @@
 			    		function(data, status){
 			    			if (data) {
 			    				alert("PC방 수정에 성공하였습니다.");
-			    				location.href = '/member/pcbang';
+			    				location.href = '/v2/member/pcbang';
 			    			} else {
 			    				alert("오류가 발생하였습니다.");
 			    			}
@@ -200,7 +200,7 @@
 		<div class="col-md-2"></div>
  		<div class="col-md-4"></div>
  		<div class="col-md-2"><button type="button" class="btn btn-lg btn-primary btn-block" id="submitPcbang">저장</button></div>
- 		<div class="col-md-2"><a class="btn btn-lg btn-default btn-block" href="/member/pcbang" role="button">취소</a></div>
+ 		<div class="col-md-2"><a class="btn btn-lg btn-default btn-block" href="/v2/member/pcbang" role="button">취소</a></div>
  		</div>
     </div>
 	

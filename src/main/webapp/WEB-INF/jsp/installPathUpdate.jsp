@@ -30,7 +30,7 @@
 		$("#submitItem").click(function(){			
 			if(!checkValidInput()) return;
 						
-		    $.post("/admin/api/installpath/update",
+		    $.post("/v2/admin/api/installpath/update",
 		    		{
 		    			id: $("#inputID").val(),
 		    			gsn: $("#inputGsn option:selected").val(),
@@ -40,7 +40,7 @@
 		    		function(data, status){
 		    			if(data) {
 		    				alert("installpath 수정에 성공하였습니다.");
-		    				location.href = '/admin/installpath';
+		    				location.href = '/v2/admin/installpath';
 		    			} else {
 		    				alert("installpath 수정에 실패했습니다. 다시 시도 하세요.");			    				
 		    			}
@@ -106,7 +106,7 @@
 		<div class="form-group">
 		<div class="col-sm-2"></div>
  		<div class="col-sm-2"><button type="button" class="btn btn-lg btn-primary btn-block" id="submitItem">저장</button></div>
- 		<div class="col-sm-2"><a class="btn btn-lg btn-default btn-block" href="/admin/installpath" role="button">취소</a></div>
+ 		<div class="col-sm-2"><a class="btn btn-lg btn-default btn-block" href="/v2/admin/installpath" role="button">취소</a></div>
  		<div class="col-sm-2"></div> 		
  		</div>
     </div>

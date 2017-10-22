@@ -69,9 +69,9 @@
 		
 		$("#excelDownload").click(function(){
 			if (searchKey.length > 0 && searchValue.length > 0) {
-				location.href='/admin/gamepatch/excel?search_key=' + searchKey + '&search_value=' + searchValue;				
+				location.href='/v2/admin/gamepatch/excel?search_key=' + searchKey + '&search_value=' + searchValue;
 			} else {
-				location.href='/admin/gamepatch/excel';
+				location.href='/v2/admin/gamepatch/excel';
 			}
 		});		
 		
@@ -86,18 +86,18 @@
 		<ul class="nav nav-pills">
 	<c:choose>
 		<c:when test="${permission eq 'ADMIN'}">
-		  <li role="presentation"><a href="/admin/agent">업체관리</a></li>
+		  <li role="presentation"><a href="/v2/admin/agent">업체관리</a></li>
 		  <li role="presentation" class="active"><a href="#">설치/패치관리</a></li>
-		  <li role="presentation"><a href="/statistics">통계</a></li>
-		  <li role="presentation"><a href="/admin/pcbang">가맹점관리</a></li>
-		  <li role="presentation"><a href="/admin/game">Game관리</a></li>
-		  <li role="presentation"><a href="/admin/installpath">InstallPath관리</a></li>
-		  <li role="presentation"><a href="/logout">로그아웃</a></li>	
+		  <li role="presentation"><a href="/v2/statistics">통계</a></li>
+		  <li role="presentation"><a href="/v2/admin/pcbang">가맹점관리</a></li>
+		  <li role="presentation"><a href="/v2/admin/game">Game관리</a></li>
+		  <li role="presentation"><a href="/v2/admin/installpath">InstallPath관리</a></li>
+		  <li role="presentation"><a href="/v2/logout">로그아웃</a></li>
 		</c:when>
 		<c:otherwise>
 		  <li role="presentation" class="active"><a href="#">설치/패치관리</a></li>
-          <li role="presentation"><a href="/statistics">통계</a></li>
-		  <li role="presentation"><a href="/logout">로그아웃</a></li>		  		
+          <li role="presentation"><a href="/v2/statistics">통계</a></li>
+		  <li role="presentation"><a href="/v2/logout">로그아웃</a></li>
 		</c:otherwise>
 	</c:choose>	
 		</ul>
@@ -130,7 +130,7 @@
 		</div>
 	</div>
 	
-	<form class="form-horizontal" action="/admin/gamepatch" method="post">
+	<form class="form-horizontal" action="/v2/admin/gamepatch" method="post">
 		<input type="hidden" name="checked_games" value="" />
 		<input type="hidden" name="search_key" value="" />
 		<input type="hidden" name="search_value" value="" />
@@ -205,7 +205,7 @@
     			<td>${pcbGamePatchResult.getPcbang().getAgent().getCompanyName()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getCompanyCode()}</td>    			
     			<td>${pcbGamePatchResult.getPcbang().getIpTotal()}</td>
-   				<td><a class="btn btn-success" href="/admin/pcbgamepatch/detail?pcb_id=${pcbGamePatchResult.getPcbang().getPcbId()}" role="button">${pcbGamePatchResult.getCheckIPCnt()}</a></td>    			
+   				<td><a class="btn btn-success" href="/v2/admin/pcbgamepatch/detail?pcb_id=${pcbGamePatchResult.getPcbang().getPcbId()}" role="button">${pcbGamePatchResult.getCheckIPCnt()}</a></td>
     			<td>${pcbGamePatchResult.getIsPaymentPcbang().toString()}</td>
 			<c:forEach var="game" items="${targetGameList}">
 				<td>${pcbGamePatchResult.getGamePatchMap().get(game.getGsn())}</td>

@@ -39,7 +39,7 @@
 			
 			if (!checkValidInput()) return;		
 			
-			var loginUrl = "/api/member/login";
+			var loginUrl = "api/member/login";
 						
 		    $.post(loginUrl,
 		    		{
@@ -77,7 +77,7 @@
     <div class = "row text-center">
 		<H1>E-GPMS Admin</H1>
 	</div>
-	<form class="form-horizontal" action="/login" method="post" >	     
+	<form class="form-horizontal" action="login" method="post" >
     <div class = "row">
 		<div class="form-group">
 		<div class="col-sm-3 text-right"><label for="lbEmail"><strong>ID</strong></label></div>
@@ -98,8 +98,8 @@
     <div class = "row">
 		<div class="form-group">    
 		<div class="col-sm-3"></div>
-		<div class="col-sm-2"><a class="btn btn-default btn-block" href="/signup" role="button">회원가입</a></div>
-		<div class="col-sm-2"><a class="btn btn-default btn-block" href="/findIDOrPassword" role="button">ID/패스워드찾기</a></div>		
+		<div class="col-sm-2"><a class="btn btn-default btn-block" href="signup" role="button">회원가입</a></div>
+		<div class="col-sm-2"><a class="btn btn-default btn-block" href="findIDOrPassword" role="button">ID/패스워드찾기</a></div>
  		<div class="col-sm-2"><button type="button" class="btn btn-lg btn-primary btn-block" id="login">로그인</button></div>
  		</div>
     </div>

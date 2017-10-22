@@ -10,7 +10,7 @@
 		
 		var updateMode = false;
 		
-		$("#frmGame").attr("action","/admin/game/new");
+		$("#frmGame").attr("action","/v2/admin/game/new");
 		
 		var checkValidInput = function() {
 			
@@ -60,7 +60,7 @@
 			//add mode
 			if(!updateMode) {
 				
-			    $.post("/admin/game/new",
+			    $.post("/v2/admin/game/new",
 			    		{
 			    			gsn: $("#inputGsn").val(),
 			    			enable: $("#inputEnable").val(),
@@ -76,7 +76,7 @@
 			    		function(data, status){
 			    			if(data) {
 			    				alert("Game 등록에 성공하였습니다.");
-			    				location.href = '/admin/game';
+			    				location.href = '/v2/admin/game';
 			    			} else {
 			    				alert("Game 등록에 실패했습니다. 다시 시도 하세요.");
 			    			}
@@ -84,7 +84,7 @@
 			    );
 			} else {
 				
-			    $.post("/admin/game/update",
+			    $.post("/v2/admin/game/update",
 			    		{
 			    			gsn: $("#inputGsn").val(),
                             enable: $("#inputEnable").val(),
@@ -225,7 +225,7 @@
 		<div class="form-group">
 		<div class="col-sm-2"></div>
  		<div class="col-sm-2"><button type="button" class="btn btn-lg btn-primary btn-block" id="submitGame">저장</button></div>
- 		<div class="col-sm-2"><a class="btn btn-lg btn-default btn-block" href="/admin/game" role="button">취소</a></div>
+ 		<div class="col-sm-2"><a class="btn btn-lg btn-default btn-block" href="/v2/admin/game" role="button">취소</a></div>
  		<div class="col-sm-2"></div> 		
  		</div>
     </div>

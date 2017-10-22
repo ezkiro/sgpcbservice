@@ -32,9 +32,9 @@
 		
 		$("#excelDownload").click(function(){
 			if (searchKey.length > 0 && searchValue.length > 0) {
-				location.href='/admin/agent/excel?search_key=' + searchKey + '&search_value=' + searchValue;				
+				location.href='/v2/admin/agent/excel?search_key=' + searchKey + '&search_value=' + searchValue;
 			} else {
-				location.href='/admin/agent/excel';
+				location.href='/v2/admin/agent/excel';
 			}
 		});
 		
@@ -48,7 +48,7 @@
 				return;
 			}
 			
-		    $.post("/api/member/agent/unregister",
+		    $.post("/v2/api/member/agent/unregister",
 		    		{
 		    			agent_id:$(this).val(),
 		    			access_token: getCookie("access_token")
@@ -56,7 +56,7 @@
 		    		function(data, status){
 		    			if(data) {
 		    				alert('업체 정보 삭제에 성공했습니다.');		    				
-		    				location.href = '/admin/agent';
+		    				location.href = 'admin/agent';
 		    			} else {
 		    				alert('업체 정보 삭제에 실패했습니다. 다시 시도 하세요.');
 		    			}
@@ -74,16 +74,16 @@
   	<div class="row">
 		<ul class="nav nav-pills">
 		  <li role="presentation" class="active"><a href="#">업체관리</a></li>
-		  <li role="presentation"><a href="/admin/gamepatch">설치/패치관리</a></li>
-		  <li role="presentation"><a href="/admin/pcbang">가맹점관리</a></li>
-		  <li role="presentation"><a href="/admin/game">Game관리</a></li>
-		  <li role="presentation"><a href="/admin/installpath">InstallPath관리</a></li>		  
-		  <li role="presentation"><a href="/logout">로그아웃</a></li>		  		  
+		  <li role="presentation"><a href="/v2/admin/gamepatch">설치/패치관리</a></li>
+		  <li role="presentation"><a href="/v2/admin/pcbang">가맹점관리</a></li>
+		  <li role="presentation"><a href="/v2/admin/game">Game관리</a></li>
+		  <li role="presentation"><a href="/v2/admin/installpath">InstallPath관리</a></li>
+		  <li role="presentation"><a href="/v2/logout">로그아웃</a></li>
 		</ul>
   	</div>
   	<hr>
   	
-	<form class="form-horizontal" action="/admin/agent" method="post">
+	<form class="form-horizontal" action="admin/agent" method="post">
 		<input type="hidden" name="search_key" value="" />
 		<input type="hidden" name="search_value" value="" />
 
@@ -155,7 +155,7 @@
     			<td>${agent.getCrtDt().toString().substring(0,10)}</td>
     			<td>${agent.getStatus()}</td>    			    			    			
     			<td>${agent.getAccount().getPermission()}</td>
-    			<td><a class="btn btn-default" href="/admin/agent/update?agent_id=${agent.getAgentId()}" role="button">수정</a></td>
+    			<td><a class="btn btn-default" href="/v2/admin/agent/update?agent_id=${agent.getAgentId()}" role="button">수정</a></td>
     			<td><button type="button" class="btn btn-danger btn-block" name="removeAgent" value="${agent.getAgentId()}">삭제</button></td>
     		</tr>
 		</c:forEach>
