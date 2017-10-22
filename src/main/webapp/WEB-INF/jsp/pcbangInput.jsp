@@ -79,7 +79,7 @@
 			    		function(data, status){
 			    			if (data) {
 			    				alert("PC방 등록에 성공하였습니다.");
-			    				location.href = '/admin/pcbang';
+			    				location.href = '/v2/admin/pcbang';
 			    			} else {
 			    				alert("오류가 발생하였습니다.");
 			    			}
@@ -105,7 +105,7 @@
 			    		function(data, status){
 			    			if(data) {
 			    				alert("PC방 수정에 성공하였습니다.");
-			    				location.href = '/admin/pcbang';
+			    				location.href = '/v2/admin/pcbang';
 			    			} else {
 			    				alert("오류가 발생하였습니다.");
 			    			}

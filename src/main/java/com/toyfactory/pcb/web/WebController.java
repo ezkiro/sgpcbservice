@@ -53,7 +53,7 @@ public class WebController {
 		
 		response.addCookie(cookie);
 		
-	    return "redirect:/login";			
+	    return "redirect:/v2/login";
     }
     
     

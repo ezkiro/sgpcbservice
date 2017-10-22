@@ -49,7 +49,7 @@
 				$("#inputVerFile").val("${game.getVerFile()}");
 				$("#inputVerFileFmt").val("${game.getVerFileFmt()}");				
 				
-				$("#frmGame").attr("action","/admin/game/update");			
+				$("#frmGame").attr("action","/v2/admin/game/update");
 			}
 		}
 		
@@ -100,7 +100,7 @@
 			    		function(data, status){
 			    			if(data) {
 			    				alert("Game 수정에 성공하였습니다.");
-			    				location.href = '/admin/game';
+			    				location.href = '/v2/admin/game';
 			    			} else {
 			    				alert("Game 수정에 실패했습니다. 다시 시도 하세요.");			    				
 			    			}
