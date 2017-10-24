@@ -59,7 +59,7 @@
   	<hr>  		
 	
 	<table class="table table-bordered table-hover">
-		<tr class="info">
+		<tr class="success">
 			<td>GSN</td>
 		    <td>사용여부</td>
 			<td>게임명</td>

@@ -66,7 +66,7 @@
 		<input type="hidden" name="search_key" value="" />
 		<input type="hidden" name="search_value" value="" />
 
-  	<div class="form-group bg-info">
+  	<div class="form-group bg-success">
 		<div class="col-md-1 text-right">
 			<label for="lbID">조회조건</label>
 		</div>
@@ -83,12 +83,12 @@
 			<input type="text" class="form-control" id="inputSerachValue" placeholder="">
 		</div>
 		<div class="col-md-2">
-			<button type="submit" class="btn btn-primary btn-block">조회</button>
+			<button type="submit" class="btn btn-success btn-block">조회</button>
 		</div>
 	</div>
 	</form>
 
-  	<div class="form-group bg-info">
+  	<div class="form-group bg-success">
 		<div class="col-md-2">
 			<label for="lbTotalAgent">총 가맹점 수 :${pcbangCnt}개 </label>
 		</div>
@@ -96,7 +96,7 @@
 	</div><!-- container -->
 
 	<table class="table table-bordered table-hover">
-		<tr class="info">
+		<tr class="success">
 			<td>구분</td>
 			<td>대표자</td>
 			<td>상호</td>
