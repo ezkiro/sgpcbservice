@@ -167,8 +167,12 @@ public class PcbangService {
 					invalidDatas.add(rawData);
 					continue;
 				}
-				
-				pcbangs.add(pcbang);
+
+				if (isDuplicateIP(pcbang.getIpStart())) {
+					invalidDatas.add(rawData + ":<font color=\"red\">Duplicate IP!</font>");
+				} else {
+					pcbangs.add(pcbang);
+				}
 			}			
 			
 			if (!invalidDatas.isEmpty()) {
@@ -216,7 +220,7 @@ public class PcbangService {
 
 		try {
 			//0 agent id(관리업체1), 1 대표자, 2 상호, 3 start ip, 4 end ip, 5 submask, 6 관리업체2, 7 프로그램, 8 주소
-			String[] pcbData = csvLine.split(",");
+			String[] pcbData = csvLine.split("\\,");
 
 			if (pcbData.length < 9) return null;
 					
@@ -227,9 +231,23 @@ public class PcbangService {
 	    	
 	    	aPcbang.setAgent(aAgent);    	
 	    	aPcbang.setCeo(pcbData[1].trim());
-	    	aPcbang.setCompanyName(pcbData[2].trim());    	
-	    	aPcbang.setIpStart(pcbData[3].trim());
-	    	aPcbang.setIpEnd(pcbData[4].trim());
+	    	aPcbang.setCompanyName(pcbData[2].trim());
+
+	    	//IP가  10.1.1.1~100 또는 10.1.1.1-100 형식으로 입력되는 경우 분리해서 넣는다.
+			String startIP = pcbData[3].trim();
+			if (startIP.contains("~")) {
+				String[] ips = startIP.split("\\~");
+				aPcbang.setIpStart(ips[0]);
+				aPcbang.setIpEnd(ips[0].substring(0,ips[0].lastIndexOf(".")+1) + ips[1]);
+			} else if (startIP.contains("-")) {
+				String[] ips = startIP.split("\\-");
+				aPcbang.setIpStart(ips[0]);
+				aPcbang.setIpEnd(ips[0].substring(0,ips[0].lastIndexOf(".")+1) + ips[1]);
+			} else {
+				aPcbang.setIpStart(startIP);
+				aPcbang.setIpEnd(pcbData[4].trim());
+			}
+
 	    	aPcbang.setSubmask(pcbData[5].trim());
 	    	aPcbang.setCompanyCode(pcbData[6].trim());    	
 	    	aPcbang.setProgram(pcbData[7].trim());
@@ -248,5 +266,23 @@ public class PcbangService {
 			logger.error("[parseCsv] exception:" + e.getMessage());
 			return null;
 		}
+	}
+
+	private boolean isDuplicateIP(String startIP) {
+		//IP의 XX.XX.XX 부분으로 검색하여 중복 IP를 체크한다.
+		String matchingPart = startIP.substring(0,startIP.lastIndexOf("."));
+
+		if (logger.isDebugEnabled()) {
+			logger.debug("[checkDuplicateIPs] check matchingPart:" + matchingPart);
+		}
+
+		List<Pcbang> duplicatePcbangs = pcbangDao.findByIpStartStartingWith(matchingPart);
+
+		if (!duplicatePcbangs.isEmpty()) {
+			logger.error("[checkDuplicateIPs] duplicate ip:" + startIP);
+			return true;
+		}
+
+		return false;
 	}
 }

@@ -210,7 +210,8 @@ public class GamePatchService {
 			}
 
 			//버전파일 체크인 경우는 minor version이 있는 경우 그 값이 동일해도 설치로 간주
-			if (game.getMinor() != null && game.getMinor().equals(pcbGame.getMajor())) {
+			//minor version에 여러 version값이 구분자로 들어 있는 경우도 처리 하기 위해서 equals 보다는 contains 로 체크한다.
+			if (game.getMinor() != null && game.getMinor().contains(pcbGame.getMajor())) {
 				return true;
 			}
 		}

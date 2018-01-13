@@ -45,7 +45,7 @@
 				$("#inputCompanyCode").val("${pcbang.getCompanyCode()}");
 				$("#inputCeo").val("${pcbang.getCeo()}");				
 				$("#inputCompany").val("${pcbang.getCompanyName()}");
-				$("#inputAddress").val("${pcbang.getAddress()}");
+				$("#inputAddress").val('${pcbang.getAddress()}');
 				$("#inputIPStart").val("${pcbang.getIpStart()}");
 				$("#inputIPEnd").val("${pcbang.getIpEnd()}");
 				$("#inputSubmask").val("${pcbang.getSubmask()}");
