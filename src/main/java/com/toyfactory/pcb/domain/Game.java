@@ -40,7 +40,7 @@ public class Game {
 
 	private String verFile;
 	
-	private String verFileFmt; //JSON/XML/BIN
+	private String verFileFmt; //JSON/XML/BIN/EPIC
 	
 	private String etc;
 

@@ -20,6 +20,7 @@ public class GamePatchLog {
 	@Id
 	@Column(nullable=false, length=10)
 	private String gsn;
+	private String major; //game version 정보
 	
 	private Long install = 0L; //설치된 수
 	private Long patch = 0L; //패치 OK 수

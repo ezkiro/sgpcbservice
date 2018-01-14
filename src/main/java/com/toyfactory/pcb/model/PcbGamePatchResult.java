@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.toyfactory.pcb.domain.Game;
 import com.toyfactory.pcb.domain.GamePatchLog;
-import com.toyfactory.pcb.domain.GamePatchLogPK;
 import com.toyfactory.pcb.domain.Pcbang;
 
 import lombok.Data;
@@ -20,10 +19,12 @@ public class PcbGamePatchResult {
 	private Long checkIPCnt;
 	
 	private Map<String, Long> gamePatchMap; //key:gsn val:patch count
+	private Map<String, String> gameVersionMap; //key:gsn val: game version
 	
 	public PcbGamePatchResult(Pcbang pcbang) {
 		this.pcbang = pcbang;
-		this.gamePatchMap = new HashMap<String, Long>();
+		this.gamePatchMap = new HashMap<>();
+		this.gameVersionMap = new HashMap<>();
 		this.isPaymentPcbang = YN.N;
 		this.totalIPCnt = pcbang.getIpTotal();
 		this.checkIPCnt = 0L;
@@ -39,7 +40,9 @@ public class PcbGamePatchResult {
 		//mapping gsn:gamePatchLog
 		for (GamePatchLog gamePatchLog : gamePatchLogs) {
 			gamePatchMap.put(gamePatchLog.getGsn(), gamePatchLog.getPatch());
-			
+			//게임별 최종 version 정보를 셋팅한다.
+			gameVersionMap.put(gamePatchLog.getGsn(), gamePatchLog.getMajor());
+
 			//checkIPCnt는  Install의 최대 값을 구해야 한다.
 			if (checkIPCnt < gamePatchLog.getInstall()) checkIPCnt = gamePatchLog.getInstall();			
 		}

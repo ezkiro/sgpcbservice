@@ -208,7 +208,7 @@
    				<td><a class="btn btn-success" href="/admin/pcbgamepatch/detail?pcb_id=${pcbGamePatchResult.getPcbang().getPcbId()}" role="button">${pcbGamePatchResult.getCheckIPCnt()}</a></td>    			
     			<td>${pcbGamePatchResult.getIsPaymentPcbang().toString()}</td>
 			<c:forEach var="game" items="${targetGameList}">
-				<td>${pcbGamePatchResult.getGamePatchMap().get(game.getGsn())}</td>
+				<td>${pcbGamePatchResult.getGamePatchMap().get(game.getGsn())}:${pcbGamePatchResult.getGameVersionMap().get(game.getGsn())}</td>
 			</c:forEach>																																																						
     		</tr>
 		</c:forEach>

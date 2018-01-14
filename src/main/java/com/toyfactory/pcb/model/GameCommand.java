@@ -26,6 +26,6 @@ public class GameCommand {
 		this.exeFile = game.getExeFile();
 		this.verFile = game.getVerFile();
 		this.verFileFmt = game.getVerFileFmt();
-		this.verKey = "version";
+		this.verKey = game.getName(); //epic 게임 버전 체크를 위해서 game name 전달
 	}
 }

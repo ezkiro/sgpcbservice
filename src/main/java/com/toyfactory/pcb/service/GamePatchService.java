@@ -24,8 +24,8 @@ import com.toyfactory.pcb.model.StatusCd;
 import com.toyfactory.pcb.model.VerifyType;
 import com.toyfactory.pcb.model.YN;
 import com.toyfactory.pcb.repository.GamePatchLogRepository;
-import com.toyfactory.pcb.repository.GameRepository;
 import com.toyfactory.pcb.repository.PcbangRepository;
+import org.springframework.util.StringUtils;
 
 
 @Service("gamePatchService")
@@ -182,6 +182,11 @@ public class GamePatchService {
 			//GSN별 PATCH 여부 체크
 			if (verifyPcbGamePatch(pcbGame)) {
 				gamePatchLog.incrPatch();
+
+				//set game version
+				if (!pcbGame.getMajor().equals(gamePatchLog.getMajor())) {
+					gamePatchLog.setMajor(pcbGame.getMajor());
+				}
 			}
 			
 			gamePatchLog.incrInstall();
@@ -209,10 +214,22 @@ public class GamePatchService {
 				return true;
 			}
 
-			//버전파일 체크인 경우는 minor version이 있는 경우 그 값이 동일해도 설치로 간주
-			//minor version에 여러 version값이 구분자로 들어 있는 경우도 처리 하기 위해서 equals 보다는 contains 로 체크한다.
-			if (game.getMinor() != null && game.getMinor().contains(pcbGame.getMajor())) {
-				return true;
+			//minor version에 여러 version값이 구분자로 들어 있는 경우도 처리
+			/*
+			    epic 게임의 경우 version 정보가 아래와 같이 길게 나오기 때문에
+			    ex)  ++Fortnite+Release-Cert-CL-3825894-Windows
+				minor에 3825894, xxxxx  형태로 넣고 list로 전환해서 각 value가 pcbGame의 major에 포함 여부 체크하는 방식으로 변경
+
+			*/
+			if (!StringUtils.isEmpty(game.getMinor())) {
+
+				String[] versions = game.getMinor().split("\\,");
+
+				for (int i = 0; i < versions.length ; i++) {
+					if (pcbGame.getMajor().contains(versions[i])) {
+						return true;
+					}
+				}
 			}
 		}
 		
