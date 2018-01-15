@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -152,7 +153,7 @@ public class GamePatchService {
 	
 	public boolean writePcbGamePatchToCache(String clientIp, PcbGamePatch pcbGamePatch) {
     	pcbGamePatch.setCrtDt(new Date());
-        redisTemplate.opsForValue().set(clientIp, pcbGamePatch);		
+        redisTemplate.opsForValue().set(clientIp, pcbGamePatch, 41L, TimeUnit.DAYS);
 		return true;
 	}
 	
