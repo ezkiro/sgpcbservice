@@ -214,7 +214,8 @@
 					<option value="JSON">JSON</option>
 					<option value="XML">XML</option>
 					<option value="INI">INI</option>
-					<option value="BIN">BIN</option>					
+					<option value="BIN">BIN</option>
+					<option value="EPIC">EPIC</option>
 				</select>						
 			</div>
 		</div>
