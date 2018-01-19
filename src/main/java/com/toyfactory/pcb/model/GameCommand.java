@@ -26,6 +26,6 @@ public class GameCommand {
 		this.exeFile = game.getExeFile();
 		this.verFile = game.getVerFile();
 		this.verFileFmt = game.getVerFileFmt();
-		this.verKey = game.getName();
+		this.verKey = "version";
 	}
 }
