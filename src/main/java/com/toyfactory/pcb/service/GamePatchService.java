@@ -243,7 +243,7 @@ public class GamePatchService {
 	}
 	
 	public boolean isMissionCompletePcbang(Pcbang pcbang, List<Game> games) {
-		//현재 지급대상 PC방은 모든 게임의 patch 수가  전체 IP 수의 50% 이상이어야 한다.
+		//현재 지급대상 PC방은 모든 게임의 patch 수가  전체 IP 수의 30% 이상이어야 한다.
 		
 		//List<Game> games = gameService.findGames();
 				
@@ -253,8 +253,8 @@ public class GamePatchService {
 				return false;
 			}
 			
-			// 50% 미만은 지급 대상이 아니다.
-			if ((gamePatchLog.getPatch() * 2L) < pcbang.getIpTotal()) {
+			// 30% 미만은 지급 대상이 아니다. 아래와 같이 하는 것은 부동 소수점 연산을 피하기 위해서 이다.
+			if ((gamePatchLog.getPatch() * 10L) < (pcbang.getIpTotal() *3L)) {
 				return false;
 			}			
 		}
