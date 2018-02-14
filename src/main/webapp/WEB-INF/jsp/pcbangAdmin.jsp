@@ -137,7 +137,7 @@
 	<table class="table table-bordered table-hover">
 		<tr class="info">
 			<td><input type="checkbox" id="select_all"/>All</td>
-			<td>대표자</td>			
+			<td>PSN</td>
 			<td>상호</td>
 			<td>주소</td>
 			<td>IP대역</td>

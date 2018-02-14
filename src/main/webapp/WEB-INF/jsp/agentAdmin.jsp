@@ -95,7 +95,7 @@
 			<select class="form-control" id ="inputSerachKey">
 			  <option value="all">전체</option>
 			  <option value="account">아이디</option>			  
-			  <option value="ceo">대표자</option>
+			  <option value="ceo">PSN</option>
 			  <option value="companyName">상호</option>			  		  
 			  <option value="status">상태</option>			  
 			</select>
@@ -128,7 +128,7 @@
 				<td>사업자번호</td>
 				<td>아이디</td>
 				<td>상호</td>
-				<td>대표자</td>
+				<td>PSN</td>
 				<td>연락처</td>
 				<td>주소</td>
 				<td>email</td>
