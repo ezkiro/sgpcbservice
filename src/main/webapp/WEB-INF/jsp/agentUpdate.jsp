@@ -158,7 +158,7 @@
 
     <div class="row">
 		<div class="form-group">    
-			<div class="col-md-2 text-right"><label for="lbCEO">PSN</label></div>
+			<div class="col-md-2 text-right"><label for="lbCEO">대표자</label></div>
 	 		<div class="col-md-4"><input type="text" class="form-control" id="inputCEO" placeholder=""></div>
  		</div>
     </div>
