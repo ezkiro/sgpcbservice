@@ -87,7 +87,7 @@
 		<input type="hidden" name="search_key" value="" />
 		<input type="hidden" name="search_value" value="" />
 
-  	<div class="form-group bg-success">
+  	<div class="form-group bg-warning">
 		<div class="col-md-1 text-right">
 			<label for="lbID">조회조건</label>
 		</div>
@@ -104,7 +104,7 @@
 			<input type="text" class="form-control" id="inputSerachValue" placeholder="">
 		</div>
 		<div class="col-md-2">		
-			<button type="submit" class="btn btn-success btn-block">조회</button>
+			<button type="submit" class="btn btn-warning btn-block">조회</button>
 		</div>
 	</div>	  
 	</form>
@@ -123,7 +123,7 @@
 	</div><!-- container -->	
 	
 		<table class="table table-bordered table-hover">
-			<tr class="success">
+			<tr class="warning">
 				<td>구분</td>
 				<td>사업자번호</td>
 				<td>아이디</td>

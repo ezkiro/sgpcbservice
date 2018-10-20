@@ -85,7 +85,7 @@
     <div class="row">
     <div class="col-md-9">
 
-	<div class="form-group bg-success">
+	<div class="form-group bg-warning">
 	    <div class="row">
 			<div class="col-md-2 text-right">
 				<label for="lbGame">게임선택</label>
@@ -113,7 +113,7 @@
 		<input type="hidden" name="search_key" value="" />
 		<input type="hidden" name="search_value" value="" />
 
-        <div class="form-group bg-success">
+        <div class="form-group bg-warning">
             <div class="row">
             <div class="col-md-2 text-right">
                 <label for="lbID">조회조건</label>
@@ -131,7 +131,7 @@
                 <input type="text" class="form-control" id="inputSerachValue" placeholder="">
             </div>
             <div class="col-md-3">
-                <button type="submit" class="btn btn-success btn-block" id="search">조회</button>
+                <button type="submit" class="btn btn-warning btn-block" id="search">조회</button>
             </div>
             </div>
         </div>
@@ -152,7 +152,7 @@
 	</div><!-- container -->	
 	
 		<table class="table table-bordered table-hover">
-			<tr class="success">
+			<tr class="warning">
 				<td>구분</td>
 				<td>상호</td>
 				<td>주소</td>				
