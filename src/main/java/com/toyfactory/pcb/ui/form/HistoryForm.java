@@ -109,11 +109,6 @@ public class HistoryForm extends VerticalLayout {
         Long pcbCntDayDelta = item1.getPcbCnt() - item2.getPcbCnt();
         footerRow.getCell("pcb_cnt").setHtml(colorNumberHtml(pcbCntDayDelta));
 
-        for(Game game : games) {
-            Long installDayDelta = item1.getInstallPcbCntByGsn(game.getGsn()) - item2.getInstallPcbCntByGsn(game.getGsn());
-            footerRow.getCell("game_" + game.getGsn()).setHtml(colorNumberHtml(installDayDelta));
-        }
-
         Long paidPcbCntDayDelta = item1.getPaidPcbCnt() - item2.getPaidPcbCnt();
         footerRow.getCell("paid_pcb_cnt").setHtml(colorNumberHtml(paidPcbCntDayDelta));
     }
