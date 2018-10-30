@@ -265,11 +265,11 @@ public class AdminController {
 		
 		if (accessToken.contains(Permission.PARTNER.toString())) {
 			model.addAttribute("permission", Permission.PARTNER.toString());
+			return "gamePatchPartner";
 		} else {
 			model.addAttribute("permission", Permission.ADMIN.toString());
+			return "gamePatchAdmin";
 		}
-				
-		return "gamePatchAdmin";
 	}
 
 	@RequestMapping("/pcbang/add")
