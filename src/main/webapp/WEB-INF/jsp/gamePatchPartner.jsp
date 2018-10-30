@@ -108,7 +108,7 @@
 		</div>
 	</div>
 
-	<form class="form-horizontal" action="/member/gamepatch" method="post">
+	<form class="form-horizontal" action="/admin/gamepatch" method="post">
 		<input type="hidden" name="checked_games" value="" />
 		<input type="hidden" name="search_key" value="" />
 		<input type="hidden" name="search_value" value="" />
