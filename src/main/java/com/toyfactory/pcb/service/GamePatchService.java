@@ -261,6 +261,18 @@ public class GamePatchService {
 		
 		return true;
 	}
+
+	//미션을 성공한 pcbang에 설치된 게임의 count 계산
+	public Long sumGamePatchCntForAllPaidPcbang(List<Pcbang> pcbangs, Game game) {
+		//1개의 게임에 대해서만 처리해야 의미를 가진다.
+		long gamePatchCnt = 0;
+		for (Pcbang aPcbang : pcbangs) {
+			GamePatchLog gamePatchLog = gamePatchLogDao.findOne(new GamePatchLogPK(aPcbang.getPcbId(), game.getGsn()));
+			gamePatchCnt += gamePatchLog.getPatch();
+		}
+
+		return gamePatchCnt;
+	}
 	
 	public String checkGamePatchPass(String clientIp) {
     	//PcbAgent가 중복해서 GamePatch check 하는 것을 방지하기 위한 사전 체크 

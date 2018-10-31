@@ -2,6 +2,7 @@ package com.toyfactory.pcb.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,16 +53,21 @@ public class HistoryService {
 
 		//등록 PC방수
 		Long pcbCnt = Long.valueOf(pcbangs.size());
-		
+
+		List<Pcbang> paidPcbangs = pcbangs.stream().filter(pcbang -> gamePatchService.isMissionCompletePcbang(pcbang, games) == true).collect(Collectors.toList());
+
 		//지급  PC방수
-		Long paidPcbCnt = pcbangs.stream().filter(pcbang -> gamePatchService.isMissionCompletePcbang(pcbang, games) == true).count();
+		Long paidPcbCnt = Long.valueOf(paidPcbangs.size());
+
+		//지급 PC방의 patch count의 sum
+		Long paidPcbAllPatchCnt = gamePatchService.sumGamePatchCntForAllPaidPcbang(paidPcbangs, games.get(0));
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("all pcb count:" + pcbCnt + ", paid pcbCnt:" + paidPcbCnt);
 		}
 		
 		//history 저장
-		historyDao.save(new History(pcbCnt, paidPcbCnt, new Date()));		
+		historyDao.save(new History(pcbCnt, paidPcbCnt, paidPcbAllPatchCnt, new Date()));
 		
 		for(Game game : games) {
 			//각 game벼로  PC방의 설치수 sum 구하기

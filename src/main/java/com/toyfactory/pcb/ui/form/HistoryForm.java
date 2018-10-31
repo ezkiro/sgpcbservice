@@ -52,6 +52,7 @@ public class HistoryForm extends VerticalLayout {
 //            }, new NumberRenderer(new DecimalFormat("#,###"))).setCaption(game.getName()).setId("game_" + game.getGsn());
 //        }
         historyGrid.addColumn(HistoryItem::getPaidPcbCnt, new NumberRenderer(new DecimalFormat("#,###"))).setCaption("설치PC방").setId("paid_pcb_cnt");
+        historyGrid.addColumn(HistoryItem::getAllPatchCnt, new NumberRenderer(new DecimalFormat("#,###"))).setCaption("설치IP수").setId("all_patch_cnt");
 
 
         HeaderRow headerRow = historyGrid.getDefaultHeaderRow();
@@ -61,6 +62,7 @@ public class HistoryForm extends VerticalLayout {
 //            headerRow.getCell("game_" + game.getGsn()).setHtml("<b>" + game.getName() +"<b>");
 //        }
         headerRow.getCell("paid_pcb_cnt").setHtml("<b>설치PC방<b>");
+        headerRow.getCell("all_patch_cnt").setHtml("<b>설치IP수<b>");
 
         //set header
 //        HeaderRow groupingHeader = historyGrid.prependHeaderRow();
@@ -80,7 +82,7 @@ public class HistoryForm extends VerticalLayout {
         }
 
         historyItemList = historyList.stream().map(history ->
-                new HistoryItem(history.getDateKey(), history.getPcbCnt(), history.getPaidPcbCnt())).collect(Collectors.toList());
+                new HistoryItem(history.getDateKey(), history.getPcbCnt(), history.getPaidPcbCnt(), history.getAllPatchCnt())).collect(Collectors.toList());
 
         //build historyItemMap
         for(HistoryItem historyItem : historyItemList) {

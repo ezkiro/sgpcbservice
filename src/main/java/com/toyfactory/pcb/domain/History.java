@@ -29,19 +29,21 @@ public class History {
 	
 	private Long pcbCnt;
 	private Long paidPcbCnt;
+	private Long allPatchCnt;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date crtDt;
 	
 	protected History() {}
 	
-	public History(Long pcbCnt, Long paidPcbCnt, Date date) {
+	public History(Long pcbCnt, Long paidPcbCnt, Long paidPcbAllPatchCnt, Date date) {
 		
 		DateFormat keyFormat = new SimpleDateFormat("yyyyMMdd");
 		
 		this.dateKey = keyFormat.format(date);
 		this.pcbCnt = pcbCnt;
 		this.paidPcbCnt = paidPcbCnt;
+		this.allPatchCnt = paidPcbAllPatchCnt;
 		this.crtDt = date;
 	}
 }

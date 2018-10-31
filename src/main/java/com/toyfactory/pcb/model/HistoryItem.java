@@ -19,6 +19,7 @@ public class HistoryItem {
     LocalDate date; //for view
     Long pcbCnt;
     Long paidPcbCnt;
+    Long allPatchCnt;
     Map<String, Long> installPcbMap;
 
     public Long getInstallPcbCntByGsn(String gsn) {
@@ -29,11 +30,12 @@ public class HistoryItem {
         installPcbMap.put(gsn, installCnt);
     }
 
-    public HistoryItem(String dateKey, Long pcbCnt, Long paidPcbCnt) {
+    public HistoryItem(String dateKey, Long pcbCnt, Long paidPcbCnt, Long allPatchCnt) {
         this.dateKey = dateKey;
         this.date = LocalDate.parse(dateKey, DateTimeFormatter.ofPattern("yyyyMMdd"));
         this.pcbCnt = pcbCnt;
         this.paidPcbCnt = paidPcbCnt;
+        this.allPatchCnt = allPatchCnt;
 
         this.installPcbMap = new HashMap<>();
     }
