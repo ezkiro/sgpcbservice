@@ -169,11 +169,16 @@ public class MemberService {
 		
 		Permission permission = Permission.NOBODY;
 		//admin,partner 와 agent간 권한 분리
-		if (user.getPermission() == Permission.ADMIN || user.getPermission() == Permission.PARTNER) {
+		if (user.getPermission() == Permission.ADMIN) {
 			//0 이라는 특수한 agent id를 사용한다.
 			tokenBuilder.append(String.valueOf(0));
 			permission = user.getPermission();
-			
+
+		} else if (user.getPermission() == Permission.PARTNER) {
+			Agent agent = user.getAgent();
+			tokenBuilder.append(String.valueOf(agent.getAgentId()));
+			permission = user.getPermission();
+
 		} else {
 			Agent agent = user.getAgent();
 			
@@ -425,7 +430,7 @@ public class MemberService {
 						
 		return agentDao.save(agent);
 	}
-	
+
 	public void unregisterAgent(Agent agent) {
 		//delete Pcbang
 //		List<Pcbang> pcbangs = agent.getPcbangs();
@@ -457,4 +462,11 @@ public class MemberService {
 			return null;
 		}		
 	}
+
+	public Agent updateMyAgent(Agent agent) {
+		agent.setUptDt(new Date());
+
+		return agentDao.save(agent);
+	}
+
 }

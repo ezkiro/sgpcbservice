@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.toyfactory.pcb.model.Permission;
 import com.toyfactory.pcb.model.YN;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -165,6 +166,26 @@ public class AgentMemberController {
 				
 		model.addAttribute("agent",agent);
 		return "pcbangInputAgent";
-	}	
+	}
+
+	@RequestMapping("/myagent")
+	@PcbAuthorization(permission="AGENT")
+	public String myAgentPage(
+			@AgentArg Agent agent,
+			HttpServletRequest request,
+			Model model){
+
+		model.addAttribute("agent",agent);
+
+		String accessToken = memberService.getAccessTokenFromCookie(request);
+
+		if (accessToken.contains(Permission.PARTNER.toString())) {
+			model.addAttribute("permission", Permission.PARTNER.toString());
+		} else {
+			model.addAttribute("permission", Permission.AGENT.toString());
+		}
+
+		return "myAgent";
+	}
 
 }
