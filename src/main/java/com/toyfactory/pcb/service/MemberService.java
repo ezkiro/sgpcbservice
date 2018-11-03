@@ -9,11 +9,14 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import com.toyfactory.pcb.exception.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.util.WebUtils;
 
 import com.toyfactory.pcb.domain.Account;
@@ -133,7 +136,7 @@ public class MemberService {
 		return true;
 	}
 	
-	public String authenticate(String id, String password) {
+	public String authenticate(String id, String password) throws AuthenticationException {
 		//access tokekn format :  [agent_id|permission|expire date|sha1 hash]
 		String accessToken = "";
 		
@@ -143,18 +146,37 @@ public class MemberService {
 		
 		if (user == null) {
 			logger.error("authentication fail! wrong password id:" + id);
-			return accessToken;
+			throw new AuthenticationException("id or password is invalid!");
 		}
-		
+
+		if (user.getAllowIp() != null) {
+			//extract remote ip
+			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+			//check loadbalancer
+			String remoteIp = request.getHeader("X-FORWARDED-FOR");
+			if (remoteIp == null) {
+				remoteIp = request.getRemoteAddr();
+			}
+			if (!user.getAllowIp().equals("0.0.0.0") && !user.getAllowIp().equals(remoteIp)) {
+				logger.error("authentication fail! not allowed ip! id:" + id + ", remote ip:" + remoteIp);
+				throw new AuthenticationException("your ip("+ remoteIp +") is not allowed to login!");
+			}
+		}
+
 		StringBuilder tokenBuilder = new StringBuilder();
 		
 		Permission permission = Permission.NOBODY;
 		//admin,partner 와 agent간 권한 분리
-		if (user.getPermission() == Permission.ADMIN || user.getPermission() == Permission.PARTNER) {
+		if (user.getPermission() == Permission.ADMIN) {
 			//0 이라는 특수한 agent id를 사용한다.
 			tokenBuilder.append(String.valueOf(0));
 			permission = user.getPermission();
-			
+
+		} else if (user.getPermission() == Permission.PARTNER) {
+			Agent agent = user.getAgent();
+			tokenBuilder.append(String.valueOf(agent.getAgentId()));
+			permission = user.getPermission();
+
 		} else {
 			Agent agent = user.getAgent();
 			
@@ -191,8 +213,18 @@ public class MemberService {
 		
 		return false;
 	}
-	
-	
+
+	public boolean changeAllowIp(Agent agent, String allowIp) {
+		Account account = agent.getAccount();
+		if (account != null) {
+			account.setAllowIp(allowIp);
+			account.setUptDt(new Date());
+			accountDao.save(account);
+			return true;
+		}
+		return false;
+	}
+
 	public List<Agent> findAgents(String key, String keyword) {
 		
 		if ("account".equals(key)) {
@@ -411,7 +443,12 @@ public class MemberService {
 		//delete agent
 		agentDao.delete(agent.getAgentId());
 	}
-	
+
+	public Agent updateMyAgent(Agent agent) {
+		agent.setUptDt(new Date());
+		return agentDao.save(agent);
+	}
+
 	public String getAccessTokenFromCookie(HttpServletRequest request) {
 		Cookie cookie = WebUtils.getCookie(request, "access_token");
 		if(cookie == null) {
