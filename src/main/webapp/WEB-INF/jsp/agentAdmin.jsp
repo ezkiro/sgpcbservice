@@ -137,6 +137,7 @@
 				<td>등록일</td>
 				<td>상태</td>
 				<td>권한</td>
+				<td>허용IP</td>
 				<td>관리</td>
 				<td>삭제</td>																																																	
 			</tr>
@@ -155,6 +156,7 @@
     			<td>${agent.getCrtDt().toString().substring(0,10)}</td>
     			<td>${agent.getStatus()}</td>    			    			    			
     			<td>${agent.getAccount().getPermission()}</td>
+    			<td>${agent.getAccount().getAllowIp()}</td>
     			<td><a class="btn btn-default" href="/admin/agent/update?agent_id=${agent.getAgentId()}" role="button">수정</a></td>
     			<td><button type="button" class="btn btn-danger btn-block" name="removeAgent" value="${agent.getAgentId()}">삭제</button></td>
     		</tr>

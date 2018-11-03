@@ -133,7 +133,7 @@ public class MemberService {
 		return true;
 	}
 	
-	public String authenticate(String id, String password) {
+	public String authenticate(String id, String password, String remoteIp) {
 		//access tokekn format :  [agent_id|permission|expire date|sha1 hash]
 		String accessToken = "";
 		
@@ -143,6 +143,11 @@ public class MemberService {
 		
 		if (user == null) {
 			logger.error("authentication fail! wrong password id:" + id);
+			return accessToken;
+		}
+
+		if (user.getAllowIp() != null && !user.getAllowIp().equals("0.0.0.0") && !user.getAllowIp().equals(remoteIp)) {
+			logger.error("authentication fail! not allowed ip! id:" + id + ", remote ip:" + remoteIp);
 			return accessToken;
 		}
 		
@@ -191,8 +196,20 @@ public class MemberService {
 		
 		return false;
 	}
-	
-	
+
+	public boolean changeAllowIp(Agent agent, String allowIp) {
+		Account account = agent.getAccount();
+		if (account != null) {
+			account.setAllowIp(allowIp);
+			account.setUptDt(new Date());
+
+			accountDao.save(account);
+			return true;
+		}
+
+		return false;
+	}
+
 	public List<Agent> findAgents(String key, String keyword) {
 		
 		if ("account".equals(key)) {

@@ -19,7 +19,8 @@
 		$("#inputBankAccount").val("${agent.getBankAccount()}");
 		$("#inputPermission").val("${agent.getAccount().getPermission()}");
 		$("#inputStatus").val("${agent.getStatus()}");
-		
+		$("#inputAllowIp").val("${agent.getAccount().getAllowIp()}");
+
 		var checkValidInput = function() {								
 			//id 체크
 			if($("#inputID").val().length === 0 ) {
@@ -63,6 +64,7 @@
 		    			agent_id: $("#inputID").val(),
 		    			status: $("#inputStatus option:selected").val(),
 		    			permission: $("#inputPermission option:selected").val(),
+		    			allow_ip: $("#inputAllowIp").val(),
 		    			company_code: $("#inputCompanyCode").val(),
 		    			company_name:$("#inputCompany").val(),
 		    			ceo: $("#inputCEO").val(),
@@ -141,7 +143,14 @@
 			</div>
 		</div>
    </div>       
-        
+
+    <div class="row">
+		<div class="form-group">
+			<div class="col-md-2 text-right"><label for="lbAllowIp">Allow IP</label></div>
+	 		<div class="col-md-4"><input type="text" class="form-control" id="inputAllowIp" placeholder="0.0.0.0" disabled></div>
+ 		</div>
+    </div>
+
     <div class="row">
  		<div class="form-group">
 			<div class="col-md-2 text-right"><label for="InputCompanyNumber">사업자번호</label></div>

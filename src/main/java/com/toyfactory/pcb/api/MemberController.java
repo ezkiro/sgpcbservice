@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -98,10 +99,11 @@ public class MemberController {
     @RequestMapping(value="/login", method=RequestMethod.POST)
     public String login(
     		@RequestParam(value="id", required = true) String id,
-    		@RequestParam(value="password", required = true) String password, 
+    		@RequestParam(value="password", required = true) String password,
+    		HttpServletRequest request,
     		HttpServletResponse response) {
 
-    	String accessToken = memberService.authenticate(id, password);
+    	String accessToken = memberService.authenticate(id, password, request.getRemoteAddr());
     	
     	if(accessToken.isEmpty()) {
         	return "/login?error=invaild id or password";    		
@@ -218,6 +220,7 @@ public class MemberController {
     		@RequestParam(value="agent_id", required = true) Long agentId,
     		@RequestParam(value="status", required = true) String status,
     		@RequestParam(value="permission", required = true) String permission,
+			@RequestParam(value="allow_ip", required = false) String allowIp,
     		@RequestParam(value="company_code", required = false) String companyCode,
     		@RequestParam(value="company_name", required = false) String companyName,
     		@RequestParam(value="ceo", required = false) String ceo,    		
@@ -233,6 +236,7 @@ public class MemberController {
     	if (aAgent == null) return false;
     	
     	aAgent.setStatus(StatusCd.valueOf(status));
+
     	if (!StringUtils.isEmpty(companyCode))
     		aAgent.setCompanyCode(companyCode);
     	
@@ -256,9 +260,12 @@ public class MemberController {
     	
     	//TODO: 단독으로 변경하는 I/F 추가 필요
     	if (!StringUtils.isEmpty(password))
-    		memberService.changePassword(aAgent, password);	
-    	    	
-    	return (null != memberService.updateAgent(aAgent, Permission.valueOf(permission)));
+    		memberService.changePassword(aAgent, password);
+
+		if (!StringUtils.isEmpty(allowIp))
+			memberService.changeAllowIp(aAgent, allowIp);
+
+		return (null != memberService.updateAgent(aAgent, Permission.valueOf(permission)));
     }    
 
     @RequestMapping(value = "/agent/unregister", method=RequestMethod.POST)
