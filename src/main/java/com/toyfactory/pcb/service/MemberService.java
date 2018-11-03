@@ -9,11 +9,14 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import com.toyfactory.pcb.exception.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.util.WebUtils;
 
 import com.toyfactory.pcb.domain.Account;
@@ -133,7 +136,7 @@ public class MemberService {
 		return true;
 	}
 	
-	public String authenticate(String id, String password, String remoteIp) {
+	public String authenticate(String id, String password) throws AuthenticationException {
 		//access tokekn format :  [agent_id|permission|expire date|sha1 hash]
 		String accessToken = "";
 		
@@ -143,14 +146,25 @@ public class MemberService {
 		
 		if (user == null) {
 			logger.error("authentication fail! wrong password id:" + id);
-			return accessToken;
+			throw new AuthenticationException("id or password is invalid!");
 		}
 
-		if (user.getAllowIp() != null && !user.getAllowIp().equals("0.0.0.0") && !user.getAllowIp().equals(remoteIp)) {
-			logger.error("authentication fail! not allowed ip! id:" + id + ", remote ip:" + remoteIp);
-			return accessToken;
+		if (user.getAllowIp() != null) {
+
+			//extract remote ip
+			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+			//check loadbalancer
+			String remoteIp = request.getHeader("X-FORWARDED-FOR");
+			if (remoteIp == null) {
+				remoteIp = request.getRemoteAddr();
+			}
+
+			if (!user.getAllowIp().equals("0.0.0.0") && !user.getAllowIp().equals(remoteIp)) {
+				logger.error("authentication fail! not allowed ip! id:" + id + ", remote ip:" + remoteIp);
+				throw new AuthenticationException("your ip("+ remoteIp +") is not allowed to login!");
+			}
 		}
-		
+
 		StringBuilder tokenBuilder = new StringBuilder();
 		
 		Permission permission = Permission.NOBODY;

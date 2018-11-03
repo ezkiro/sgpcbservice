@@ -147,7 +147,7 @@
     <div class="row">
 		<div class="form-group">
 			<div class="col-md-2 text-right"><label for="lbAllowIp">Allow IP</label></div>
-	 		<div class="col-md-4"><input type="text" class="form-control" id="inputAllowIp" placeholder="0.0.0.0" disabled></div>
+	 		<div class="col-md-4"><input type="text" class="form-control" id="inputAllowIp" placeholder="0.0.0.0"></div>
  		</div>
     </div>
 

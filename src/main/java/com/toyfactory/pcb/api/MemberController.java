@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.toyfactory.pcb.exception.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,16 +100,11 @@ public class MemberController {
     public String login(
     		@RequestParam(value="id", required = true) String id,
     		@RequestParam(value="password", required = true) String password,
-    		HttpServletRequest request,
     		HttpServletResponse response) {
-
-    	String accessToken = memberService.authenticate(id, password, request.getRemoteAddr());
-    	
-    	if(accessToken.isEmpty()) {
-        	return "/login?error=invaild id or password";    		
-    	}
-    	
 		try {
+
+	    	String accessToken = memberService.authenticate(id, password);
+
 			Cookie cookie;
 			cookie = new Cookie("access_token", URLEncoder.encode(accessToken, "UTF-8"));
 			cookie.setPath("/");
@@ -118,20 +113,22 @@ public class MemberController {
 			//if(!Strings.isNullOrEmpty(cookiePath)) cookie.setPath(cookiePath);
 			
 			response.addCookie(cookie);
+
+			//go to process for permission
+
+			if(accessToken.contains(Permission.ADMIN.toString())){
+				return "/admin/agent";
+			} else if (accessToken.contains(Permission.PARTNER.toString())) {
+				return "/admin/gamepatch";
+			} else {
+				return "/member/gamepatch";
+			}
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
+		} catch (AuthenticationException e) {
+			return "/login?error=" + e.getMessage();
 		}
-
-		//go to process for permission
-		
-		if(accessToken.contains(Permission.ADMIN.toString())){			
-			return "/admin/agent";
-		} else if (accessToken.contains(Permission.PARTNER.toString())) {
-			return "/admin/gamepatch";
-		} else {
-	    	return "/member/gamepatch";			
-		}
-    }    
+    }
     
     @RequestMapping(value = "/pcbang/add", method=RequestMethod.POST)
     @PcbAuthorization(permission="AGENT")
@@ -263,7 +260,7 @@ public class MemberController {
     		memberService.changePassword(aAgent, password);
 
 		if (!StringUtils.isEmpty(allowIp))
-			memberService.changeAllowIp(aAgent, allowIp);
+			memberService.changeAllowIp(aAgent, allowIp.replaceAll(" ", ""));
 
 		return (null != memberService.updateAgent(aAgent, Permission.valueOf(permission)));
     }    
