@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import com.toyfactory.pcb.exception.AuthenticationException;
+import com.toyfactory.pcb.resolver.AgentArg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,13 +103,9 @@ public class MemberController {
     		@RequestParam(value="password", required = true) String password, 
     		HttpServletResponse response) {
 
-    	String accessToken = memberService.authenticate(id, password);
-    	
-    	if(accessToken.isEmpty()) {
-        	return "/login?error=invaild id or password";    		
-    	}
-    	
 		try {
+			String accessToken = memberService.authenticate(id, password);
+
 			Cookie cookie;
 			cookie = new Cookie("access_token", URLEncoder.encode(accessToken, "UTF-8"));
 			cookie.setPath("/");
@@ -116,20 +114,21 @@ public class MemberController {
 			//if(!Strings.isNullOrEmpty(cookiePath)) cookie.setPath(cookiePath);
 			
 			response.addCookie(cookie);
+			//go to process for permission
+
+			if(accessToken.contains(Permission.ADMIN.toString())){
+				return "/admin/agent";
+			} else if (accessToken.contains(Permission.PARTNER.toString())) {
+				return "/admin/gamepatch";
+			} else {
+				return "/member/gamepatch";
+			}
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
+		} catch (AuthenticationException e) {
+			return "/login?error=" + e.getMessage();
 		}
-
-		//go to process for permission
-		
-		if(accessToken.contains(Permission.ADMIN.toString())){			
-			return "/admin/agent";
-		} else if (accessToken.contains(Permission.PARTNER.toString())) {
-			return "/admin/gamepatch";
-		} else {
-	    	return "/member/gamepatch";			
-		}
-    }    
+    }
     
     @RequestMapping(value = "/pcbang/add", method=RequestMethod.POST)
     @PcbAuthorization(permission="AGENT")
@@ -218,6 +217,7 @@ public class MemberController {
     		@RequestParam(value="agent_id", required = true) Long agentId,
     		@RequestParam(value="status", required = true) String status,
     		@RequestParam(value="permission", required = true) String permission,
+			@RequestParam(value="allow_ip", required = false) String allowIp,
     		@RequestParam(value="company_code", required = false) String companyCode,
     		@RequestParam(value="company_name", required = false) String companyName,
     		@RequestParam(value="ceo", required = false) String ceo,    		
@@ -256,7 +256,10 @@ public class MemberController {
     	
     	//TODO: 단독으로 변경하는 I/F 추가 필요
     	if (!StringUtils.isEmpty(password))
-    		memberService.changePassword(aAgent, password);	
+    		memberService.changePassword(aAgent, password);
+
+		if (!StringUtils.isEmpty(allowIp))
+			memberService.changeAllowIp(aAgent, allowIp.replaceAll(" ", ""));
     	    	
     	return (null != memberService.updateAgent(aAgent, Permission.valueOf(permission)));
     }    
@@ -274,5 +277,51 @@ public class MemberController {
     	
     	return true;
     }
+
+	@RequestMapping(value = "/myagent", method=RequestMethod.POST)
+	@PcbAuthorization(permission="AGENT")
+	public boolean updateMyAgent(
+			@AgentArg Agent aAgent,
+			@RequestParam(value="allow_ip", required = false) String allowIp,
+			@RequestParam(value="company_code", required = false) String companyCode,
+			@RequestParam(value="company_name", required = false) String companyName,
+			@RequestParam(value="ceo", required = false) String ceo,
+			@RequestParam(value="address", required = false) String address,
+			@RequestParam(value="contact_num", required = false) String contactNum,
+			@RequestParam(value="bank_account", required = false) String bankAccount,
+			@RequestParam(value="email", required = false) String email,
+			@RequestParam(value="password", required = false) String password
+	) {
+		if (aAgent == null) return false;
+
+		if (!StringUtils.isEmpty(companyCode))
+			aAgent.setCompanyCode(companyCode);
+
+		if (!StringUtils.isEmpty(companyName))
+			aAgent.setCompanyName(companyName);
+
+		if (!StringUtils.isEmpty(ceo))
+			aAgent.setCeo(ceo);
+
+		if (!StringUtils.isEmpty(address))
+			aAgent.setAddress(address);
+
+		if (!StringUtils.isEmpty(contactNum))
+			aAgent.setContactNum(contactNum);
+
+		if (!StringUtils.isEmpty(bankAccount))
+			aAgent.setBankAccount(bankAccount);
+
+		if (!StringUtils.isEmpty(email))
+			aAgent.setEmail(email);
+		//TODO: 단독으로 변경하는 I/F 추가 필요
+		if (!StringUtils.isEmpty(password))
+			memberService.changePassword(aAgent, password);
+
+		if (!StringUtils.isEmpty(allowIp))
+			memberService.changeAllowIp(aAgent, allowIp.replaceAll(" ", ""));
+
+		return (null != memberService.updateMyAgent(aAgent));
+	}
     
 }

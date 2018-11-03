@@ -28,7 +28,10 @@ public class Account {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable=false, length=10)
 	private Permission permission;
-	
+
+	@Column(length=16)
+	private String allowIp;
+
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="agent_id")
 	private Agent agent;
@@ -45,6 +48,7 @@ public class Account {
 		this.id = id;
 		this.password = password;
 		this.permission = permission;
+		this.allowIp = "0.0.0.0"; //all ip allowed
 		this.crtDt = new Date();
 		this.uptDt = new Date();
 	}
