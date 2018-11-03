@@ -126,6 +126,11 @@ public class HistoryForm extends VerticalLayout {
 
         Long paidPcbCntDayDelta = item1.getPaidPcbCnt() - item2.getPaidPcbCnt();
         footerRow.getCell("paid_pcb_cnt").setHtml(colorNumberHtml(paidPcbCntDayDelta));
+
+        if (item1.getAllPatchCnt() != null && item2.getAllPatchCnt() != null) {
+            Long allPatchCntDelta = item1.getAllPatchCnt() - item2.getAllPatchCnt();
+            footerRow.getCell("all_patch_cnt").setHtml(colorNumberHtml(allPatchCntDelta));
+        }
     }
 
     private void clearDeltaFooter() {
