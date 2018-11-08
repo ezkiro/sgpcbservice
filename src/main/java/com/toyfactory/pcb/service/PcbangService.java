@@ -169,10 +169,11 @@ public class PcbangService {
 				}
 
 				if (isDuplicateIP(pcbang.getIpStart())) {
-					invalidDatas.add(rawData + ":<font color=\"red\">Duplicate IP!</font>");
-				} else {
-					pcbangs.add(pcbang);
+					//중복이면 따로 분리하지 않고 상태만 WAIT 상태로 해서 입력
+					//invalidDatas.add(rawData + ":<font color=\"red\">Duplicate IP!</font>");
+					pcbang.setStatus(StatusCd.WAIT);
 				}
+				pcbangs.add(pcbang);
 			}			
 			
 			if (!invalidDatas.isEmpty()) {
