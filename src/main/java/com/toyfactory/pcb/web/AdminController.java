@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.toyfactory.pcb.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +38,6 @@ import com.toyfactory.pcb.model.StatusCd;
 import com.toyfactory.pcb.model.VerifyType;
 import com.toyfactory.pcb.model.YN;
 import com.toyfactory.pcb.repository.PcbangRepository;
-import com.toyfactory.pcb.service.GamePatchService;
-import com.toyfactory.pcb.service.GameService;
-import com.toyfactory.pcb.service.MemberService;
-import com.toyfactory.pcb.service.PcbangService;
 
 @Controller
 @RequestMapping("/admin")
@@ -61,7 +58,10 @@ public class AdminController {
 	private PcbangRepository pcbangDao;
 	
 	@Autowired	
-	private PcbangService pcbangService;	
+	private PcbangService pcbangService;
+
+	@Autowired
+	private HistoryService historyService;
 	
 	@RequestMapping("/agent")
 	@PcbAuthorization(permission="ADMIN")	
@@ -265,6 +265,13 @@ public class AdminController {
 		
 		if (accessToken.contains(Permission.PARTNER.toString())) {
 			model.addAttribute("permission", Permission.PARTNER.toString());
+			//배치상태 체크
+			if (historyService.getHistory(new Date()) == null) {
+				model.addAttribute("batchStatus", "배치 작업중!");
+			} else {
+				model.addAttribute("batchStatus", "");
+			}
+
 			return "gamePatchPartner";
 		} else {
 			model.addAttribute("permission", Permission.ADMIN.toString());

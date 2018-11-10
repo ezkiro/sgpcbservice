@@ -1,5 +1,7 @@
 package com.toyfactory.pcb.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -100,5 +102,10 @@ public class HistoryService {
 
 	public List<GamePatchHistory> getGamePatchHistorysBetween(String startKey, String endKey) {
 		return gamePatchHistoryDao.findByDateKeyBetween(startKey, endKey);
+	}
+
+	public History getHistory(Date date) {
+		DateFormat keyFormat = new SimpleDateFormat("yyyyMMdd");
+		return historyDao.findOne(keyFormat.format(date));
 	}
 }

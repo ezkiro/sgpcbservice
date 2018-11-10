@@ -143,6 +143,8 @@
 			<label for="lbTotal">등록 PC방 : ${pcbGamePatchResultList.size()} 개</label>
 			<br>
 			<label for="lbPay">설치 PC방 : ${paymentPcbCnt} 개</label>
+			<br>
+			<label for="lbBatch">${batchStatus}</label>
 		</div>
 	</div>
     </div>
