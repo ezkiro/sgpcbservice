@@ -2,6 +2,7 @@ package com.toyfactory.pcb.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,30 +54,42 @@ public class HistoryService {
 		//등록 PC방수
 		Long pcbCnt = Long.valueOf(pcbangs.size());
 		
-		//지급  PC방수
-		Long paidPcbCnt = pcbangs.stream().filter(pcbang -> gamePatchService.isMissionCompletePcbang(pcbang, games) == true).count();
-		
+
+		List<Pcbang> paidPcbangs = pcbangs.stream().filter(pcbang -> gamePatchService.isMissionCompletePcbang(pcbang, games) == true).collect(Collectors.toList());
+
+		//정산  PC방수
+		Long paidPcbCnt = Long.valueOf(paidPcbangs.size());
+
+		//정산 PC방의 총 IP 수
+		Long paidIpCnt = paidPcbangs.stream().mapToLong(pcbang-> pcbang.getIpTotal()).sum();
+
 		if (logger.isInfoEnabled()) {
-			logger.info("all pcb count:" + pcbCnt + ", paid pcbCnt:" + paidPcbCnt);
+			logger.info("all pcb count:" + pcbCnt + ", paid pcbCnt:" + paidPcbCnt + ", paidIpCnt:" + paidIpCnt);
 		}
 		
 		//history 저장
-		historyDao.save(new History(pcbCnt, paidPcbCnt, new Date()));		
+		historyDao.save(new History(pcbCnt, paidPcbCnt, paidIpCnt, new Date()));
 		
 		for(Game game : games) {
-			//각 game벼로  PC방의 설치수 sum 구하기
-			Long installCnt = gamePatchLogDao.findByGsn(game.getGsn()).stream().filter(gamePatchLog -> gamePatchLog.getInstall() > 0L).count();
+			List<GamePatchLog> gamePatchLogs = gamePatchLogDao.findByGsn(game.getGsn());
+
+			//각 game별로  PC방의 설치수 sum 구하기
+			Long installCnt = gamePatchLogs.stream().filter(gamePatchLog -> gamePatchLog.getInstall() > 0L).count();
+
+			//각 game별로 설치 IP수 sum 구하기
+			Long installIpCnt = gamePatchLogs.stream().mapToLong(gamePatchLog -> gamePatchLog.getInstall()).sum();
 
 			if (logger.isInfoEnabled()) {
-				logger.info("game:" + game.getGsn() + ", install count:" + installCnt);
+				logger.info("game:" + game.getGsn() + ", install count:" + installCnt + ", install ip count:" + installIpCnt);
 			}			
 			
-			GamePatchHistory newHistory = new GamePatchHistory(game.getGsn(), installCnt, new Date());
+			GamePatchHistory newHistory = new GamePatchHistory(game.getGsn(), installCnt, installIpCnt, new Date());
 			
 			GamePatchHistory oldHistory = gamePatchHistoryDao.findByDateKeyAndGsn(newHistory.getDateKey(), newHistory.getGsn());
 			
 			if (oldHistory != null) {
 				oldHistory.setInstall(installCnt);
+				oldHistory.setInstallIpCnt(installIpCnt);
 				gamePatchHistoryDao.save(oldHistory);
 			} else {
 				gamePatchHistoryDao.save(newHistory);

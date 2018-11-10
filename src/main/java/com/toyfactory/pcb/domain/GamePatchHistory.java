@@ -33,19 +33,21 @@ public class GamePatchHistory {
 	@Column(nullable=false, length=10)
 	private String gsn;
 	
-	private Long install = 0L; //설치된 수
+	private Long install = 0L; //설치된 PC방 수
+	private Long installIpCnt; //설치된 IP 수
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date crtDt;
 	
 	protected GamePatchHistory() {}
 	
-	public GamePatchHistory(String gsn, Long install, Date date) {
+	public GamePatchHistory(String gsn, Long install, Long installIpCnt, Date date) {
 		DateFormat keyFormat = new SimpleDateFormat("yyyyMMdd");
 		
 		this.dateKey = keyFormat.format(date);		
 		this.gsn = gsn;
 		this.install = install;
+		this.installIpCnt = installIpCnt;
 		this.crtDt = date;
 	}
 }

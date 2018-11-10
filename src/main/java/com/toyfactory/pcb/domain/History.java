@@ -15,7 +15,7 @@ import lombok.Data;
 
 /**
  * 일자별로 다음 데이터를 저장하는 history
- * 일자 / 등록PC방 수 / 정산PC방 수 
+ * 일자 / 등록PC방 수 / 정산PC방 수 / 정산PC방의 총 IP 수
  * @author ezkiro
  *
  */
@@ -29,19 +29,21 @@ public class History {
 	
 	private Long pcbCnt;
 	private Long paidPcbCnt;
+	private Long paidIpCnt;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date crtDt;
 	
 	protected History() {}
 	
-	public History(Long pcbCnt, Long paidPcbCnt, Date date) {
+	public History(Long pcbCnt, Long paidPcbCnt, Long paidIpCnt, Date date) {
 		
 		DateFormat keyFormat = new SimpleDateFormat("yyyyMMdd");
 		
 		this.dateKey = keyFormat.format(date);
 		this.pcbCnt = pcbCnt;
 		this.paidPcbCnt = paidPcbCnt;
+		this.paidIpCnt = paidIpCnt;
 		this.crtDt = date;
 	}
 }

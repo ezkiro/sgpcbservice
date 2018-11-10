@@ -19,7 +19,9 @@ public class HistoryItem {
     LocalDate date; //for view
     Long pcbCnt;
     Long paidPcbCnt;
+    Long paidIpCnt;
     Map<String, Long> installPcbMap;
+    Map<String, Long> installIpMap;
 
     public Long getInstallPcbCntByGsn(String gsn) {
         return installPcbMap.get(gsn);
@@ -29,12 +31,22 @@ public class HistoryItem {
         installPcbMap.put(gsn, installCnt);
     }
 
-    public HistoryItem(String dateKey, Long pcbCnt, Long paidPcbCnt) {
+    public Long getInstallIpCntByGsn(String gsn) {
+        return installIpMap.get(gsn);
+    }
+
+    public void setInstallIpCntByGsn(String gsn, Long installCnt) {
+        installIpMap.put(gsn, installCnt);
+    }
+
+    public HistoryItem(String dateKey, Long pcbCnt, Long paidPcbCnt, Long paidIpCnt) {
         this.dateKey = dateKey;
         this.date = LocalDate.parse(dateKey, DateTimeFormatter.ofPattern("yyyyMMdd"));
         this.pcbCnt = pcbCnt;
         this.paidPcbCnt = paidPcbCnt;
+        this.paidIpCnt = paidIpCnt;
 
         this.installPcbMap = new HashMap<>();
+        this.installIpMap = new HashMap<>();
     }
 }
