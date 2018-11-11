@@ -269,7 +269,7 @@ public class AdminController {
 			if (historyService.getHistory(new Date()) == null) {
 				model.addAttribute("batchStatus", "배치 작업중!");
 			} else {
-				model.addAttribute("batchStatus", "");
+				model.addAttribute("batchStatus", "배치 작업완료");
 			}
 
 			return "gamePatchPartner";
