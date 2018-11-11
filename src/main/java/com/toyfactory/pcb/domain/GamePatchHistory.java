@@ -34,7 +34,7 @@ public class GamePatchHistory {
 	private String gsn;
 	
 	private Long install = 0L; //설치된 PC방 수
-	private Long installIpCnt; //설치된 IP 수
+	private Long installIpCnt = 0L; //설치된 IP 수
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date crtDt;
@@ -50,4 +50,16 @@ public class GamePatchHistory {
 		this.installIpCnt = installIpCnt;
 		this.crtDt = date;
 	}
+
+	//새로 추가된 컬럼에 대해서 null 값 대신 0으로 반환하기 위해서
+	public Long getInstallIpCnt() {
+		if (this.installIpCnt == null) return 0L;
+		return this.installIpCnt;
+	}
+
+	public Long getInstall() {
+		if (this.install == null) return 0L;
+		return this.install;
+	}
+
 }

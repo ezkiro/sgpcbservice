@@ -24,6 +24,7 @@ public class HistoryItem {
     Map<String, Long> installIpMap;
 
     public Long getInstallPcbCntByGsn(String gsn) {
+        if (installPcbMap.get(gsn) == null) return 0L;
         return installPcbMap.get(gsn);
     }
 
@@ -32,6 +33,7 @@ public class HistoryItem {
     }
 
     public Long getInstallIpCntByGsn(String gsn) {
+        if (installIpMap.get(gsn) == null) return 0L;
         return installIpMap.get(gsn);
     }
 

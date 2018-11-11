@@ -27,9 +27,9 @@ public class History {
 	@Column(nullable=false, length=8)	
 	private String dateKey; //YYYMMdd 형태
 	
-	private Long pcbCnt;
-	private Long paidPcbCnt;
-	private Long paidIpCnt;
+	private Long pcbCnt = 0L;
+	private Long paidPcbCnt = 0L;
+	private Long paidIpCnt = 0L;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date crtDt;
@@ -45,5 +45,11 @@ public class History {
 		this.paidPcbCnt = paidPcbCnt;
 		this.paidIpCnt = paidIpCnt;
 		this.crtDt = date;
+	}
+
+	//새로 추가된 컬럼에 대해서 null 값 대신 0으로 반환하기 위해서
+	public Long getPaidIpCnt() {
+		if (this.paidIpCnt == null) return 0L;
+		return this.paidIpCnt;
 	}
 }
