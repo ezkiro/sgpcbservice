@@ -13,6 +13,7 @@ import com.vaadin.ui.renderers.LocalDateRenderer;
 import com.vaadin.ui.renderers.NumberRenderer;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -173,7 +174,8 @@ public class HistoryForm extends VerticalLayout {
         } else {
             sb.append("<font color=\"blue\">");
         }
-        sb.append(num.toString());
+        String formatedNum = NumberFormat.getIntegerInstance().format(num);
+        sb.append(formatedNum);
         sb.append("</font>");
 
         return sb.toString();
