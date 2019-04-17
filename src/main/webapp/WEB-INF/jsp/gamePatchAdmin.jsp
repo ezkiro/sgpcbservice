@@ -207,6 +207,7 @@
     			<td>${pcbGamePatchResult.getPcbang().getIpStart()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getIpEnd()}</td>    			
     			<td>${pcbGamePatchResult.getPcbang().getSubmask()}</td>
+
 				<c:choose>
 				<c:when test="${permission eq 'ADMIN'}">
     			<td>${pcbGamePatchResult.getPcbang().getAgent().getCompanyName()}</td>
