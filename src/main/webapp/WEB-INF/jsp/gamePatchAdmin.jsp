@@ -172,8 +172,8 @@
     </div>
 
 	</div><!-- row -->
-	</div><!-- container -->	
-	
+	</div><!-- container -->
+
 		<table class="table table-bordered table-hover">
 			<tr class="info">
 				<td>구분</td>
@@ -183,8 +183,13 @@
 				<td>IPstart</td>
 				<td>IPend</td>				
 				<td>submask</td>
+
+				<c:choose>
+				<c:when test="${permission eq 'ADMIN'}">
 				<td>관리업체1</td>
-				<td>관리업체2</td>				
+				<td>관리업체2</td>
+				</c:when>
+
 				<td>관리IP수</td>
 				<td>확인IP수</td>
 				<td>지급대상(Y/N)</td>
@@ -202,8 +207,12 @@
     			<td>${pcbGamePatchResult.getPcbang().getIpStart()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getIpEnd()}</td>    			
     			<td>${pcbGamePatchResult.getPcbang().getSubmask()}</td>
+				<c:choose>
+				<c:when test="${permission eq 'ADMIN'}">
     			<td>${pcbGamePatchResult.getPcbang().getAgent().getCompanyName()}</td>
-    			<td>${pcbGamePatchResult.getPcbang().getCompanyCode()}</td>    			
+    			<td>${pcbGamePatchResult.getPcbang().getCompanyCode()}</td>
+				</c:when>
+
     			<td>${pcbGamePatchResult.getPcbang().getIpTotal()}</td>
    				<td><a class="btn btn-success" href="/v2/admin/pcbgamepatch/detail?pcb_id=${pcbGamePatchResult.getPcbang().getPcbId()}" role="button">${pcbGamePatchResult.getCheckIPCnt()}</a></td>
     			<td>${pcbGamePatchResult.getIsPaymentPcbang().toString()}</td>

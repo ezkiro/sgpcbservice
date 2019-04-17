@@ -15,8 +15,6 @@ response.setHeader("Content-Disposition", "attachment;filename=excelResult.html"
 			<td>IPstart</td>
 			<td>IPend</td>			
 			<td>submask</td>
-			<td>관리업체1</td>
-			<td>관리업체2</td>				
 			<td>관리IP수</td>
 			<td>확인IP수</td>
 			<td>지급대상(Y/N)</td>
@@ -33,8 +31,6 @@ response.setHeader("Content-Disposition", "attachment;filename=excelResult.html"
 	  			<td>${pcbGamePatchResult.getPcbang().getIpStart()}</td>
 	  			<td>${pcbGamePatchResult.getPcbang().getIpEnd()}</td>	  			
 	  			<td>${pcbGamePatchResult.getPcbang().getSubmask()}</td>
-	  			<td>${pcbGamePatchResult.getPcbang().getAgent().getCompanyName()}</td>
-	  			<td>${pcbGamePatchResult.getPcbang().getCompanyCode()}</td>    			
 	  			<td>${pcbGamePatchResult.getPcbang().getIpTotal()}</td>
 	 				<td>${pcbGamePatchResult.getCheckIPCnt()}</td>
 	  			<td>${pcbGamePatchResult.getIsPaymentPcbang().toString()}</td>

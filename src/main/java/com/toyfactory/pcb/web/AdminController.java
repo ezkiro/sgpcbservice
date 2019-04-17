@@ -191,7 +191,7 @@ public class AdminController {
 			pcbangs = pcbangService.findPcbangs("status", StatusCd.OK.toString());				
 		}
 				
-		List<PcbGamePatchResult> pcbGamePatchResultList = gamePatchService.buildPcbGamePathResultForPcbang(pcbangs, targetGames);
+		List<PcbGamePatchResult> pcbGamePatchResultList = gamePatchService.buildPcbGamePathResultForPcbangV2(pcbangs, targetGames);
 		
 		model.addAttribute("targetGameList",targetGames);		
 		model.addAttribute("pcbGamePatchResultList",pcbGamePatchResultList);
