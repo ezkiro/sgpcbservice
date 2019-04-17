@@ -16,7 +16,7 @@ response.setHeader("Content-Disposition", "attachment;filename=excelResult.html"
 			<td>submask</td>
 			<td>관리IP수</td>
 			<td>확인IP수</td>
-			<td>설치유무(Y/N)</td>
+			<td>지급대상(Y/N)</td>
 		<c:forEach var="game" items="${targetGameList}">
 			<td>${game.getName()}</td>
 		</c:forEach>																																																						
