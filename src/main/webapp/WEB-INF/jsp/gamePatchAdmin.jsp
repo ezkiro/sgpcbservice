@@ -189,6 +189,7 @@
 				<td>관리업체1</td>
 				<td>관리업체2</td>
 				</c:when>
+				</c:choose>
 
 				<td>관리IP수</td>
 				<td>확인IP수</td>
@@ -213,6 +214,7 @@
     			<td>${pcbGamePatchResult.getPcbang().getAgent().getCompanyName()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getCompanyCode()}</td>
 				</c:when>
+				</c:choose>
 
     			<td>${pcbGamePatchResult.getPcbang().getIpTotal()}</td>
    				<td><a class="btn btn-success" href="/v2/admin/pcbgamepatch/detail?pcb_id=${pcbGamePatchResult.getPcbang().getPcbId()}" role="button">${pcbGamePatchResult.getCheckIPCnt()}</a></td>

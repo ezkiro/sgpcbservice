@@ -23,6 +23,7 @@ response.setHeader("Content-Disposition", "attachment;filename=excelResult.html"
 			<td>관리업체1</td>
 			<td>관리업체2</td>
 		</c:when>
+		</c:choose>
 
 			<td>관리IP수</td>
 			<td>확인IP수</td>
@@ -46,6 +47,7 @@ response.setHeader("Content-Disposition", "attachment;filename=excelResult.html"
 				<td>${pcbGamePatchResult.getPcbang().getAgent().getCompanyName()}</td>
 				<td>${pcbGamePatchResult.getPcbang().getCompanyCode()}</td>
 			</c:when>
+			</c:choose>
 
 	  			<td>${pcbGamePatchResult.getPcbang().getIpTotal()}</td>
 	 				<td>${pcbGamePatchResult.getCheckIPCnt()}</td>
