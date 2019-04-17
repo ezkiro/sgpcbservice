@@ -171,7 +171,8 @@ public class AdminController {
 	@PcbAuthorization(permission="PARTNER")	
 	public String gamePatchExcelDownload(
 			@RequestParam(value="search_key", required = false) String searchKey,
-			@RequestParam(value="search_value", required = false) String searchValue,			
+			@RequestParam(value="search_value", required = false) String searchValue,
+			HttpServletRequest request,
 			Model model){
 		
 		if (logger.isDebugEnabled()) {
@@ -191,13 +192,19 @@ public class AdminController {
 			pcbangs = pcbangService.findPcbangs("status", StatusCd.OK.toString());				
 		}
 				
-		List<PcbGamePatchResult> pcbGamePatchResultList = gamePatchService.buildPcbGamePathResultForPcbang(pcbangs, targetGames);
+		List<PcbGamePatchResult> pcbGamePatchResultList = gamePatchService.buildPcbGamePathResultForPcbangV2(pcbangs, targetGames);
 		
 		model.addAttribute("targetGameList",targetGames);		
 		model.addAttribute("pcbGamePatchResultList",pcbGamePatchResultList);
-				
-		return "gamePatchExcelDownload";
-	}	
+
+		String accessToken = memberService.getAccessTokenFromCookie(request);
+
+		if (accessToken.contains(Permission.PARTNER.toString())) {
+			return "gamePatchExcelDownloadSimple";
+		} else {
+			return "gamePatchExcelDownload";
+		}
+	}
 	
 	@RequestMapping("/gamepatch")
 	@PcbAuthorization(permission="PARTNER")	
