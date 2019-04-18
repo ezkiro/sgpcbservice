@@ -65,7 +65,7 @@ public class HistoryService {
 		
 		for(Game game : games) {
 			//각 game벼로  PC방의 설치수 sum 구하기
-			Long installCnt = gamePatchLogDao.findByGsn(game.getGsn()).stream().filter(gamePatchLog -> gamePatchLog.getInstall() > 0L).count();
+			Long installCnt = gamePatchLogDao.findByGsn(game.getGsn()).stream().filter(gamePatchLog -> gamePatchLog.getPatch() > 0L).count();
 
 			if (logger.isInfoEnabled()) {
 				logger.info("game:" + game.getGsn() + ", install count:" + installCnt);
