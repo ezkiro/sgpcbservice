@@ -74,10 +74,10 @@ public class HistoryService {
 			List<GamePatchLog> gamePatchLogs = gamePatchLogDao.findByGsn(game.getGsn());
 
 			//각 game별로  PC방의 설치수 sum 구하기
-			Long installCnt = gamePatchLogs.stream().filter(gamePatchLog -> gamePatchLog.getInstall() > 0L).count();
+			Long installCnt = gamePatchLogs.stream().filter(gamePatchLog -> gamePatchLog.getPatch() > 0L).count();
 
 			//각 game별로 설치 IP수 sum 구하기
-			Long installIpCnt = gamePatchLogs.stream().mapToLong(gamePatchLog -> gamePatchLog.getInstall()).sum();
+			Long installIpCnt = gamePatchLogs.stream().mapToLong(gamePatchLog -> gamePatchLog.getPatch()).sum();
 
 			if (logger.isInfoEnabled()) {
 				logger.info("game:" + game.getGsn() + ", install count:" + installCnt + ", install ip count:" + installIpCnt);
