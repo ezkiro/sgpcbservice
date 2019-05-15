@@ -14,18 +14,20 @@ import lombok.Data;
 @Data
 public class PcbGamePatchResult {
 	private Pcbang pcbang;
-	private YN isPaymentPcbang;
+	//private YN isPaymentPcbang;
 	private Long totalIPCnt;
 	private Long checkIPCnt;
 	
 	private Map<String, Long> gamePatchMap; //key:gsn val:patch count
 	private Map<String, String> gameVersionMap; //key:gsn val: game version
-	
+	private Map<String, YN> gamePaymentMap; //key:gsn val: isPayment YN
+
 	public PcbGamePatchResult(Pcbang pcbang) {
 		this.pcbang = pcbang;
 		this.gamePatchMap = new HashMap<>();
 		this.gameVersionMap = new HashMap<>();
-		this.isPaymentPcbang = YN.N;
+		this.gamePaymentMap = new HashMap<>();
+		//this.isPaymentPcbang = YN.N;
 		this.totalIPCnt = pcbang.getIpTotal();
 		this.checkIPCnt = 0L;
 	}
@@ -48,10 +50,30 @@ public class PcbGamePatchResult {
 		}
 		
 		//check mission complete
-		isPaymentPcbang = isMissionCompletePcbang(games) ? YN.Y : YN.N;
+		for (Game aGame : games) {
+			Long patchCnt = gamePatchMap.get(aGame.getGsn());
+			//우선 성공한 것으로 셋팅
+			gamePaymentMap.put(aGame.getGsn(), YN.Y);
+
+			//잘못된 PC방 IP 정보로 인해서 전체 IP수가 0이 나오면 무조건 false 반환
+			if (pcbang.getIpTotal() == 0L) {
+				gamePaymentMap.put(aGame.getGsn(), YN.N);
+			}
+
+			// 30% 미만은 지급 대상이 아니다. 아래와 같이 하는 것은 부동 소수점 연산을 피하기 위해서 이다.
+			if ((patchCnt * 10L) < (pcbang.getIpTotal() *3L)) {
+				gamePaymentMap.put(aGame.getGsn(), YN.N);
+			}
+		}
+
+		//isPaymentPcbang = isMissionCompletePcbang(games) ? YN.Y : YN.N;
 		
 	}
-	
+
+	public YN isMissionCompleteGame(Game game) {
+		return this.gamePaymentMap.get(game.getGsn());
+	}
+
 	public boolean isMissionCompletePcbang(List<Game> games) {
 		//현재 지급대상 PC방은 모든 게임의 patch 수가  전체 IP 수의 50% 이상이어야 한다.
 						

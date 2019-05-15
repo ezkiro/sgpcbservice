@@ -1,7 +1,9 @@
 package com.toyfactory.pcb.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.toyfactory.pcb.model.Permission;
 import com.toyfactory.pcb.model.YN;
@@ -112,27 +114,12 @@ public class AgentMemberController {
 		model.addAttribute("gameList",allGames);
 		model.addAttribute("targetGameList",targetGames);
 
-		long paymentPcbCnt = 0;
 
-		if ("patchYN".equals(searchKey)) {
-			List<PcbGamePatchResult> pcbGamePatchResultListByPatchYN = new ArrayList<PcbGamePatchResult>();
+		model.addAttribute("pcbGamePatchResultList", pcbGamePatchResultList);
 
-			for (PcbGamePatchResult item :pcbGamePatchResultList) {
-				if (item.getIsPaymentPcbang() == YN.valueOf(searchValue)) {
-					pcbGamePatchResultListByPatchYN.add(item);
-				}
-			}
-
-			if ("Y".equals(searchValue)) {
-				paymentPcbCnt = pcbGamePatchResultListByPatchYN.size();
-			}
-
-			model.addAttribute("pcbGamePatchResultList",pcbGamePatchResultListByPatchYN);
-		} else {
-			model.addAttribute("pcbGamePatchResultList", pcbGamePatchResultList);
-
-			paymentPcbCnt = pcbGamePatchResultList.stream()
-					.filter(pcbGamePatch -> pcbGamePatch.getIsPaymentPcbang() == YN.Y).count();
+		Map<String, Long> paymentPcbCnt = new HashMap<>();
+		for (Game aGame: targetGames) {
+			paymentPcbCnt.put(aGame.getGsn(), pcbGamePatchResultList.stream().filter(pcbGamePatch -> pcbGamePatch.isMissionCompleteGame(aGame) == YN.Y).count());
 		}
 
 		model.addAttribute("paymentPcbCnt", paymentPcbCnt);

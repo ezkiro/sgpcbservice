@@ -151,7 +151,10 @@
 		<div class="col-md-10 col-md-offset-2 bg-warning">
 			<label for="lbTotal">등록 PC방 : ${pcbGamePatchResultList.size()} 개</label>
 			<br>
-			<label for="lbPay">설치 PC방 : ${paymentPcbCnt} 개</label>
+        <c:forEach var="game" items="${targetGameList}">
+			<label for="lbPay">${game.getName()} 설치 PC방 : ${paymentPcbCnt.get(game.getGsn())} 개</label>
+			<br>
+	    </c:forEach>
 		</div>
 	</div>
     </div>
@@ -166,13 +169,12 @@
 				<td>주소</td>				
 				<td>IPstart</td>
 				<td>IPend</td>				
-				<td>submask</td>
 				<td>관리IP수</td>
 				<td>확인IP수</td>
 			<c:forEach var="game" items="${targetGameList}">
 				<td>${game.getName()}</td>
-			</c:forEach>
 				<td>설치유무(Y/N)</td>
+			</c:forEach>
 			</tr>
 
 		<c:forEach var="pcbGamePatchResult" items="${pcbGamePatchResultList}">
@@ -182,13 +184,12 @@
     			<td>${pcbGamePatchResult.getPcbang().getAddress()}</td>    			    			    			
     			<td>${pcbGamePatchResult.getPcbang().getIpStart()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getIpEnd()}</td>    			
-    			<td>${pcbGamePatchResult.getPcbang().getSubmask()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getIpTotal()}</td>
    				<td><a class="btn btn-success" href="/admin/pcbgamepatch/detail?pcb_id=${pcbGamePatchResult.getPcbang().getPcbId()}" role="button">${pcbGamePatchResult.getCheckIPCnt()}</a></td>    			
 			<c:forEach var="game" items="${targetGameList}">
 				<td>${pcbGamePatchResult.getGamePatchMap().get(game.getGsn())}</td>
+				<td>${pcbGamePatchResult.isMissionCompleteGame(game).toString()}</td>
 			</c:forEach>
-    			<td>${pcbGamePatchResult.getIsPaymentPcbang().toString()}</td>
     		</tr>
 		</c:forEach>
 		</table>
