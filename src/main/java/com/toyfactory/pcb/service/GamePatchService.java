@@ -49,32 +49,7 @@ public class GamePatchService {
 	
     @Autowired @Qualifier("jsonRedisTemplate")
     private RedisTemplate<String, PcbGamePatch> redisTemplate;	
-	
-	public List<PcbGamePatchResult> buildPcbGamePathResultForPcbang(List<Pcbang> pcbangs, List<Game> games) {
-		//최종 결과 
-		//gamePatchMapForPcbang = { pcbId: 123, games:{{key(gsn1):value(설치여부)},{key(gsn2):value(설치여부),...}, ...}			
-		List<PcbGamePatchResult> pcbGamePatchResultList = new ArrayList<PcbGamePatchResult>();
-						
-		for (Pcbang pcbang : pcbangs) {
-			
-			if (logger.isDebugEnabled()) logger.debug("pcbGamePatchResult pcb_id:" + pcbang.getPcbId());
-			
-			PcbGamePatchResult pcbGamePatchResult = new PcbGamePatchResult(pcbang);
-			
-			List<GamePatchLog> gamePatchLogs = gamePatchLogDao.findByPcbId(pcbang.getPcbId());
-			
-			pcbGamePatchResult.buildResult(gamePatchLogs, games);
 
-			YN isPaymentPcbang = isMissionCompletePcbang(pcbang, games) ? YN.Y : YN.N;
-			
-			pcbGamePatchResult.setIsPaymentPcbang(isPaymentPcbang);
-			
-			pcbGamePatchResultList.add(pcbGamePatchResult);
-		}
-		
-		return pcbGamePatchResultList;
-	}
-	
 	public List<PcbGamePatchResult> buildPcbGamePathResultForPcbangV2(List<Pcbang> pcbangs, List<Game> games) {
 		//최종 결과 
 		//gamePatchMapForPcbang = { pcbId: 123, games:{{key(gsn1):value(설치여부)},{key(gsn2):value(설치여부),...}, ...}			
