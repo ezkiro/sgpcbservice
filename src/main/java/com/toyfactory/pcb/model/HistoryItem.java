@@ -20,13 +20,24 @@ public class HistoryItem {
     Long pcbCnt;
     Long paidPcbCnt;
     Map<String, Long> installPcbMap;
+    Map<String, Long> installIpMap;
 
     public Long getInstallPcbCntByGsn(String gsn) {
+        if (installPcbMap.get(gsn) == null) return 0L;
         return installPcbMap.get(gsn);
     }
 
     public void setInstallPcbCntByGsn(String gsn, Long installCnt) {
         installPcbMap.put(gsn, installCnt);
+    }
+
+    public Long getInstallIpCntByGsn(String gsn) {
+        if (installIpMap.get(gsn) == null) return 0L;
+        return installIpMap.get(gsn);
+    }
+
+    public void setInstallIpCntByGsn(String gsn, Long installCnt) {
+        installIpMap.put(gsn, installCnt);
     }
 
     public HistoryItem(String dateKey, Long pcbCnt, Long paidPcbCnt) {
@@ -36,5 +47,6 @@ public class HistoryItem {
         this.paidPcbCnt = paidPcbCnt;
 
         this.installPcbMap = new HashMap<>();
+        this.installIpMap = new HashMap<>();
     }
 }

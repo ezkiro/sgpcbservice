@@ -34,18 +34,31 @@ public class GamePatchHistory {
 	private String gsn;
 	
 	private Long install = 0L; //설치된 수
+	private Long installIpCnt = 0L; //설치된 IP 수
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date crtDt;
 	
 	protected GamePatchHistory() {}
 	
-	public GamePatchHistory(String gsn, Long install, Date date) {
+	public GamePatchHistory(String gsn, Long install, Long installIpCnt, Date date) {
 		DateFormat keyFormat = new SimpleDateFormat("yyyyMMdd");
 		
 		this.dateKey = keyFormat.format(date);		
 		this.gsn = gsn;
 		this.install = install;
+		this.installIpCnt = installIpCnt;
 		this.crtDt = date;
+	}
+
+	//새로 추가된 컬럼에 대해서 null 값 대신 0으로 반환하기 위해서
+	public Long getInstallIpCnt() {
+		if (this.installIpCnt == null) return 0L;
+		return this.installIpCnt;
+	}
+
+	public Long getInstall() {
+		if (this.install == null) return 0L;
+		return this.install;
 	}
 }

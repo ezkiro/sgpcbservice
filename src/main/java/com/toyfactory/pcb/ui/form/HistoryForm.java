@@ -46,23 +46,25 @@ public class HistoryForm extends VerticalLayout {
         historyGrid.addColumn(HistoryItem::getDate, new LocalDateRenderer(formatter)).setCaption("일자").setId("date");
         historyGrid.addColumn(HistoryItem::getPcbCnt, new NumberRenderer(new DecimalFormat("#,###"))).setCaption("등록PC방").setId("pcb_cnt");
 
-        historyGrid.addColumn(HistoryItem::getPaidPcbCnt, new NumberRenderer(new DecimalFormat("#,###"))).setCaption("설치PC방").setId("paid_pcb_cnt");
+        for(Game game : games) {
+            historyGrid.addColumn(historyItem -> {
+                return historyItem.getInstallPcbCntByGsn(game.getGsn());
+            }, new NumberRenderer(new DecimalFormat("#,###"))).setCaption(game.getName()).setId("game_" + game.getGsn());
 
+            historyGrid.addColumn(historyItem -> {
+                return historyItem.getInstallIpCntByGsn(game.getGsn());
+            }, new NumberRenderer(new DecimalFormat("#,###"))).setCaption("설치 IP수").setId("game_ip_" + game.getGsn());
+
+        }
 
         HeaderRow headerRow = historyGrid.getDefaultHeaderRow();
         headerRow.getCell("date").setHtml("<b>일자<b>");
         headerRow.getCell("pcb_cnt").setHtml("<b>등록PC방<b>");
-        headerRow.getCell("paid_pcb_cnt").setHtml("<b>설치PC방<b>");
 
-        //set header
-//        HeaderRow groupingHeader = historyGrid.prependHeaderRow();
-//        Set<HeaderCell> gameSet = new HashSet<>();
-//
-//        for(Game game : games) {
-//            gameSet.add(groupingHeader.getCell("game_" + game.getGsn()));
-//        }
-//
-//        groupingHeader.join(gameSet).setText("설치PC방");
+        for(Game game : games) {
+            headerRow.getCell("game_" + game.getGsn()).setHtml("<b>" + game.getName() +"<b>");
+            headerRow.getCell("game_ip_" + game.getGsn()).setHtml("<b>설치 IP수<b>");
+        }
     }
 
     public void reloadGrid(List<History> historyList, List<GamePatchHistory> gamePatchHistoryList) {
@@ -86,6 +88,7 @@ public class HistoryForm extends VerticalLayout {
             if (historyItem == null) continue;
 
             historyItem.setInstallPcbCntByGsn(gamePatchHistory.getGsn(), gamePatchHistory.getInstall());
+            historyItem.setInstallIpCntByGsn(gamePatchHistory.getGsn(), gamePatchHistory.getInstallIpCnt());
         }
 
         historyGrid.setItems(historyItemList);
@@ -109,8 +112,15 @@ public class HistoryForm extends VerticalLayout {
         Long pcbCntDayDelta = item1.getPcbCnt() - item2.getPcbCnt();
         footerRow.getCell("pcb_cnt").setHtml(colorNumberHtml(pcbCntDayDelta));
 
-        Long paidPcbCntDayDelta = item1.getPaidPcbCnt() - item2.getPaidPcbCnt();
-        footerRow.getCell("paid_pcb_cnt").setHtml(colorNumberHtml(paidPcbCntDayDelta));
+        for(Game game : games) {
+            //게임별 설치 PC방 수
+            Long installDayDelta = item1.getInstallPcbCntByGsn(game.getGsn()) - item2.getInstallPcbCntByGsn(game.getGsn());
+            footerRow.getCell("game_" + game.getGsn()).setHtml(colorNumberHtml(installDayDelta));
+
+            //게임별 설치 IP수
+            Long installIpCntDayDelta = item1.getInstallIpCntByGsn(game.getGsn()) - item2.getInstallIpCntByGsn(game.getGsn());
+            footerRow.getCell("game_ip_" + game.getGsn()).setHtml(colorNumberHtml(installIpCntDayDelta));
+        }
     }
 
     private void clearDeltaFooter() {

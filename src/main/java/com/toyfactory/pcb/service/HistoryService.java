@@ -64,19 +64,26 @@ public class HistoryService {
 		historyDao.save(new History(pcbCnt, paidPcbCnt, new Date()));		
 		
 		for(Game game : games) {
+
+			List<GamePatchLog> gamePatchLogs = gamePatchLogDao.findByGsn(game.getGsn());
+
 			//각 game벼로  PC방의 설치수 sum 구하기
-			Long installCnt = gamePatchLogDao.findByGsn(game.getGsn()).stream().filter(gamePatchLog -> gamePatchLog.getPatch() > 0L).count();
+			Long installCnt = gamePatchLogs.stream().filter(gamePatchLog -> gamePatchLog.getPatch() > 0L).count();
+
+			//각 game별로 설치 IP수 sum 구하기
+			Long installIpCnt = gamePatchLogs.stream().mapToLong(gamePatchLog -> gamePatchLog.getPatch()).sum();
 
 			if (logger.isInfoEnabled()) {
-				logger.info("game:" + game.getGsn() + ", install count:" + installCnt);
+				logger.info("game:" + game.getGsn() + ", install count:" + installCnt + ", install ip count:" + installIpCnt);
 			}			
 			
-			GamePatchHistory newHistory = new GamePatchHistory(game.getGsn(), installCnt, new Date());
+			GamePatchHistory newHistory = new GamePatchHistory(game.getGsn(), installCnt, installIpCnt, new Date());
 			
 			GamePatchHistory oldHistory = gamePatchHistoryDao.findByDateKeyAndGsn(newHistory.getDateKey(), newHistory.getGsn());
 			
 			if (oldHistory != null) {
 				oldHistory.setInstall(installCnt);
+				oldHistory.setInstallIpCnt(installIpCnt);
 				gamePatchHistoryDao.save(oldHistory);
 			} else {
 				gamePatchHistoryDao.save(newHistory);
