@@ -52,17 +52,11 @@ public class PcbGamePatchResult {
 		//check mission complete
 		for (Game aGame : games) {
 			Long patchCnt = gamePatchMap.get(aGame.getGsn());
-			//우선 성공한 것으로 셋팅
-			gamePaymentMap.put(aGame.getGsn(), YN.Y);
+			gamePaymentMap.put(aGame.getGsn(), YN.N);
 
-			//잘못된 PC방 IP 정보로 인해서 전체 IP수가 0이 나오면 무조건 false 반환
-			if (pcbang.getIpTotal() == 0L) {
-				gamePaymentMap.put(aGame.getGsn(), YN.N);
-			}
-
-			// 30% 미만은 지급 대상이 아니다. 아래와 같이 하는 것은 부동 소수점 연산을 피하기 위해서 이다.
-			if ((patchCnt * 10L) < (pcbang.getIpTotal() *3L)) {
-				gamePaymentMap.put(aGame.getGsn(), YN.N);
+			//1대라도 설치되면 성공으로 셋팅
+			if (patchCnt > 0) {
+				gamePaymentMap.put(aGame.getGsn(), YN.Y);
 			}
 		}
 
