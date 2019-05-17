@@ -148,7 +148,6 @@
                   <option value="companyCode">관리업체2</option>
                   <option value="companyName">상호</option>
                   <option value="ipRange">IP</option>
-                  <option value="patchYN">설치유무</option>
                 </select>
             </div>
             <div class="col-md-4">

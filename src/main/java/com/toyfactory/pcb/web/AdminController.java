@@ -6,6 +6,7 @@ import java.util.concurrent.Executors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.toyfactory.pcb.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,6 @@ import com.toyfactory.pcb.model.StatusCd;
 import com.toyfactory.pcb.model.VerifyType;
 import com.toyfactory.pcb.model.YN;
 import com.toyfactory.pcb.repository.PcbangRepository;
-import com.toyfactory.pcb.service.GamePatchService;
-import com.toyfactory.pcb.service.GameService;
-import com.toyfactory.pcb.service.MemberService;
-import com.toyfactory.pcb.service.PcbangService;
 
 @Controller
 @RequestMapping("/admin")
@@ -58,7 +55,10 @@ public class AdminController {
 	private PcbangRepository pcbangDao;
 	
 	@Autowired	
-	private PcbangService pcbangService;	
+	private PcbangService pcbangService;
+
+	@Autowired
+	private HistoryService historyService;
 	
 	@RequestMapping("/agent")
 	@PcbAuthorization(permission="ADMIN")	
@@ -400,7 +400,26 @@ public class AdminController {
 				
 		return "OK";
 	}
-	
+
+	@RequestMapping("/batch2")
+	@ResponseBody
+	@PcbAuthorization(permission="ADMIN")
+	public String runHistoryBatch(){
+
+		//reference http://tutorials.jenkov.com/java-util-concurrent/executorservice.html
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+		executorService.execute(new Runnable() {
+			public void run() {
+				historyService.executeHistoryBatch(gameService.findEnableGames());
+			}
+		});
+
+		executorService.shutdown();
+
+		return "OK";
+	}
+
 	@RequestMapping("/pcbgamepatch/detail")
 	@PcbAuthorization(permission="ADMIN")	
 	public String showPcbGamePatch(Model model,
