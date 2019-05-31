@@ -54,8 +54,8 @@ public class PcbGamePatchResult {
 			Long patchCnt = gamePatchMap.get(aGame.getGsn());
 			gamePaymentMap.put(aGame.getGsn(), YN.N);
 
-			//1대라도 설치되면 성공으로 셋팅
-			if (patchCnt > 0) {
+			// 30% 미만은 지급 대상이 아니다. 아래와 같이 하는 것은 부동 소수점 연산을 피하기 위해서 이다.
+			if ((patchCnt * 10L) < (pcbang.getIpTotal() *3L)) {
 				gamePaymentMap.put(aGame.getGsn(), YN.Y);
 			}
 		}
