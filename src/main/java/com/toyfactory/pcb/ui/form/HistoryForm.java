@@ -150,7 +150,9 @@ public class HistoryForm extends VerticalLayout {
         } else {
             sb.append("<font color=\"blue\">");
         }
-        sb.append(num.toString());
+
+        DecimalFormat fmt = new DecimalFormat("#,###");
+        sb.append(fmt.format(num));
         sb.append("</font>");
 
         return sb.toString();

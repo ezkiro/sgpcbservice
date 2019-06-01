@@ -2,6 +2,8 @@ package com.toyfactory.pcb.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,20 +57,22 @@ public class HistoryService {
 		
 		//지급  PC방수
 		Long paidPcbCnt = pcbangs.stream().filter(pcbang -> gamePatchService.isMissionCompletePcbang(pcbang, games) == true).count();
-		
+
 		if (logger.isInfoEnabled()) {
 			logger.info("all pcb count:" + pcbCnt + ", paid pcbCnt:" + paidPcbCnt);
 		}
 		
 		//history 저장
-		historyDao.save(new History(pcbCnt, paidPcbCnt, new Date()));		
-		
+		historyDao.save(new History(pcbCnt, paidPcbCnt, new Date()));
+
+		Map<Long, Long> pcbangIpTotalMap = pcbangs.stream().collect(Collectors.toMap(Pcbang::getPcbId,Pcbang::getIpTotal));
+
 		for(Game game : games) {
 
 			List<GamePatchLog> gamePatchLogs = gamePatchLogDao.findByGsn(game.getGsn());
 
-			//각 game벼로  PC방의 설치수 sum 구하기
-			Long installCnt = gamePatchLogs.stream().filter(gamePatchLog -> gamePatchLog.getPatch() > 0L).count();
+			//각 game별로  30% 이상 설치 달성한 PC방의 설치수 sum 구하기
+			Long installCnt = gamePatchLogs.stream().filter(gamePatchLog -> gamePatchLog.getPatch()*10L > pcbangIpTotalMap.get(gamePatchLog.getPcbId())*3L).count();
 
 			//각 game별로 설치 IP수 sum 구하기
 			Long installIpCnt = gamePatchLogs.stream().mapToLong(gamePatchLog -> gamePatchLog.getPatch()).sum();
