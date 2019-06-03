@@ -175,8 +175,7 @@
     			<td>${pcbGamePatchResult.getPcbang().getCompanyName()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getAddress()}</td>    			    			    			
     			<td>${pcbGamePatchResult.getPcbang().getIpStart()} - ${pcbGamePatchResult.getPcbang().getIpEnd()}</td>
-    			<td>${pcbGamePatchResult.getPcbang().getSubmask()}</td>
-    			<td>${pcbGamePatchResult.getPcbang().getCompanyCode()}</td>    			
+    			<td>${pcbGamePatchResult.getPcbang().getCompanyCode()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getIpTotal()}</td>
     			<td>${pcbGamePatchResult.getCheckIPCnt()}</td>    			    			    			
 			<c:forEach var="game" items="${targetGameList}">
