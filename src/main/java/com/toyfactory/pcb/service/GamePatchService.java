@@ -238,7 +238,7 @@ public class GamePatchService {
 			}
 			
 			// 50% 미만은 지급 대상이 아니다.
-			if ((gamePatchLog.getPatch() * 2L) < pcbang.getIpTotal()) {
+			if ((gamePatchLog.getPatch() * 10L) < (pcbang.getIpTotal() * 3L)) {
 				return false;
 			}			
 		}
