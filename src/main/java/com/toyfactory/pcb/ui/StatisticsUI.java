@@ -63,7 +63,7 @@ public class StatisticsUI extends UI {
 
         screenLayout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 
-        screenLayout.addComponent(new HeaderLayout(title + " 게임 별 설치 및 패치 현황", "BACK", "/admin/gamepatch"));
+        screenLayout.addComponent(new HeaderLayout(title + " 게임 설치 현황", "BACK", "/admin/gamepatch"));
 
         Label searchLabel = new Label("기간 별 통계");
         searchLabel.addStyleName(ValoTheme.LABEL_H3);
