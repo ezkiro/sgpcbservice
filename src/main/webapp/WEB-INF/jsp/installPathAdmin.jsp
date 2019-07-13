@@ -59,7 +59,7 @@
   	<hr>  		
 	
 	<table class="table table-bordered table-hover">
-		<tr class="success">
+		<tr class="pcb">
 			<td>id</td>
 			<td>Game</td>			
 			<td>category</td>

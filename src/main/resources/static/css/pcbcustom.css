@@ -1,0 +1,29 @@
+.bg-pcb {
+  background-color: #E6E6E6;
+}
+a.bg-pcb:hover {
+  background-color: #c1e2b3;
+}
+
+.table > thead > tr > td.pcb,
+.table > tbody > tr > td.pcb,
+.table > tfoot > tr > td.pcb,
+.table > thead > tr > th.pcb,
+.table > tbody > tr > th.pcb,
+.table > tfoot > tr > th.pcb,
+.table > thead > tr.pcb > td,
+.table > tbody > tr.pcb > td,
+.table > tfoot > tr.pcb > td,
+.table > thead > tr.pcb > th,
+.table > tbody > tr.pcb > th,
+.table > tfoot > tr.pcb > th {
+  background-color: #E6E6E6;
+}
+
+.table-hover > tbody > tr > td.pcb:hover,
+.table-hover > tbody > tr > th.pcb:hover,
+.table-hover > tbody > tr.pcb:hover > td,
+.table-hover > tbody > tr:hover > .pcb,
+.table-hover > tbody > tr.pcb:hover > th {
+  background-color: #d0e9c6;
+}
