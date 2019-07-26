@@ -144,7 +144,7 @@
 		<div class="col-md-10 col-md-offset-2 bg-warning">
 			<label for="lbTotal">등록 PC방 : ${pcbGamePatchResultList.size()} 개</label>
 			<br>
-			<label for="lbPay">지급 PC방 : ${paymentPcbCnt} 개</label>
+			<label for="lbPay">정산 PC방 : ${paymentPcbCnt} 개</label>
 		</div>
 	</div>
     </div>
@@ -155,7 +155,6 @@
 		<table class="table table-bordered table-hover">
 			<tr class="info">
 				<td>구분</td>
-				<td>PSN</td>
 				<td>상호</td>
 				<td>주소</td>				
 				<td>IP대역</td>
@@ -163,7 +162,7 @@
 				<td>관리업체2</td>				
 				<td>관리IP수</td>
 				<td>확인IP수</td>
-				<td>지급대상(Y/N)</td>
+				<td>정산대상(Y/N)</td>
 			<c:forEach var="game" items="${targetGameList}">
 				<td>${game.getName()}</td>
 			</c:forEach>																																																						
@@ -172,7 +171,6 @@
 		<c:forEach var="pcbGamePatchResult" items="${pcbGamePatchResultList}">
 			<tr>
     			<td>${pcbGamePatchResult.getPcbang().getPcbId()}</td>
-    			<td>${pcbGamePatchResult.getPcbang().getCeo()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getCompanyName()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getAddress()}</td>    			    			    			
     			<td>${pcbGamePatchResult.getPcbang().getIpStart()} - ${pcbGamePatchResult.getPcbang().getIpEnd()}</td>

@@ -60,8 +60,8 @@ public class PcbGamePatchResult {
 				return false;
 			}
 
-			// 50% 미만은 지급 대상이 아니다.
-			if ((patchCnt * 2L) < pcbang.getIpTotal()) {
+			// 30% 미만은 지급 대상이 아니다.
+			if ((patchCnt * 10L) < (pcbang.getIpTotal() * 3L)) {
 				return false;
 			}			
 		}
