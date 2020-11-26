@@ -55,7 +55,7 @@ public class PcbGamePatchResult {
 			gamePaymentMap.put(aGame.getGsn(), YN.N);
 
 			// 10개 이상 설치를 하면 성공으로 간주한다.
-			if (patchCnt >= 10L) {
+			if (PcbGamePatchResult.isGamePatchOk(patchCnt, pcbang.getIpTotal())) {
 				gamePaymentMap.put(aGame.getGsn(), YN.Y);
 			}
 		}
@@ -87,5 +87,15 @@ public class PcbGamePatchResult {
 		
 		return true;
 	}
-	
+
+	public static boolean isGamePatchOk(Long installCnt, Long totalPcbIpCnt) {
+		//최초에는 전체 PC 방 IP 수의 30% 이상이 설치가 OK
+
+		//2020-11-25 설치 IP 수가 10 개 이상이면 OK
+		if (installCnt >= 10L) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

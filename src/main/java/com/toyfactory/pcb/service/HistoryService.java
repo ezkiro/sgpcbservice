@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.toyfactory.pcb.model.PcbGamePatchResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,13 +72,13 @@ public class HistoryService {
 
 			List<GamePatchLog> gamePatchLogs = gamePatchLogDao.findByGsn(game.getGsn());
 
-			//각 game별로  30% 이상 설치 달성한 PC방의 설치수 sum 구하기
+			//각 game별로  10IP 이상 설치 달성한 PC방의 설치수 sum 구하기
 			Long installCnt = gamePatchLogs.stream().filter(gamePatchLog -> {
 
 				Long pcbIpTotal = pcbangIpTotalMap.get(gamePatchLog.getPcbId());
 				if (pcbIpTotal == null) return false;
 
-				if (gamePatchLog.getPatch()*10L > pcbIpTotal*3L) {
+				if (PcbGamePatchResult.isGamePatchOk(gamePatchLog.getPatch(), pcbIpTotal)) {
 					return true;
 				} else {
 					return false;

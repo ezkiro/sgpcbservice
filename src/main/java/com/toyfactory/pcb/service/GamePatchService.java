@@ -228,8 +228,8 @@ public class GamePatchService {
 				return false;
 			}
 			
-			// 30% 미만은 지급 대상이 아니다. 아래와 같이 하는 것은 부동 소수점 연산을 피하기 위해서 이다.
-			if ((gamePatchLog.getPatch() * 10L) < (pcbang.getIpTotal() *3L)) {
+			// 설치 IP 수가 10개 이상이면 정산대상 PC 방이다.
+			if (!PcbGamePatchResult.isGamePatchOk(gamePatchLog.getPatch(), pcbang.getIpTotal())) {
 				return false;
 			}			
 		}
