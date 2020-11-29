@@ -60,8 +60,8 @@ public class PcbGamePatchResult {
 				return false;
 			}
 
-			// 30% 미만은 지급 대상이 아니다.
-			if ((patchCnt * 10L) < (pcbang.getIpTotal() * 3L)) {
+			// 10 ip 미만 설치이면 정산 PC방이 아니다.
+			if (patchCnt < 10L) {
 				return false;
 			}			
 		}
