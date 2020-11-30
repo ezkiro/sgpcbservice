@@ -237,8 +237,8 @@ public class GamePatchService {
 				return false;
 			}
 			
-			// 50% 미만은 지급 대상이 아니다.
-			if ((gamePatchLog.getPatch() * 10L) < (pcbang.getIpTotal() * 3L)) {
+			// 10 IP 설치 미만은 정산 PC방이 아니다.
+			if (gamePatchLog.getPatch() < 10L) {
 				return false;
 			}			
 		}
