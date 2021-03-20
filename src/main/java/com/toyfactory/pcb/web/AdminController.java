@@ -425,7 +425,26 @@ public class AdminController {
 				
 		return "OK";
 	}
-	
+
+	@RequestMapping("/batch2")
+	@ResponseBody
+	@PcbAuthorization(permission="ADMIN")
+	public String runHistoryBatch(){
+
+		//reference http://tutorials.jenkov.com/java-util-concurrent/executorservice.html
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+		executorService.execute(new Runnable() {
+			public void run() {
+				historyService.executeHistoryBatch(gameService.findEnableGames());
+			}
+		});
+
+		executorService.shutdown();
+
+		return "OK";
+	}
+
 	@RequestMapping("/pcbgamepatch/detail")
 	@PcbAuthorization(permission="ADMIN")	
 	public String showPcbGamePatch(Model model,
