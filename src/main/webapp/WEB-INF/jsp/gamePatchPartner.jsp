@@ -29,7 +29,7 @@
 			}
 
 			if ($("#inputSerachKey").val() == "patchYN" && !($("#inputSerachValue").val() == "Y" || $("#inputSerachValue").val() == "N")) {
-				alert("입력오류! 지급대상은 'Y' 또는 'N'를  입력하세요.");
+				alert("입력오류! 설치유무는 'Y' 또는 'N'를  입력하세요.");
 				return false;
 			}
 
@@ -131,8 +131,7 @@
                 <select class="form-control" id ="inputSerachKey">
                   <option value="all">전체</option>
                   <option value="companyName">상호</option>
-                  <option value="ipRange">IP</option>
-                  <option value="patchYN">지급대상</option>
+                  <option value="patchYN">설치유무</option>
                 </select>
             </div>
             <div class="col-md-4">
@@ -151,7 +150,7 @@
 		<div class="col-md-10 col-md-offset-2 bg-warning">
 			<label for="lbTotal">등록 PC방 : ${pcbGamePatchResultList.size()} 개</label>
 			<br>
-			<label for="lbPay">정산 PC방 : ${paymentPcbCnt} 개</label>
+			<label for="lbPay">설치 PC방 : ${paymentPcbCnt} 개</label>
 		</div>
 	</div>
     </div>
@@ -164,15 +163,11 @@
 				<td>구분</td>
 				<td>상호</td>
 				<td>주소</td>
-				<td>IPstart</td>
-				<td>IPend</td>
-				<td>submask</td>
 				<td>관리IP수</td>
-				<td>확인IP수</td>
-				<td>정산대상(Y/N)</td>
 			<c:forEach var="game" items="${targetGameList}">
 				<td>${game.getName()}</td>
 			</c:forEach>
+				<td>설치유무(Y/N)</td>
 			</tr>
 
 		<c:forEach var="pcbGamePatchResult" items="${pcbGamePatchResultList}">
@@ -180,15 +175,11 @@
     			<td>${pcbGamePatchResult.getPcbang().getPcbId()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getCompanyName()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getAddress()}</td>
-    			<td>${pcbGamePatchResult.getPcbang().getIpStart()}</td>
-    			<td>${pcbGamePatchResult.getPcbang().getIpEnd()}</td>
-    			<td>${pcbGamePatchResult.getPcbang().getSubmask()}</td>
     			<td>${pcbGamePatchResult.getPcbang().getIpTotal()}</td>
-   				<td><a class="btn btn-success" href="/admin/pcbgamepatch/detail?pcb_id=${pcbGamePatchResult.getPcbang().getPcbId()}" role="button">${pcbGamePatchResult.getCheckIPCnt()}</a></td>
-    			<td>${pcbGamePatchResult.getIsPaymentPcbang().toString()}</td>
 			<c:forEach var="game" items="${targetGameList}">
 				<td>${pcbGamePatchResult.getGamePatchMap().get(game.getGsn())}</td>
 			</c:forEach>
+				<td>${pcbGamePatchResult.getIsPaymentPcbang().toString()}</td>
     		</tr>
 		</c:forEach>
 		</table>

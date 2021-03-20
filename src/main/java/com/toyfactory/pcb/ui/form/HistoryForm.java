@@ -47,29 +47,30 @@ public class HistoryForm extends VerticalLayout {
         historyGrid.addColumn(HistoryItem::getDate, new LocalDateRenderer(formatter)).setCaption("일자").setId("date");
         historyGrid.addColumn(HistoryItem::getPcbCnt, new NumberRenderer(new DecimalFormat("#,###"))).setCaption("등록PC방").setId("pcb_cnt");
 
-        for(Game game : games) {
-            historyGrid.addColumn(historyItem -> {
-                return historyItem.getInstallPcbCntByGsn(game.getGsn());
-            }, new NumberRenderer(new DecimalFormat("#,###"))).setCaption(game.getName()).setId("game_" + game.getGsn());
+//        for(Game game : games) {
+//            historyGrid.addColumn(historyItem -> {
+//                return historyItem.getInstallPcbCntByGsn(game.getGsn());
+//            }, new NumberRenderer(new DecimalFormat("#,###"))).setCaption(game.getName()).setId("game_" + game.getGsn());
+//
+//            historyGrid.addColumn(historyItem -> {
+//                return historyItem.getInstallIpCntByGsn(game.getGsn());
+//            }, new NumberRenderer(new DecimalFormat("#,###"))).setCaption("설치 IP수").setId("game_ip_" + game.getGsn());
+//
+//        }
 
-            historyGrid.addColumn(historyItem -> {
-                return historyItem.getInstallIpCntByGsn(game.getGsn());
-            }, new NumberRenderer(new DecimalFormat("#,###"))).setCaption("설치 IP수").setId("game_ip_" + game.getGsn());
-
-        }
-        historyGrid.addColumn(HistoryItem::getPaidPcbCnt, new NumberRenderer(new DecimalFormat("#,###"))).setCaption("정산PC방").setId("paid_pcb_cnt");
-        historyGrid.addColumn(HistoryItem::getPaidIpCnt, new NumberRenderer(new DecimalFormat("#,###"))).setCaption("정산IP수").setId("paid_ip_cnt");
+        historyGrid.addColumn(HistoryItem::getPaidPcbCnt, new NumberRenderer(new DecimalFormat("#,###"))).setCaption("설치PC방").setId("paid_pcb_cnt");
+        historyGrid.addColumn(HistoryItem::getPaidIpCnt, new NumberRenderer(new DecimalFormat("#,###"))).setCaption("설치IP수").setId("paid_ip_cnt");
 
 
         HeaderRow headerRow = historyGrid.getDefaultHeaderRow();
         headerRow.getCell("date").setHtml("<b>일자<b>");
         headerRow.getCell("pcb_cnt").setHtml("<b>등록PC방<b>");
-        for(Game game : games) {
-            headerRow.getCell("game_" + game.getGsn()).setHtml("<b>" + game.getName() +"<b>");
-            headerRow.getCell("game_ip_" + game.getGsn()).setHtml("<b>설치 IP수<b>");
-        }
-        headerRow.getCell("paid_pcb_cnt").setHtml("<b>정산PC방<b>");
-        headerRow.getCell("paid_ip_cnt").setHtml("<b>정산IP수<b>");
+//        for(Game game : games) {
+//            headerRow.getCell("game_" + game.getGsn()).setHtml("<b>" + game.getName() +"<b>");
+//            headerRow.getCell("game_ip_" + game.getGsn()).setHtml("<b>설치 IP수<b>");
+//        }
+        headerRow.getCell("paid_pcb_cnt").setHtml("<b>설치PC방<b>");
+        headerRow.getCell("paid_ip_cnt").setHtml("<b>설치IP수<b>");
 
         //set header
 //        HeaderRow groupingHeader = historyGrid.prependHeaderRow();
@@ -128,15 +129,15 @@ public class HistoryForm extends VerticalLayout {
         Long pcbCntDayDelta = item1.getPcbCnt() - item2.getPcbCnt();
         footerRow.getCell("pcb_cnt").setHtml(colorNumberHtml(pcbCntDayDelta));
 
-        for(Game game : games) {
-            //게임별 설치 PC방 수
-            Long installDayDelta = item1.getInstallPcbCntByGsn(game.getGsn()) - item2.getInstallPcbCntByGsn(game.getGsn());
-            footerRow.getCell("game_" + game.getGsn()).setHtml(colorNumberHtml(installDayDelta));
-
-            //게임별 설치 IP수
-            Long installIpCntDayDelta = item1.getInstallIpCntByGsn(game.getGsn()) - item2.getInstallIpCntByGsn(game.getGsn());
-            footerRow.getCell("game_ip_" + game.getGsn()).setHtml(colorNumberHtml(installIpCntDayDelta));
-        }
+//        for(Game game : games) {
+//            //게임별 설치 PC방 수
+//            Long installDayDelta = item1.getInstallPcbCntByGsn(game.getGsn()) - item2.getInstallPcbCntByGsn(game.getGsn());
+//            footerRow.getCell("game_" + game.getGsn()).setHtml(colorNumberHtml(installDayDelta));
+//
+//            //게임별 설치 IP수
+//            Long installIpCntDayDelta = item1.getInstallIpCntByGsn(game.getGsn()) - item2.getInstallIpCntByGsn(game.getGsn());
+//            footerRow.getCell("game_ip_" + game.getGsn()).setHtml(colorNumberHtml(installIpCntDayDelta));
+//        }
 
         //정산 PC방 수
         Long paidPcbCntDayDelta = item1.getPaidPcbCnt() - item2.getPaidPcbCnt();
