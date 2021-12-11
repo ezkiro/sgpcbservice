@@ -29,7 +29,7 @@ public class PcbGamePatchResult {
 		this.checkIPCnt = 0L;
 	}
 
-	public void buildResult(List<GamePatchLog> gamePatchLogs, List<Game> games){
+	public void buildResult(List<GamePatchLog> gamePatchLogs, List<Game> games, long installCnt){
 
 		//init from games
 		for (Game game : games) {
@@ -45,11 +45,11 @@ public class PcbGamePatchResult {
 		}
 		
 		//check mission complete
-		isPaymentPcbang = isMissionCompletePcbang(games) ? YN.Y : YN.N;
+		isPaymentPcbang = isMissionCompletePcbang(games, installCnt) ? YN.Y : YN.N;
 		
 	}
 	
-	public boolean isMissionCompletePcbang(List<Game> games) {
+	public boolean isMissionCompletePcbang(List<Game> games, long installCnt) {
 		//현재 지급대상 PC방은 모든 게임의 patch 수가  전체 IP 수의 50% 이상이어야 한다.
 						
 		for (Game aGame : games) {
@@ -61,7 +61,7 @@ public class PcbGamePatchResult {
 			}
 
 			// 10 ip 미만 설치이면 정산 PC방이 아니다.
-			if (patchCnt < 10L) {
+			if (patchCnt < installCnt) {
 				return false;
 			}			
 		}

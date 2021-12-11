@@ -3,15 +3,13 @@ package com.toyfactory.pcb.api;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.toyfactory.pcb.config.PcbProperties;
 import com.toyfactory.pcb.service.GameService;
 import com.toyfactory.pcb.service.HistoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.toyfactory.pcb.service.GamePatchService;
 
@@ -30,7 +28,15 @@ public class BatchController {
 
 	@Autowired
 	private GameService gameService;
-	
+
+	@Autowired
+	private PcbProperties pcbProperties;
+
+	@GetMapping("/config")
+	public String getConfig() {
+		return "config:" + pcbProperties.toString();
+	}
+
     @PostMapping("/gamepatchlog")
     public String buildGamePatchLog(@RequestParam(value="auth_key", required = true) String authKey) {
     	

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import com.toyfactory.pcb.config.PcbProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,6 @@ import com.toyfactory.pcb.model.StatusCd;
 import com.toyfactory.pcb.model.VerifyType;
 import com.toyfactory.pcb.model.YN;
 import com.toyfactory.pcb.repository.GamePatchLogRepository;
-import com.toyfactory.pcb.repository.GameRepository;
-import com.toyfactory.pcb.repository.PcbangRepository;
-
 
 @Service("gamePatchService")
 public class GamePatchService {
@@ -42,8 +40,8 @@ public class GamePatchService {
 	@Autowired	
 	private GameService gameService;
 	
-	@Autowired	
-	private PcbangRepository pcbangDao;
+	@Autowired
+	private PcbProperties pcbProperties;
 
 	@Autowired	
 	private PcbangService pcbangService;	
@@ -64,7 +62,7 @@ public class GamePatchService {
 			
 			List<GamePatchLog> gamePatchLogs = gamePatchLogDao.findByPcbId(pcbang.getPcbId());
 			
-			pcbGamePatchResult.buildResult(gamePatchLogs, games);
+			pcbGamePatchResult.buildResult(gamePatchLogs, games, pcbProperties.getInstallCnt());
 
 			YN isPaymentPcbang = isMissionCompletePcbang(pcbang, games) ? YN.Y : YN.N;
 			
@@ -109,7 +107,7 @@ public class GamePatchService {
 				gamePatchLogs = new ArrayList<GamePatchLog>();
 			}
 			
-			pcbGamePatchResult.buildResult(gamePatchLogs, games);
+			pcbGamePatchResult.buildResult(gamePatchLogs, games, pcbProperties.getInstallCnt());
 			
 			pcbGamePatchResultList.add(pcbGamePatchResult);
 		}
@@ -153,7 +151,7 @@ public class GamePatchService {
 	
 	public boolean writePcbGamePatchToCache(String clientIp, PcbGamePatch pcbGamePatch) {
     	pcbGamePatch.setCrtDt(new Date());
-        redisTemplate.opsForValue().set(clientIp, pcbGamePatch, 41L, TimeUnit.DAYS);
+        redisTemplate.opsForValue().set(clientIp, pcbGamePatch, pcbProperties.getAgentExpireDays(), TimeUnit.DAYS);
 		return true;
 	}
 	
@@ -227,8 +225,6 @@ public class GamePatchService {
 	}
 	
 	public boolean isMissionCompletePcbang(Pcbang pcbang, List<Game> games) {
-		//현재 지급대상 PC방은 모든 게임의 patch 수가  전체 IP 수의 50% 이상이어야 한다.
-		
 		//List<Game> games = gameService.findGames();
 				
 		for (Game aGame : games) {
@@ -238,7 +234,7 @@ public class GamePatchService {
 			}
 			
 			// 10 IP 설치 미만은 정산 PC방이 아니다.
-			if (gamePatchLog.getPatch() < 10L) {
+			if (gamePatchLog.getPatch() < pcbProperties.getInstallCnt()) {
 				return false;
 			}			
 		}
