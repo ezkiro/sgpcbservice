@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.toyfactory.pcb.config.PcbProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,7 @@ import com.toyfactory.pcb.model.PcbGamePatch;
 import com.toyfactory.pcb.model.PcbGamePatchResult;
 import com.toyfactory.pcb.model.StatusCd;
 import com.toyfactory.pcb.model.VerifyType;
-import com.toyfactory.pcb.model.YN;
 import com.toyfactory.pcb.repository.GamePatchLogRepository;
-import com.toyfactory.pcb.repository.PcbangRepository;
 import org.springframework.util.StringUtils;
 
 
@@ -40,41 +39,16 @@ public class GamePatchService {
 	
 	@Autowired	
 	private GameService gameService;
-	
-	@Autowired	
-	private PcbangRepository pcbangDao;
+
+	@Autowired
+	private PcbProperties pcbProperties;
 
 	@Autowired	
 	private PcbangService pcbangService;	
 	
     @Autowired @Qualifier("jsonRedisTemplate")
     private RedisTemplate<String, PcbGamePatch> redisTemplate;	
-	
-	public List<PcbGamePatchResult> buildPcbGamePathResultForPcbang(List<Pcbang> pcbangs, List<Game> games) {
-		//최종 결과 
-		//gamePatchMapForPcbang = { pcbId: 123, games:{{key(gsn1):value(설치여부)},{key(gsn2):value(설치여부),...}, ...}			
-		List<PcbGamePatchResult> pcbGamePatchResultList = new ArrayList<PcbGamePatchResult>();
-						
-		for (Pcbang pcbang : pcbangs) {
-			
-			if (logger.isDebugEnabled()) logger.debug("pcbGamePatchResult pcb_id:" + pcbang.getPcbId());
-			
-			PcbGamePatchResult pcbGamePatchResult = new PcbGamePatchResult(pcbang);
-			
-			List<GamePatchLog> gamePatchLogs = gamePatchLogDao.findByPcbId(pcbang.getPcbId());
-			
-			pcbGamePatchResult.buildResult(gamePatchLogs, games);
 
-			YN isPaymentPcbang = isMissionCompletePcbang(pcbang, games) ? YN.Y : YN.N;
-			
-			pcbGamePatchResult.setIsPaymentPcbang(isPaymentPcbang);
-			
-			pcbGamePatchResultList.add(pcbGamePatchResult);
-		}
-		
-		return pcbGamePatchResultList;
-	}
-	
 	public List<PcbGamePatchResult> buildPcbGamePathResultForPcbangV2(List<Pcbang> pcbangs, List<Game> games) {
 		//최종 결과 
 		//gamePatchMapForPcbang = { pcbId: 123, games:{{key(gsn1):value(설치여부)},{key(gsn2):value(설치여부),...}, ...}			
@@ -108,7 +82,7 @@ public class GamePatchService {
 				gamePatchLogs = new ArrayList<GamePatchLog>();
 			}
 			
-			pcbGamePatchResult.buildResult(gamePatchLogs, games);
+			pcbGamePatchResult.buildResult(gamePatchLogs, games, pcbProperties.getInstallCnt());
 			
 			pcbGamePatchResultList.add(pcbGamePatchResult);
 		}
@@ -242,7 +216,7 @@ public class GamePatchService {
 		return false;
 	}
 	
-	public boolean isMissionCompletePcbang(Pcbang pcbang, List<Game> games) {
+	public boolean isMissionCompletePcbang(Pcbang pcbang, List<Game> games, long installCnt) {
 		//현재 지급대상 PC방은 모든 게임의 patch 수가  전체 IP 수의 30% 이상이어야 한다.
 		
 		//List<Game> games = gameService.findGames();
@@ -254,7 +228,7 @@ public class GamePatchService {
 			}
 			
 			// 10 ip 미만 설치는 정산 PC방이 아니다.
-			if (gamePatchLog.getPatch() < 10L) {
+			if (gamePatchLog.getPatch() < installCnt) {
 				return false;
 			}			
 		}

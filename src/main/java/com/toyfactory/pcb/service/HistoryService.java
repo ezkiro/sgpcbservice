@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.toyfactory.pcb.config.PcbProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,10 @@ public class HistoryService {
 	
 	@Autowired
 	private GamePatchHistoryRepository gamePatchHistoryDao;
-	
-	
+
+	@Autowired
+	private PcbProperties pcbProperties;
+
 	public void executeHistoryBatch(List<Game> games) {
 		//반드시 excuteGamePatchAnalysisBatch() 이후에 실행이 되어야 한다.
 		
@@ -56,7 +59,7 @@ public class HistoryService {
 		//등록 PC방수
 		Long pcbCnt = Long.valueOf(pcbangs.size());
 
-		List<Pcbang> paidPcbangs = pcbangs.stream().filter(pcbang -> gamePatchService.isMissionCompletePcbang(pcbang, games) == true).collect(Collectors.toList());
+		List<Pcbang> paidPcbangs = pcbangs.stream().filter(pcbang -> gamePatchService.isMissionCompletePcbang(pcbang, games, pcbProperties.getInstallCnt()) == true).collect(Collectors.toList());
 
 		//지급  PC방수
 		Long paidPcbCnt = Long.valueOf(paidPcbangs.size());
