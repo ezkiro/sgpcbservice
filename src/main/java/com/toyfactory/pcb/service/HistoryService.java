@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.toyfactory.pcb.config.PcbProperties;
 import com.toyfactory.pcb.model.PcbGamePatchResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,9 @@ public class HistoryService {
 	
 	@Autowired
 	private GamePatchHistoryRepository gamePatchHistoryDao;
-	
+
+	@Autowired
+	private PcbProperties pcbProperties;
 	
 	public void executeHistoryBatch(List<Game> games) {
 		//반드시 excuteGamePatchAnalysisBatch() 이후에 실행이 되어야 한다.
@@ -78,7 +81,7 @@ public class HistoryService {
 				Long pcbIpTotal = pcbangIpTotalMap.get(gamePatchLog.getPcbId());
 				if (pcbIpTotal == null) return false;
 
-				if (PcbGamePatchResult.isGamePatchOk(gamePatchLog.getPatch(), pcbIpTotal)) {
+				if (PcbGamePatchResult.isGamePatchOk(gamePatchLog.getPatch(), pcbIpTotal, pcbProperties.getInstallCnt())) {
 					return true;
 				} else {
 					return false;

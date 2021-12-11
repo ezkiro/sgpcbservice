@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.toyfactory.pcb.config.PcbProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,7 @@ import com.toyfactory.pcb.model.PcbGamePatch;
 import com.toyfactory.pcb.model.PcbGamePatchResult;
 import com.toyfactory.pcb.model.StatusCd;
 import com.toyfactory.pcb.model.VerifyType;
-import com.toyfactory.pcb.model.YN;
 import com.toyfactory.pcb.repository.GamePatchLogRepository;
-import com.toyfactory.pcb.repository.PcbangRepository;
 import org.springframework.util.StringUtils;
 
 
@@ -40,9 +39,9 @@ public class GamePatchService {
 	
 	@Autowired	
 	private GameService gameService;
-	
-	@Autowired	
-	private PcbangRepository pcbangDao;
+
+	@Autowired
+	private PcbProperties pcbProperties;
 
 	@Autowired	
 	private PcbangService pcbangService;	
@@ -83,7 +82,7 @@ public class GamePatchService {
 				gamePatchLogs = new ArrayList<GamePatchLog>();
 			}
 			
-			pcbGamePatchResult.buildResult(gamePatchLogs, games);
+			pcbGamePatchResult.buildResult(gamePatchLogs, games, pcbProperties.getInstallCnt());
 			
 			pcbGamePatchResultList.add(pcbGamePatchResult);
 		}
@@ -229,7 +228,7 @@ public class GamePatchService {
 			}
 			
 			// 설치 IP 수가 10개 이상이면 정산대상 PC 방이다.
-			if (!PcbGamePatchResult.isGamePatchOk(gamePatchLog.getPatch(), pcbang.getIpTotal())) {
+			if (!PcbGamePatchResult.isGamePatchOk(gamePatchLog.getPatch(), pcbang.getIpTotal(), pcbProperties.getInstallCnt())) {
 				return false;
 			}			
 		}
