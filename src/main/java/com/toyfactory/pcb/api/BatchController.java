@@ -46,7 +46,7 @@ public class BatchController {
     	
     	if (!AUTH_KEY.equals(authKey)) {
     		
-    		return "fail: invaild auth key!";
+    		return "fail: invalid auth key!";
     	}
     	
 		//reference http://tutorials.jenkov.com/java-util-concurrent/executorservice.html
@@ -62,5 +62,22 @@ public class BatchController {
 		executorService.shutdown();
 				
 		return "success";
-    }	
+    }
+
+
+    @PostMapping("/reset/history/{key}")
+    public String resetHistory(@RequestParam(value="auth_key", required = true) String authKey,
+							   @PathVariable String key) {
+
+		if (logger.isInfoEnabled()) {
+			logger.info("batch resetHistory: auth_key:" + authKey);
+		}
+
+		if (!AUTH_KEY.equals(authKey)) {
+
+			return "fail: invalid auth key!";
+		}
+
+		return historyService.resetHistory(key);
+	}
 }
