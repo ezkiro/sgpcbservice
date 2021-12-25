@@ -168,11 +168,8 @@ public class PcbangService {
 					continue;
 				}
 
-				if (isDuplicateIP(pcbang.getIpStart())) {
-					//중복이면 따로 분리하지 않고 상태만 WAIT 상태로 해서 입력
-					//invalidDatas.add(rawData + ":<font color=\"red\">Duplicate IP!</font>");
-					pcbang.setStatus(StatusCd.WAIT);
-				}
+				//2021-12-25 ip check 기능 제거
+
 				pcbangs.add(pcbang);
 			}			
 			
