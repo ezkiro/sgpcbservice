@@ -1,5 +1,7 @@
 package com.toyfactory.pcb.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,8 @@ import com.toyfactory.pcb.repository.GamePatchHistoryRepository;
 import com.toyfactory.pcb.repository.GamePatchLogRepository;
 import com.toyfactory.pcb.repository.HistoryRepository;
 import com.toyfactory.pcb.repository.PcbangRepository;
+
+import javax.transaction.Transactional;
 
 @Service("historyService")
 public class HistoryService {
@@ -119,5 +123,30 @@ public class HistoryService {
 
 	public List<GamePatchHistory> getGamePatchHistorysBetween(String startKey, String endKey) {
 		return gamePatchHistoryDao.findByDateKeyBetween(startKey, endKey);
+	}
+
+	@Transactional
+	public String resetHistory(String key) {
+
+		if ("all".equals(key)) {
+			historyDao.deleteAll();
+			gamePatchHistoryDao.deleteAll();
+			logger.info("[resetHistory] deleteAll");
+		} else {
+			try {
+				//key는 yyyyMMdd 형식
+				SimpleDateFormat input = new SimpleDateFormat("yyyyMMdd");
+				Date crtDt = input.parse(key);
+				historyDao.deleteByCrtDtBefore(crtDt);
+				gamePatchHistoryDao.deleteByCrtDtBefore(crtDt);
+				logger.info("[resetHistory] deleteBefore crtDt:{}", crtDt);
+
+			} catch (ParseException e) {
+				logger.error("[resetHistory] ParseException error:{}", e.getMessage());
+				return "fail! invalid key:" + key;
+			}
+		}
+
+		return "success";
 	}
 }
